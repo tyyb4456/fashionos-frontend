@@ -2,26 +2,9 @@ import { useEffect, useState } from 'react'
 import { useApi } from '../api/client'
 import Badge from '../components/Badge'
 
-const cardS = {
-  background: 'rgba(44,62,80,0.4)',
-  border: '1px solid rgba(76,161,175,0.15)',
-  borderRadius: '16px',
-  padding: '16px',
-}
-
 const approveStyle = {
   background: 'linear-gradient(135deg, #166534, #22c55e)',
   color: 'white', border: 'none',
-}
-const rejectStyle = {
-  background: 'rgba(255,255,255,0.07)',
-  color: '#94a3b8',
-  border: '1px solid rgba(255,255,255,0.1)',
-}
-const inputS = {
-  width: '100%', background: 'rgba(0,0,0,0.25)',
-  border: '1px solid rgba(76,161,175,0.18)', borderRadius: '10px',
-  padding: '6px 12px', fontSize: '0.7rem', color: '#b0ccd4', outline: 'none',
 }
 
 function Tab({ label, active, count, onClick }) {
@@ -29,9 +12,9 @@ function Tab({ label, active, count, onClick }) {
     <button onClick={onClick}
       className="px-4 py-2 text-sm font-medium rounded-xl transition-all"
       style={active ? {
-        background: 'linear-gradient(120deg, rgba(44,62,80,0.7), rgba(76,161,175,0.22))',
-        color: '#4CA1AF', border: '1px solid rgba(76,161,175,0.3)',
-      } : { color: '#7a9ab5', background: 'none', border: 'none', cursor: 'pointer' }}
+        background: 'var(--active-nav)',
+        color: '#4CA1AF', border: '1px solid var(--card-border)',
+      } : { color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}
     >
       {label} {count > 0 && <span className="ml-1 opacity-70 text-xs">({count})</span>}
     </button>
@@ -46,7 +29,9 @@ function ActionBtns({ onApprove, onReject, approveLabel, loading }) {
         style={approveStyle}>{approveLabel}</button>
       <button onClick={onReject} disabled={loading}
         className="flex-1 text-xs py-1.5 rounded-xl transition-all disabled:opacity-50"
-        style={rejectStyle}>Reject</button>
+        style={{ background: 'var(--reject-bg)', color: 'var(--reject-text)', border: '1px solid var(--reject-border)' }}>
+        Reject
+      </button>
     </div>
   )
 }
@@ -55,18 +40,18 @@ function PricingCard({ rec, onApprove, onReject }) {
   const [loading, setLoading] = useState(false)
   const act = async fn => { setLoading(true); try { await fn() } finally { setLoading(false) } }
   return (
-    <div style={cardS}>
+    <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '16px' }}>
       <div className="flex justify-between items-start mb-3">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white">{rec.sku}</span>
+            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{rec.sku}</span>
             <Badge level="pending" />
           </div>
-          <p className="text-xs mt-1" style={{ color: '#7a9ab5' }}>{rec.reason}</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{rec.reason}</p>
         </div>
         <div className="text-right text-xs">
-          <div style={{ color: '#7a9ab5' }}>PKR {rec.current_price?.toFixed(0)}</div>
-          <div className="text-white font-medium">→ PKR {rec.recommended_price?.toFixed(0)}</div>
+          <div style={{ color: 'var(--text-secondary)' }}>PKR {rec.current_price?.toFixed(0)}</div>
+          <div className="font-medium" style={{ color: 'var(--text-primary)' }}>→ PKR {rec.recommended_price?.toFixed(0)}</div>
           <div style={{ color: '#facc15' }}>{rec.discount_pct?.toFixed(0)}% off</div>
         </div>
       </div>
@@ -80,25 +65,30 @@ function RestockCard({ rec, onApprove, onReject }) {
   const [loading, setLoading] = useState(false)
   const [supplierNum, setSupplierNum] = useState('')
   const act = async fn => { setLoading(true); try { await fn() } finally { setLoading(false) } }
+  const inputS = {
+    width: '100%', background: 'var(--input-bg)',
+    border: '1px solid var(--input-border)', borderRadius: '10px',
+    padding: '6px 12px', fontSize: '0.7rem', color: 'var(--text-body)', outline: 'none',
+  }
   return (
-    <div style={cardS}>
+    <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '16px' }}>
       <div className="flex justify-between items-start mb-2">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white">{rec.sku}</span>
+            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{rec.sku}</span>
             <Badge level={rec.urgency} />
           </div>
-          <p className="text-xs mt-1" style={{ color: '#7a9ab5' }}>{rec.reason}</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{rec.reason}</p>
         </div>
         <div className="text-right text-xs">
-          <div className="text-white font-medium">{rec.recommended_quantity} units</div>
-          <div style={{ color: '#7a9ab5' }}>{rec.days_of_stock_remaining?.toFixed(1)} days left</div>
-          <div style={{ color: '#7a9ab5' }}>{rec.units_per_day?.toFixed(1)}/day</div>
+          <div className="font-medium" style={{ color: 'var(--text-primary)' }}>{rec.recommended_quantity} units</div>
+          <div style={{ color: 'var(--text-secondary)' }}>{rec.days_of_stock_remaining?.toFixed(1)} days left</div>
+          <div style={{ color: 'var(--text-secondary)' }}>{rec.units_per_day?.toFixed(1)}/day</div>
         </div>
       </div>
       {rec.supplier_message && (
         <div className="rounded-xl p-2 mb-3 text-xs line-clamp-3"
-          style={{ background: 'rgba(0,0,0,0.2)', color: '#7a9ab5' }}>
+          style={{ background: 'var(--inner-bg)', color: 'var(--text-secondary)' }}>
           {rec.supplier_message}
         </div>
       )}
@@ -106,7 +96,7 @@ function RestockCard({ rec, onApprove, onReject }) {
         placeholder="Supplier WhatsApp (923001234567) — optional"
         style={inputS} className="mb-2"
         onFocus={e => e.target.style.borderColor = '#4CA1AF'}
-        onBlur={e => e.target.style.borderColor = 'rgba(76,161,175,0.18)'}
+        onBlur={e => e.target.style.borderColor = 'var(--input-border)'}
       />
       <ActionBtns
         onApprove={() => act(() => onApprove(supplierNum || null))}
@@ -122,20 +112,20 @@ function MarketingCard({ rec, onApprove, onReject }) {
   const [loading, setLoading] = useState(false)
   const act = async fn => { setLoading(true); try { await fn() } finally { setLoading(false) } }
   return (
-    <div style={cardS}>
+    <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '16px' }}>
       <div className="flex justify-between items-start mb-3">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white">{rec.campaign_name}</span>
+            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{rec.campaign_name}</span>
             <Badge level="pending" />
           </div>
-          {rec.sku && <span className="text-xs" style={{ color: '#7a9ab5' }}>SKU: {rec.sku}</span>}
-          <p className="text-xs mt-1" style={{ color: '#7a9ab5' }}>{rec.reason}</p>
+          {rec.sku && <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>SKU: {rec.sku}</span>}
+          <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{rec.reason}</p>
         </div>
         <div className="text-right text-xs">
-          <div className="capitalize" style={{ color: '#7a9ab5' }}>{rec.action?.replace('_', ' ')}</div>
+          <div className="capitalize" style={{ color: 'var(--text-secondary)' }}>{rec.action?.replace('_', ' ')}</div>
           {rec.new_budget_pkr && (
-            <div className="text-white font-medium">PKR {rec.new_budget_pkr?.toFixed(0)}/day</div>
+            <div className="font-medium" style={{ color: 'var(--text-primary)' }}>PKR {rec.new_budget_pkr?.toFixed(0)}/day</div>
           )}
           {rec.change_pct !== 0 && (
             <div style={{ color: rec.change_pct > 0 ? '#4ade80' : '#f87171' }}>
@@ -151,7 +141,7 @@ function MarketingCard({ rec, onApprove, onReject }) {
 }
 
 function Empty({ text }) {
-  return <div className="text-center py-12 text-sm" style={{ color: '#4a6070' }}>{text}</div>
+  return <div className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>{text}</div>
 }
 
 export default function Approvals() {
@@ -183,7 +173,7 @@ export default function Approvals() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl text-white" style={{ fontFamily: "'Grape Nuts', cursive" }}>Approvals</h1>
+      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Approvals</h1>
       <div className="flex gap-2">
         <Tab label="Pricing"   active={tab === 'pricing'}   count={pricing.length}   onClick={() => setTab('pricing')} />
         <Tab label="Restock"   active={tab === 'restock'}   count={restock.length}   onClick={() => setTab('restock')} />

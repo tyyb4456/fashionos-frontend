@@ -28,27 +28,27 @@ export default function Content() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl text-white" style={{ fontFamily: "'Grape Nuts', cursive" }}>Content Queue</h1>
-      <p className="text-xs" style={{ color: '#7a9ab5' }}>
+      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Content Queue</h1>
+      <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
         {posts.filter(p => p.is_urgent).length} urgent · {posts.length} total pending
       </p>
       <div className="space-y-3">
         {posts.map(post => (
           <div key={post.id} className="rounded-2xl overflow-hidden transition-all"
             style={{
-              border: post.is_urgent ? '1px solid rgba(251,146,60,0.3)' : '1px solid rgba(76,161,175,0.15)',
-              background: post.is_urgent ? 'rgba(251,146,60,0.05)' : 'rgba(44,62,80,0.35)',
+              border: post.is_urgent ? '1px solid rgba(251,146,60,0.3)' : '1px solid var(--card-border)',
+              background: post.is_urgent ? 'rgba(251,146,60,0.05)' : 'var(--item-bg)',
             }}>
             <div className="p-4 cursor-pointer"
               onClick={() => setExpanded(expanded === post.id ? null : post.id)}>
               <div className="flex justify-between items-start">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-white">{post.product_title}</span>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{post.product_title}</span>
                     {post.is_urgent && <Badge level="warning" />}
-                    <span className="text-xs" style={{ color: '#7a9ab5' }}>{post.sku}</span>
+                    <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{post.sku}</span>
                   </div>
-                  <div className="flex items-center gap-3 mt-1 text-xs" style={{ color: '#7a9ab5' }}>
+                  <div className="flex items-center gap-3 mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
                     <span className="flex items-center gap-1"><SiInstagram size={10} /> {post.instagram_post_time}</span>
                     <span className="flex items-center gap-1"><Video size={10} /> {post.tiktok_post_time}</span>
                   </div>
@@ -56,19 +56,19 @@ export default function Content() {
                     <span className="text-xs mt-1 block" style={{ color: '#4ade80' }}>{post.sale_mention}</span>
                   )}
                 </div>
-                <span className="text-xs" style={{ color: '#7a9ab5' }}>{expanded === post.id ? '▲' : '▼'}</span>
+                <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{expanded === post.id ? '▲' : '▼'}</span>
               </div>
             </div>
 
             {expanded === post.id && (
-              <div className="p-4 space-y-4" style={{ borderTop: '1px solid rgba(76,161,175,0.1)' }}>
+              <div className="p-4 space-y-4" style={{ borderTop: '1px solid var(--item-border)' }}>
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <SiInstagram size={12} style={{ color: '#f472b6' }} />
                     <span className="text-xs font-medium" style={{ color: '#f472b6' }}>Instagram Caption</span>
                   </div>
                   <p className="text-xs whitespace-pre-wrap rounded-xl p-3"
-                    style={{ background: 'rgba(0,0,0,0.25)', color: '#b0ccd4' }}>
+                    style={{ background: 'var(--inner-bg)', color: 'var(--text-body)' }}>
                     {post.instagram_caption}
                   </p>
                   {post.instagram_hashtags && (
@@ -85,19 +85,19 @@ export default function Content() {
                       <span className="text-xs font-medium" style={{ color: '#22d3ee' }}>TikTok Script</span>
                     </div>
                     <div className="rounded-xl p-3 text-xs space-y-2"
-                      style={{ background: 'rgba(0,0,0,0.25)', color: '#b0ccd4' }}>
-                      <p><span style={{ color: '#7a9ab5' }}>Hook:</span> {post.tiktok_script.hook}</p>
-                      <p><span style={{ color: '#7a9ab5' }}>Context:</span> {post.tiktok_script.context}</p>
-                      <p><span style={{ color: '#7a9ab5' }}>Reveal:</span> {post.tiktok_script.reveal}</p>
-                      <p><span style={{ color: '#7a9ab5' }}>CTA:</span> {post.tiktok_script.cta}</p>
+                      style={{ background: 'var(--inner-bg)', color: 'var(--text-body)' }}>
+                      <p><span style={{ color: 'var(--text-secondary)' }}>Hook:</span> {post.tiktok_script.hook}</p>
+                      <p><span style={{ color: 'var(--text-secondary)' }}>Context:</span> {post.tiktok_script.context}</p>
+                      <p><span style={{ color: 'var(--text-secondary)' }}>Reveal:</span> {post.tiktok_script.reveal}</p>
+                      <p><span style={{ color: 'var(--text-secondary)' }}>CTA:</span> {post.tiktok_script.cta}</p>
                     </div>
                   </div>
                 )}
 
                 {post.creator_notes && (
                   <div>
-                    <span className="text-xs" style={{ color: '#7a9ab5' }}>📋 Creator Notes</span>
-                    <p className="text-xs mt-1" style={{ color: '#8ba5b8' }}>{post.creator_notes}</p>
+                    <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>📋 Creator Notes</span>
+                    <p className="text-xs mt-1" style={{ color: 'var(--text-body)' }}>{post.creator_notes}</p>
                   </div>
                 )}
 
@@ -109,7 +109,7 @@ export default function Content() {
                   </button>
                   <button onClick={() => updateStatus(post.id, 'skipped')}
                     className="flex-1 text-xs py-1.5 rounded-xl transition-all"
-                    style={{ background: 'rgba(255,255,255,0.07)', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    style={{ background: 'var(--reject-bg)', color: 'var(--reject-text)', border: '1px solid var(--reject-border)' }}>
                     Skip
                   </button>
                 </div>
@@ -118,7 +118,7 @@ export default function Content() {
           </div>
         ))}
         {posts.length === 0 && (
-          <div className="text-center py-12 text-sm" style={{ color: '#4a6070' }}>No content pending</div>
+          <div className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>No content pending</div>
         )}
       </div>
     </div>

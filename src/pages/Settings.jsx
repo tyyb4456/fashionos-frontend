@@ -3,16 +3,6 @@ import { useApi } from '../api/client'
 import { useSearchParams } from 'react-router-dom'
 import { Check, ExternalLink, Trash2 } from 'lucide-react'
 
-const cardS = {
-  background: 'rgba(44,62,80,0.4)',
-  border: '1px solid rgba(76,161,175,0.15)',
-  borderRadius: '16px', padding: '20px',
-}
-const inputBase = {
-  width: '100%', background: 'rgba(13,30,46,0.8)',
-  border: '1px solid rgba(76,161,175,0.2)', borderRadius: '10px',
-  padding: '8px 12px', fontSize: '0.875rem', color: '#b0ccd4', outline: 'none',
-}
 const gradBtn = {
   background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
   color: 'white', border: 'none',
@@ -20,12 +10,12 @@ const gradBtn = {
 
 function ConnectCard({ title, connected, onConnect, onDisconnect, children }) {
   return (
-    <div style={cardS} className="space-y-4">
+    <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '20px' }} className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-white">{title}</h2>
+        <h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{title}</h2>
         {connected
           ? <span className="text-xs flex items-center gap-1" style={{ color: '#4ade80' }}><Check size={10} /> Connected</span>
-          : <span className="text-xs" style={{ color: '#7a9ab5' }}>Not connected</span>}
+          : <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>Not connected</span>}
       </div>
       {children}
       <div>
@@ -46,12 +36,17 @@ function ConnectCard({ title, connected, onConnect, onDisconnect, children }) {
 }
 
 function Field({ label, name, value, onChange, placeholder }) {
+  const inputBase = {
+    width: '100%', background: 'var(--input-bg)',
+    border: '1px solid var(--input-border)', borderRadius: '10px',
+    padding: '8px 12px', fontSize: '0.875rem', color: 'var(--text-body)', outline: 'none',
+  }
   return (
     <div>
-      <label className="block text-xs mb-1" style={{ color: '#7a9ab5' }}>{label}</label>
+      <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>{label}</label>
       <input name={name} value={value} onChange={onChange} placeholder={placeholder} style={inputBase}
         onFocus={e => e.target.style.borderColor = '#4CA1AF'}
-        onBlur={e => e.target.style.borderColor = 'rgba(76,161,175,0.2)'} />
+        onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
     </div>
   )
 }
@@ -77,8 +72,8 @@ export default function Settings() {
     if (searchParams.get('meta')    === 'connected') setBrand(b => b ? { ...b, meta_connected: true, instagram_connected: true } : b)
   }, [searchParams])
 
-  const connectShopify  = async () => { if (!shopInput.trim()) return alert('Enter shop name first.'); const { url } = await api.get(`/api/v1/oauth/shopify/start?shop=${shopInput.trim()}`); window.location.href = url }
-  const connectMeta     = async () => { const { url } = await api.get('/api/v1/oauth/meta/start'); window.location.href = url }
+  const connectShopify    = async () => { if (!shopInput.trim()) return alert('Enter shop name first.'); const { url } = await api.get(`/api/v1/oauth/shopify/start?shop=${shopInput.trim()}`); window.location.href = url }
+  const connectMeta       = async () => { const { url } = await api.get('/api/v1/oauth/meta/start'); window.location.href = url }
   const disconnectShopify = async () => { if (!confirm('Disconnect Shopify?')) return; await api.del('/api/v1/brands/me/shopify'); setBrand(b => ({ ...b, shopify_connected: false })) }
   const disconnectMeta    = async () => { if (!confirm('Disconnect Meta?')) return;    await api.del('/api/v1/brands/me/meta');    setBrand(b => ({ ...b, meta_connected: false, instagram_connected: false })) }
   const onChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
@@ -95,11 +90,17 @@ export default function Settings() {
     </div>
   )
 
+  const inputBase = {
+    width: '100%', background: 'var(--input-bg)',
+    border: '1px solid var(--input-border)', borderRadius: '10px',
+    padding: '8px 12px', fontSize: '0.875rem', color: 'var(--text-body)', outline: 'none',
+  }
+
   return (
     <div className="p-6 max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl text-white" style={{ fontFamily: "'Grape Nuts', cursive" }}>Settings</h1>
-        {brand && <p className="text-xs mt-0.5" style={{ color: '#7a9ab5' }}>{brand.owner_email} · {brand.plan} plan</p>}
+        <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Settings</h1>
+        {brand && <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{brand.owner_email} · {brand.plan} plan</p>}
       </div>
 
       {searchParams.get('shopify') === 'connected' && (
@@ -115,8 +116,8 @@ export default function Settings() {
         </div>
       )}
 
-      <div style={cardS} className="space-y-4">
-        <h2 className="text-sm font-semibold text-white">Brand Info</h2>
+      <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '20px' }} className="space-y-4">
+        <h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Brand Info</h2>
         <Field label="Brand Name"                   name="brand_name"           value={form.brand_name           || ''} onChange={onChange} />
         <Field label="Owner WhatsApp (for alerts)"  name="brand_owner_whatsapp" value={form.brand_owner_whatsapp || ''} onChange={onChange} placeholder="923001234567" />
         <Field label="Owner Email (for digests)"    name="brand_owner_email"    value={form.brand_owner_email    || ''} onChange={onChange} placeholder="you@example.com" />
@@ -134,15 +135,15 @@ export default function Settings() {
         onConnect={connectShopify} onDisconnect={disconnectShopify}>
         {!brand?.shopify_connected && (
           <div>
-            <label className="block text-xs mb-1" style={{ color: '#7a9ab5' }}>Shop name</label>
+            <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Shop name</label>
             <input value={shopInput} onChange={e => setShopInput(e.target.value)}
               placeholder="mybrand (without .myshopify.com)" style={inputBase}
               onFocus={e => e.target.style.borderColor = '#4CA1AF'}
-              onBlur={e => e.target.style.borderColor = 'rgba(76,161,175,0.2)'} />
+              onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
           </div>
         )}
         {brand?.shopify_connected && (
-          <p className="text-xs" style={{ color: '#7a9ab5' }}>
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
             Products, orders, inventory and webhooks are syncing automatically.
           </p>
         )}
@@ -153,18 +154,18 @@ export default function Settings() {
         {brand?.meta_connected ? (
           <div className="space-y-1">
             {brand.meta_ad_account_id && (
-              <p className="text-xs" style={{ color: '#7a9ab5' }}>
-                Ad Account: <span style={{ color: '#b0ccd4' }}>{brand.meta_ad_account_id}</span>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                Ad Account: <span style={{ color: 'var(--text-body)' }}>{brand.meta_ad_account_id}</span>
               </p>
             )}
             {brand.instagram_page_id && (
-              <p className="text-xs" style={{ color: '#7a9ab5' }}>
-                Instagram Page: <span style={{ color: '#b0ccd4' }}>{brand.instagram_page_id}</span>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                Instagram Page: <span style={{ color: 'var(--text-body)' }}>{brand.instagram_page_id}</span>
               </p>
             )}
           </div>
         ) : (
-          <p className="text-xs" style={{ color: '#7a9ab5' }}>
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
             Connects Facebook Ads, Instagram DMs, and ad management in one click.
           </p>
         )}

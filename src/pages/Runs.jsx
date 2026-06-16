@@ -22,31 +22,31 @@ export default function Runs() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl text-white" style={{ fontFamily: "'Grape Nuts', cursive" }}>Run History</h1>
+      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Run History</h1>
       <div className="space-y-2">
         {runs.map(run => (
           <div key={run.run_id} onClick={() => nav(`/runs/${run.run_id}`)}
             className="rounded-2xl p-4 cursor-pointer transition-all"
-            style={{ background: 'rgba(44,62,80,0.35)', border: '1px solid rgba(76,161,175,0.12)' }}
+            style={{ background: 'var(--item-bg)', border: '1px solid var(--item-border)' }}
             onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(76,161,175,0.32)'}
-            onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(76,161,175,0.12)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--item-border)'}
           >
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-medium text-white capitalize">{run.trigger}</span>
+                  <span className="text-sm font-medium capitalize" style={{ color: 'var(--text-primary)' }}>{run.trigger}</span>
                   {run.alert_count_critical > 0 && <Badge level="critical" />}
                   {run.alert_count_warning  > 0 && <Badge level="warning"  />}
                 </div>
-                <p className="text-xs" style={{ color: '#7a9ab5' }}>
+                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                   {new Date(run.started_at).toLocaleString()}
                   {run.completed_at && ` · ${Math.round((new Date(run.completed_at) - new Date(run.started_at)) / 1000)}s`}
                 </p>
                 {run.run_summary && (
-                  <p className="text-xs mt-2 line-clamp-2" style={{ color: '#8ba5b8' }}>{run.run_summary}</p>
+                  <p className="text-xs mt-2 line-clamp-2" style={{ color: 'var(--text-body)' }}>{run.run_summary}</p>
                 )}
               </div>
-              <div className="text-right text-xs space-y-1" style={{ color: '#7a9ab5' }}>
+              <div className="text-right text-xs space-y-1" style={{ color: 'var(--text-secondary)' }}>
                 <div>{run.inventory_skus_analysed} SKUs</div>
                 <div>{run.pricing_decisions_total} pricing</div>
                 <div>{run.alert_count_total} alerts</div>
@@ -56,7 +56,7 @@ export default function Runs() {
               <div className="mt-2 flex flex-wrap gap-1">
                 {run.agents_run.map(a => (
                   <span key={a} className="text-xs px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(76,161,175,0.1)', color: '#7a9ab5', border: '1px solid rgba(76,161,175,0.15)' }}>
+                    style={{ background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--card-border)' }}>
                     {a}
                   </span>
                 ))}

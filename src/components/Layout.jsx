@@ -1,6 +1,7 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { UserButton } from '@clerk/clerk-react'
-import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, Zap } from 'lucide-react'
+import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, Zap, Sun, Moon } from 'lucide-react'
+import { useTheme } from '../context/ThemeContext'
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -11,23 +12,26 @@ const navItems = [
   { to: '/settings',  icon: Settings,          label: 'Settings'  },
 ]
 
-const activeStyle = {
-  background: 'linear-gradient(120deg, rgba(44,62,80,0.7) 0%, rgba(76,161,175,0.22) 100%)',
-  borderLeft: '2px solid #4CA1AF',
-  paddingLeft: '10px',
-  color: 'white',
-}
-
 export default function Layout() {
+  const { theme, toggleTheme } = useTheme()
+
+  const activeStyle = {
+    background: 'var(--active-nav)',
+    borderLeft: '2px solid #4CA1AF',
+    paddingLeft: '10px',
+    color: 'var(--text-primary)',
+  }
+
   return (
-    <div className="flex h-screen" style={{ background: '#0a1628' }}>
+    <div className="flex h-screen" style={{ background: 'var(--bg)', transition: 'background 0.25s' }}>
       <aside className="flex flex-col" style={{
         width: '220px', minWidth: '220px',
-        background: 'linear-gradient(170deg, #0c1d2f 0%, #0f2336 60%, #0c1d2f 100%)',
-        borderRight: '1px solid rgba(76,161,175,0.13)',
+        background: 'var(--sidebar-gradient)',
+        borderRight: '1px solid var(--sidebar-border)',
+        transition: 'background 0.25s, border-color 0.25s',
       }}>
         {/* Brand */}
-        <div className="p-5" style={{ borderBottom: '1px solid rgba(76,161,175,0.12)' }}>
+        <div className="p-5" style={{ borderBottom: '1px solid var(--item-border)' }}>
           <div className="flex items-center gap-3">
             <div style={{
               width: 34, height: 34, borderRadius: 10,
@@ -37,7 +41,7 @@ export default function Layout() {
             }}>
               <Zap size={16} color="white" />
             </div>
-            <span style={{ fontFamily: "'Grape Nuts', cursive", fontSize: '1.3rem', color: 'white' }}>
+            <span style={{ fontFamily: "'Grape Nuts', cursive", fontSize: '1.3rem', color: 'var(--text-primary)' }}>
               FashionOS
             </span>
           </div>
@@ -50,9 +54,9 @@ export default function Layout() {
               {({ isActive }) => (
                 <div
                   className="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm transition-all cursor-pointer"
-                  style={isActive ? activeStyle : { color: '#7a9ab5' }}
-                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(76,161,175,0.08)'; e.currentTarget.style.color = 'white' } }}
-                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = ''; e.currentTarget.style.color = '#7a9ab5' } }}
+                  style={isActive ? activeStyle : { color: 'var(--text-secondary)' }}
+                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'var(--hover-bg)'; e.currentTarget.style.color = 'var(--text-primary)' } }}
+                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = ''; e.currentTarget.style.color = 'var(--text-secondary)' } }}
                 >
                   <Icon size={15} style={isActive ? { color: '#4CA1AF' } : {}} />
                   <span>{label}</span>
@@ -62,10 +66,32 @@ export default function Layout() {
           ))}
         </nav>
 
-        {/* Account */}
-        <div className="p-4 flex items-center gap-3" style={{ borderTop: '1px solid rgba(76,161,175,0.12)' }}>
-          <UserButton afterSignOutUrl="/" />
-          <span style={{ fontSize: '0.7rem', color: '#7a9ab5' }}>Account</span>
+        {/* Account + Toggle */}
+        <div className="p-4 flex items-center justify-between" style={{ borderTop: '1px solid var(--item-border)' }}>
+          <div className="flex items-center gap-3">
+            <UserButton afterSignOutUrl="/" />
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Account</span>
+          </div>
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              background: 'var(--card-bg)',
+              border: '1px solid var(--card-border)',
+              borderRadius: '8px',
+              padding: '6px',
+              cursor: 'pointer',
+              color: 'var(--text-secondary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#4CA1AF'; e.currentTarget.style.borderColor = '#4CA1AF' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'var(--card-border)' }}
+          >
+            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
         </div>
       </aside>
 
