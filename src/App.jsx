@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
 import Layout from './components/Layout'
+import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
 import Runs from './pages/Runs'
 import RunDetail from './pages/RunDetail'
@@ -22,12 +23,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public landing page */}
+        <Route path="/" element={<Landing />} />
+
+        {/* Protected app shell */}
         <Route path="/" element={
           <ProtectedRoute>
             <Layout />
           </ProtectedRoute>
         }>
-          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="runs" element={<Runs />} />
           <Route path="runs/:runId" element={<RunDetail />} />
