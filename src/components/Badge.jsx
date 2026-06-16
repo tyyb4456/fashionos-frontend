@@ -1,15 +1,18 @@
+const badgeMap = {
+  critical: { bg: 'rgba(239,68,68,0.12)',    border: 'rgba(239,68,68,0.35)',    text: '#f87171' },
+  warning:  { bg: 'rgba(250,204,21,0.12)',   border: 'rgba(250,204,21,0.35)',   text: '#facc15' },
+  info:     { bg: 'rgba(76,161,175,0.12)',   border: 'rgba(76,161,175,0.35)',   text: '#4CA1AF' },
+  healthy:  { bg: 'rgba(74,222,128,0.12)',   border: 'rgba(74,222,128,0.35)',   text: '#4ade80' },
+  pending:  { bg: 'rgba(251,146,60,0.12)',   border: 'rgba(251,146,60,0.35)',   text: '#fb923c' },
+  posted:   { bg: 'rgba(74,222,128,0.12)',   border: 'rgba(74,222,128,0.35)',   text: '#4ade80' },
+  skipped:  { bg: 'rgba(148,163,184,0.12)',  border: 'rgba(148,163,184,0.35)',  text: '#94a3b8' },
+}
+
 export default function Badge({ level }) {
-  const styles = {
-    critical: 'bg-red-500/20 text-red-400 border border-red-500/30',
-    warning:  'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
-    info:     'bg-blue-500/20 text-blue-400 border border-blue-500/30',
-    healthy:  'bg-green-500/20 text-green-400 border border-green-500/30',
-    pending:  'bg-orange-500/20 text-orange-400 border border-orange-500/30',
-    posted:   'bg-green-500/20 text-green-400 border border-green-500/30',
-    skipped:  'bg-gray-500/20 text-gray-400 border border-gray-500/30',
-  }
+  const s = badgeMap[level] || badgeMap.info
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${styles[level] || styles.info}`}>
+    <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+      style={{ background: s.bg, border: `1px solid ${s.border}`, color: s.text }}>
       {level}
     </span>
   )

@@ -20,70 +20,72 @@ export default function Returns() {
 
   useEffect(() => {
     const q = filter !== 'all' ? `?severity=${filter}` : ''
-    api.get(`/api/v1/returns/insights${q}`)
-      .then(setInsights)
-      .catch(console.error)
-      .finally(() => setLoading(false))
+    setLoading(true)
+    api.get(`/api/v1/returns/insights${q}`).then(setInsights).catch(console.error).finally(() => setLoading(false))
   }, [filter])
 
-  if (loading) return <div className="p-8 text-gray-400">Loading...</div>
+  if (loading) return (
+    <div className="flex items-center justify-center h-64">
+      <div className="w-8 h-8 rounded-full border-2 animate-spin"
+        style={{ borderColor: 'rgba(76,161,175,0.25)', borderTopColor: '#4CA1AF' }} />
+    </div>
+  )
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-bold text-white">Returns Fix Queue</h1>
-
+      <h1 className="text-2xl text-white" style={{ fontFamily: "'Grape Nuts', cursive" }}>Returns Fix Queue</h1>
       <div className="flex gap-2">
         {['all', 'critical', 'warning', 'info'].map(f => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 text-xs rounded-lg capitalize transition-all
-              ${filter === f ? 'bg-purple-500/20 text-purple-400' : 'text-gray-400 hover:text-white'}`}
-          >
+          <button key={f} onClick={() => setFilter(f)}
+            className="px-3 py-1.5 text-xs rounded-xl capitalize transition-all"
+            style={filter === f ? {
+              background: 'linear-gradient(120deg, rgba(44,62,80,0.7), rgba(76,161,175,0.22))',
+              color: '#4CA1AF', border: '1px solid rgba(76,161,175,0.3)',
+            } : { color: '#7a9ab5', background: 'none', border: 'none', cursor: 'pointer' }}>
             {f}
           </button>
         ))}
       </div>
-
       <div className="space-y-3">
         {insights.map(insight => (
-          <div key={insight.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
+          <div key={insight.id} className="rounded-2xl p-4"
+            style={{ background: 'rgba(44,62,80,0.4)', border: '1px solid rgba(76,161,175,0.15)' }}>
             <div className="flex justify-between items-start mb-2">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-white">{insight.sku}</span>
                   <Badge level={insight.severity} />
                 </div>
-                <p className="text-xs text-gray-400">{insight.product_title}</p>
+                <p className="text-xs" style={{ color: '#7a9ab5' }}>{insight.product_title}</p>
               </div>
               <div className="text-right text-xs">
                 <div className="text-white">{insight.total_units_returned} units returned</div>
                 {insight.return_rate_pct && (
-                  <div className="text-red-400">{insight.return_rate_pct.toFixed(1)}% rate</div>
+                  <div style={{ color: '#f87171' }}>{insight.return_rate_pct.toFixed(1)}% rate</div>
                 )}
               </div>
             </div>
-
-            <div className="bg-black/30 rounded-lg p-2 mb-3 text-xs text-gray-400">
-              <span className="text-gray-500">Reason: </span>
-              <span className="text-yellow-400 capitalize">{insight.primary_reason?.replace('_', ' ')}</span>
+            <div className="rounded-xl p-2 mb-3 text-xs"
+              style={{ background: 'rgba(0,0,0,0.2)', color: '#8ba5b8' }}>
+              <span style={{ color: '#7a9ab5' }}>Reason: </span>
+              <span className="capitalize" style={{ color: '#facc15' }}>
+                {insight.primary_reason?.replace('_', ' ')}
+              </span>
             </div>
-
-            <p className="text-xs text-gray-300 mb-2">{insight.recommended_fix}</p>
-
+            <p className="text-xs mb-2" style={{ color: '#b0ccd4' }}>{insight.recommended_fix}</p>
             <div className="flex items-center justify-between">
-              <span className="text-xs bg-white/10 text-gray-400 px-2 py-0.5 rounded-full">
+              <span className="text-xs px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(76,161,175,0.1)', color: '#7a9ab5', border: '1px solid rgba(76,161,175,0.15)' }}>
                 {fixTypeLabels[insight.fix_type] || insight.fix_type}
               </span>
-              <span className="text-xs text-gray-600">
+              <span className="text-xs" style={{ color: '#4a6070' }}>
                 {new Date(insight.created_at).toLocaleDateString()}
               </span>
             </div>
           </div>
         ))}
-
         {insights.length === 0 && (
-          <div className="text-center py-12 text-gray-600 text-sm">No return issues found ✅</div>
+          <div className="text-center py-12 text-sm" style={{ color: '#4a6070' }}>No return issues found ✅</div>
         )}
       </div>
     </div>

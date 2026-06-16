@@ -1,11 +1,8 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 import { UserButton } from '@clerk/clerk-react'
-import {
-  LayoutDashboard, History, CheckSquare,
-  FileText, RotateCcw, Settings, Zap
-} from 'lucide-react'
+import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, Zap } from 'lucide-react'
 
-const nav = [
+const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/runs',      icon: History,          label: 'Runs'      },
   { to: '/approvals', icon: CheckSquare,       label: 'Approvals' },
@@ -14,39 +11,64 @@ const nav = [
   { to: '/settings',  icon: Settings,          label: 'Settings'  },
 ]
 
+const activeStyle = {
+  background: 'linear-gradient(120deg, rgba(44,62,80,0.7) 0%, rgba(76,161,175,0.22) 100%)',
+  borderLeft: '2px solid #4CA1AF',
+  paddingLeft: '10px',
+  color: 'white',
+}
+
 export default function Layout() {
   return (
-    <div className="flex h-screen bg-[#0f0f0f]">
-      {/* Sidebar */}
-      <aside className="w-56 bg-[#141414] border-r border-white/10 flex flex-col">
-        <div className="p-4 border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <Zap className="text-purple-400" size={20} />
-            <span className="font-bold text-white">FashionOS</span>
+    <div className="flex h-screen" style={{ background: '#0a1628' }}>
+      <aside className="flex flex-col" style={{
+        width: '220px', minWidth: '220px',
+        background: 'linear-gradient(170deg, #0c1d2f 0%, #0f2336 60%, #0c1d2f 100%)',
+        borderRight: '1px solid rgba(76,161,175,0.13)',
+      }}>
+        {/* Brand */}
+        <div className="p-5" style={{ borderBottom: '1px solid rgba(76,161,175,0.12)' }}>
+          <div className="flex items-center gap-3">
+            <div style={{
+              width: 34, height: 34, borderRadius: 10,
+              background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
+              boxShadow: '0 4px 14px rgba(76,161,175,0.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Zap size={16} color="white" />
+            </div>
+            <span style={{ fontFamily: "'Grape Nuts', cursive", fontSize: '1.3rem', color: 'white' }}>
+              FashionOS
+            </span>
           </div>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1">
-          {nav.map(({ to, icon: Icon, label }) => (
-            <NavLink key={to} to={to} className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
-               ${isActive
-                 ? 'bg-purple-500/20 text-purple-400 font-medium'
-                 : 'text-gray-400 hover:text-white hover:bg-white/5'}`
-            }>
-              <Icon size={16} />
-              {label}
+        {/* Nav */}
+        <nav className="flex-1 p-3 space-y-0.5 mt-1">
+          {navItems.map(({ to, icon: Icon, label }) => (
+            <NavLink key={to} to={to} className="block">
+              {({ isActive }) => (
+                <div
+                  className="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm transition-all cursor-pointer"
+                  style={isActive ? activeStyle : { color: '#7a9ab5' }}
+                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(76,161,175,0.08)'; e.currentTarget.style.color = 'white' } }}
+                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = ''; e.currentTarget.style.color = '#7a9ab5' } }}
+                >
+                  <Icon size={15} style={isActive ? { color: '#4CA1AF' } : {}} />
+                  <span>{label}</span>
+                </div>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10 flex items-center gap-3">
+        {/* Account */}
+        <div className="p-4 flex items-center gap-3" style={{ borderTop: '1px solid rgba(76,161,175,0.12)' }}>
           <UserButton afterSignOutUrl="/" />
-          <span className="text-xs text-gray-500">Account</span>
+          <span style={{ fontSize: '0.7rem', color: '#7a9ab5' }}>Account</span>
         </div>
       </aside>
 
-      {/* Main */}
       <main className="flex-1 overflow-y-auto">
         <Outlet />
       </main>
