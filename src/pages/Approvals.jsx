@@ -173,7 +173,7 @@ export default function Approvals() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Approvals</h1>
+      <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Approvals</h1>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">
         <Tab label="Pricing"   active={tab === 'pricing'}   count={pricing.length}   onClick={() => setTab('pricing')} />
         <Tab label="Restock"   active={tab === 'restock'}   count={restock.length}   onClick={() => setTab('restock')} />

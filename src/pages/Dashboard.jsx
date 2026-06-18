@@ -200,7 +200,7 @@ export default function Dashboard() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
               <h1 style={{
-                fontFamily: "'Grape Nuts', cursive",
+                fontFamily: "'Fascinate Inline', cursive",
                 color: 'var(--text-primary)',
                 fontSize: '1.75rem',
                 margin: 0, lineHeight: 1,

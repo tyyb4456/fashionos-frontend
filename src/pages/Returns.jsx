@@ -33,7 +33,7 @@ export default function Returns() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Returns Fix Queue</h1>
+      <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Returns Fix Queue</h1>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">
         {['all', 'critical', 'warning', 'info'].map(f => (
           <button key={f} onClick={() => setFilter(f)}

@@ -28,7 +28,7 @@ export default function Content() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Content Queue</h1>
+      <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Content Queue</h1>
       <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
         {posts.filter(p => p.is_urgent).length} urgent · {posts.length} total pending
       </p>

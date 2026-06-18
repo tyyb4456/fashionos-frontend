@@ -66,7 +66,7 @@ const STYLES = `
   }
 
   .hero-title {
-    font-family: 'Grape Nuts', cursive;
+    font-family: 'Fascinate Inline', cursive;
     font-size: clamp(3rem, 7vw, 5.5rem);
     line-height: 1.08;
     color: var(--text-primary);
@@ -104,7 +104,7 @@ const STYLES = `
     cursor: pointer;
     transition: all 0.25s ease;
     animation: pulse-glow 3s ease-in-out infinite, slide-up 0.7s ease 0.3s both;
-    font-family: 'Molle', cursive;
+    font-family: 'Story Script', cursive;
     text-decoration: none;
   }
   .cta-btn:hover {
@@ -125,7 +125,7 @@ const STYLES = `
     cursor: pointer;
     transition: all 0.25s ease;
     animation: slide-up 0.7s ease 0.35s both;
-    font-family: 'Molle', cursive;
+    font-family: 'Story Script', cursive;
   }
   .cta-secondary:hover {
     background: var(--hover-bg);

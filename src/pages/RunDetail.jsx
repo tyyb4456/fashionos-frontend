@@ -43,7 +43,7 @@ export default function RunDetail() {
       </button>
 
       <div>
-        <h1 className="text-2xl capitalize" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>
+        <h1 className="text-2xl capitalize" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>
           {run.trigger} Run
         </h1>
         <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{new Date(run.started_at).toLocaleString()}</p>

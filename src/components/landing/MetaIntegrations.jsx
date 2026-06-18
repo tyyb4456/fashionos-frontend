@@ -14,7 +14,7 @@ export default function MetaIntegrations() {
           Meta Ecosystem
         </div>
         <h2 style={{
-          fontFamily: "'Grape Nuts', cursive",
+          fontFamily: "'Fascinate Inline', cursive",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)',
           margin: 0, lineHeight: 1.2,
@@ -68,7 +68,7 @@ export default function MetaIntegrations() {
               {/* Name + description */}
               <div>
                 <h3 style={{
-                  fontFamily: "'Grape Nuts', cursive",
+                  fontFamily: "'Fascinate Inline', cursive",
                   fontSize: '1.1rem', color: 'var(--text-primary)', margin: '0 0 6px',
                 }}>{m.name}</h3>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.65 }}>

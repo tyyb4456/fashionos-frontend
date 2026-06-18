@@ -16,7 +16,7 @@ export default function Footer() {
         }}>
           <Zap size={11} color="white" />
         </div>
-        <span style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-secondary)', fontSize: '1rem' }}>
+        <span style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-secondary)', fontSize: '1rem' }}>
           FashionOS
         </span>
       </div>

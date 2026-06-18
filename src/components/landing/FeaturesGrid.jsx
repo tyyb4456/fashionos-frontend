@@ -14,7 +14,7 @@ export default function FeaturesGrid() {
           Agent Pipeline
         </div>
         <h2 style={{
-          fontFamily: "'Grape Nuts', cursive",
+          fontFamily: "'Fascinate Inline', cursive",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)',
           margin: 0, lineHeight: 1.2,
@@ -56,7 +56,7 @@ export default function FeaturesGrid() {
               </div>
 
               <h3 style={{
-                fontFamily: "'Grape Nuts', cursive",
+                fontFamily: "'Fascinate Inline', cursive",
                 fontSize: '1.05rem', color: 'var(--text-primary)', margin: '0 0 8px',
               }}>{f.title}</h3>
 

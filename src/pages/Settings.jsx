@@ -99,7 +99,7 @@ export default function Settings() {
   return (
     <div className="p-6 max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Settings</h1>
+        <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Settings</h1>
         {brand && <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{brand.owner_email} · {brand.plan} plan</p>}
       </div>
 

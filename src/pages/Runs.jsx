@@ -22,7 +22,7 @@ export default function Runs() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl" style={{ fontFamily: "'Grape Nuts', cursive", color: 'var(--text-primary)' }}>Run History</h1>
+      <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Run History</h1>
       <div className="space-y-2">
         {runs.map(run => (
           <div key={run.run_id} onClick={() => nav(`/runs/${run.run_id}`)}

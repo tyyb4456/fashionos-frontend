@@ -50,7 +50,7 @@ export default function Layout() {
             }}>
               <Zap size={12} color="white" />
             </div>
-            <span style={{ fontFamily: "'Grape Nuts', cursive", fontSize: '1.15rem', color: 'var(--text-primary)' }}>
+            <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '1.15rem', color: 'var(--text-primary)' }}>
               FashionOS
             </span>
           </div>
@@ -87,7 +87,7 @@ export default function Layout() {
 
       {/* Sidebar Drawer */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 md:static flex flex-col w-[220px] h-full transition-transform duration-300 ease-in-out md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 md:static flex flex-col w-55 h-full transition-transform duration-300 ease-in-out md:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
@@ -107,7 +107,7 @@ export default function Layout() {
             }}>
               <Zap size={16} color="white" />
             </div>
-            <span style={{ fontFamily: "'Grape Nuts', cursive", fontSize: '1.3rem', color: 'var(--text-primary)' }}>
+            <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '1.3rem', color: 'var(--text-primary)' }}>
               FashionOS
             </span>
           </div>

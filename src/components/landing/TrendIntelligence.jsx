@@ -14,7 +14,7 @@ export default function TrendIntelligence() {
           Trend Intelligence
         </div>
         <h2 style={{
-          fontFamily: "'Grape Nuts', cursive",
+          fontFamily: "'Fascinate Inline', cursive",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)', margin: 0, lineHeight: 1.2,
         }}>
@@ -69,7 +69,7 @@ export default function TrendIntelligence() {
                     {/* Source name + platform meta */}
                     <div>
                       <h3 style={{
-                        fontFamily: "'Grape Nuts', cursive",
+                        fontFamily: "'Fascinate Inline', cursive",
                         fontSize: '1.25rem', color: 'var(--text-primary)', margin: '0 0 3px',
                       }}>{src.label}</h3>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -114,7 +114,7 @@ export default function TrendIntelligence() {
                       textAlign: 'center',
                     }}>
                       <span style={{
-                        fontFamily: "'Grape Nuts', cursive",
+                        fontFamily: "'Fascinate Inline', cursive",
                         fontSize: '1.3rem', color: src.color, display: 'block', lineHeight: 1,
                       }}>{b.stat}</span>
                       <span style={{ fontSize: '0.65rem', color: '#4CA1AF', display: 'block', marginTop: 2 }}>{b.unit}</span>
