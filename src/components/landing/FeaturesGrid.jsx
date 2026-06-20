@@ -45,14 +45,14 @@ export default function FeaturesGrid() {
               {/* Icon box */}
               <div style={{
                 width: 42, height: 42, borderRadius: 11,
-                background: isHovered ? 'linear-gradient(135deg, #2C3E50, #4CA1AF)' : 'var(--subtle-bg)',
+                background: isHovered ? 'linear-gradient(135deg, #003152, #ADDFF1)' : 'var(--subtle-bg)',
                 border: '1px solid var(--subtle-border)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 marginBottom: 16,
                 transition: 'all 0.25s ease',
-                boxShadow: isHovered ? '0 4px 16px rgba(76,161,175,0.3)' : 'none',
+                boxShadow: isHovered ? '0 4px 16px rgba(173,223,241,0.3)' : 'none',
               }}>
-                <Icon size={18} color={isHovered ? '#fff' : '#4CA1AF'} />
+                <Icon size={18} color={isHovered ? '#fff' : '#ADDFF1'} />
               </div>
 
               <h3 style={{

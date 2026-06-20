@@ -8,14 +8,14 @@ import {
 } from '@icons-pack/react-simple-icons'
 
 export const features = [
-  { icon: Package,        title: 'Inventory Intelligence', desc: 'Real-time stock snapshots. AI flags critical stockouts and velocity anomalies before they cost you sales.',     color: '#4CA1AF' },
-  { icon: TrendingUp,     title: 'Trend Radar',            desc: 'Google Trends + social signal aggregation across TikTok & Instagram. Know what buyers want next.',              color: '#5db8c5' },
-  { icon: DollarSign,     title: 'Smart Pricing',          desc: 'Automated markdown and surge pricing. Auto-executes under 15% — everything else needs your sign-off.',         color: '#4CA1AF' },
-  { icon: FileText,       title: 'Content Engine',         desc: 'Generates Instagram captions and TikTok scripts in Urdu-English mix, timed to PST peak hours.',                color: '#5db8c5' },
-  { icon: RotateCcw,      title: 'Returns Insights',       desc: 'Detects return patterns by SKU and reason. Surfaces quality and sizing issues before they escalate.',          color: '#4CA1AF' },
-  { icon: Megaphone,      title: 'Ad Automation',          desc: 'Monitors campaign ROI and auto-adjusts budgets. Pauses underperformers and doubles down on winners.',          color: '#5db8c5' },
-  { icon: MessageCircle,  title: 'DM Autopilot',           desc: 'Classifies and drafts replies to customer DMs. Bulk inquiries, complaints, and compliments — all handled.',    color: '#4CA1AF' },
-  { icon: Shield,         title: 'Human-in-the-Loop',      desc: 'High-stakes decisions always surface in the Approvals queue. You stay in control of what matters most.',       color: '#5db8c5' },
+  { icon: Package,        title: 'Inventory Intelligence', desc: 'Real-time stock snapshots. AI flags critical stockouts and velocity anomalies before they cost you sales.',     color: '#ADDFF1' },
+  { icon: TrendingUp,     title: 'Trend Radar',            desc: 'Google Trends + social signal aggregation across TikTok & Instagram. Know what buyers want next.',              color: '#9dd6ed' },
+  { icon: DollarSign,     title: 'Smart Pricing',          desc: 'Automated markdown and surge pricing. Auto-executes under 15% — everything else needs your sign-off.',         color: '#ADDFF1' },
+  { icon: FileText,       title: 'Content Engine',         desc: 'Generates Instagram captions and TikTok scripts in Urdu-English mix, timed to PST peak hours.',                color: '#9dd6ed' },
+  { icon: RotateCcw,      title: 'Returns Insights',       desc: 'Detects return patterns by SKU and reason. Surfaces quality and sizing issues before they escalate.',          color: '#ADDFF1' },
+  { icon: Megaphone,      title: 'Ad Automation',          desc: 'Monitors campaign ROI and auto-adjusts budgets. Pauses underperformers and doubles down on winners.',          color: '#9dd6ed' },
+  { icon: MessageCircle,  title: 'DM Autopilot',           desc: 'Classifies and drafts replies to customer DMs. Bulk inquiries, complaints, and compliments — all handled.',    color: '#ADDFF1' },
+  { icon: Shield,         title: 'Human-in-the-Loop',      desc: 'High-stakes decisions always surface in the Approvals queue. You stay in control of what matters most.',       color: '#9dd6ed' },
 ]
 
 export const stats = [

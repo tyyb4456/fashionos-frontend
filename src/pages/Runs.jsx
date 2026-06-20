@@ -16,7 +16,7 @@ export default function Runs() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(76,161,175,0.25)', borderTopColor: '#4CA1AF' }} />
+        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
     </div>
   )
 
@@ -28,7 +28,7 @@ export default function Runs() {
           <div key={run.run_id} onClick={() => nav(`/runs/${run.run_id}`)}
             className="rounded-2xl p-4 cursor-pointer transition-all"
             style={{ background: 'var(--item-bg)', border: '1px solid var(--item-border)' }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(76,161,175,0.32)'}
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(173,223,241,0.32)'}
             onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--item-border)'}
           >
             <div className="flex items-start justify-between">

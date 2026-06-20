@@ -1,7 +1,7 @@
 const badgeMap = {
   critical: { bg: 'rgba(239,68,68,0.12)',    border: 'rgba(239,68,68,0.35)',    text: '#f87171' },
   warning:  { bg: 'rgba(250,204,21,0.12)',   border: 'rgba(250,204,21,0.35)',   text: '#facc15' },
-  info:     { bg: 'rgba(76,161,175,0.12)',   border: 'rgba(76,161,175,0.35)',   text: '#4CA1AF' },
+  info:     { bg: 'rgba(173,223,241,0.12)',   border: 'rgba(173,223,241,0.35)',   text: '#ADDFF1' },
   healthy:  { bg: 'rgba(74,222,128,0.12)',   border: 'rgba(74,222,128,0.35)',   text: '#4ade80' },
   pending:  { bg: 'rgba(251,146,60,0.12)',   border: 'rgba(251,146,60,0.35)',   text: '#fb923c' },
   posted:   { bg: 'rgba(74,222,128,0.12)',   border: 'rgba(74,222,128,0.35)',   text: '#4ade80' },

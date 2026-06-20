@@ -19,7 +19,7 @@ export default function Layout() {
 
   const activeStyle = {
     background: 'var(--active-nav)',
-    borderLeft: '2px solid #4CA1AF',
+    borderLeft: '2px solid #ADDFF1',
     paddingLeft: '10px',
     color: 'var(--text-primary)',
   }
@@ -45,7 +45,7 @@ export default function Layout() {
           <div className="flex items-center gap-2">
             <div style={{
               width: 26, height: 26, borderRadius: 7,
-              background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
+              background: 'linear-gradient(135deg, #003152, #ADDFF1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <Zap size={12} color="white" />
@@ -101,8 +101,8 @@ export default function Layout() {
           <div className="flex items-center gap-3">
             <div style={{
               width: 34, height: 34, borderRadius: 10,
-              background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
-              boxShadow: '0 4px 14px rgba(76,161,175,0.35)',
+              background: 'linear-gradient(135deg, #003152, #ADDFF1)',
+              boxShadow: '0 4px 14px rgba(173,223,241,0.35)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <Zap size={16} color="white" />
@@ -137,7 +137,7 @@ export default function Layout() {
                   onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'var(--hover-bg)'; e.currentTarget.style.color = 'var(--text-primary)' } }}
                   onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = ''; e.currentTarget.style.color = 'var(--text-secondary)' } }}
                 >
-                  <Icon size={15} style={isActive ? { color: '#4CA1AF' } : {}} />
+                  <Icon size={15} style={isActive ? { color: '#ADDFF1' } : {}} />
                   <span>{label}</span>
                 </div>
               )}
@@ -166,7 +166,7 @@ export default function Layout() {
               justifyContent: 'center',
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#4CA1AF'; e.currentTarget.style.borderColor = '#4CA1AF' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#ADDFF1'; e.currentTarget.style.borderColor = '#ADDFF1' }}
             onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'var(--card-border)' }}
           >
             {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}

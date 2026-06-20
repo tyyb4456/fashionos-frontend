@@ -22,7 +22,7 @@ export default function Content() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(76,161,175,0.25)', borderTopColor: '#4CA1AF' }} />
+        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
     </div>
   )
 
@@ -72,7 +72,7 @@ export default function Content() {
                     {post.instagram_caption}
                   </p>
                   {post.instagram_hashtags && (
-                    <p className="text-xs mt-2" style={{ color: '#4CA1AF' }}>
+                    <p className="text-xs mt-2" style={{ color: '#ADDFF1' }}>
                       #{post.instagram_hashtags.slice(0, 10).join(' #')}
                     </p>
                   )}

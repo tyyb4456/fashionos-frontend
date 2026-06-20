@@ -117,7 +117,7 @@ export default function TrendIntelligence() {
                         fontFamily: "'Fascinate Inline', cursive",
                         fontSize: '1.3rem', color: src.color, display: 'block', lineHeight: 1,
                       }}>{b.stat}</span>
-                      <span style={{ fontSize: '0.65rem', color: '#4CA1AF', display: 'block', marginTop: 2 }}>{b.unit}</span>
+                      <span style={{ fontSize: '0.65rem', color: '#ADDFF1', display: 'block', marginTop: 2 }}>{b.unit}</span>
                       <span style={{ fontSize: '0.62rem', color: 'var(--text-muted)', marginTop: 4, display: 'block', lineHeight: 1.4 }}>{b.desc}</span>
                     </div>
                   ))}
@@ -162,7 +162,7 @@ export default function TrendIntelligence() {
         background: 'var(--subtle-bg)', border: '1px solid var(--subtle-border)',
         display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap',
       }}>
-        <TrendingUp size={14} color="#4CA1AF" style={{ flexShrink: 0 }} />
+        <TrendingUp size={14} color="#ADDFF1" style={{ flexShrink: 0 }} />
         <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
           <strong style={{ color: 'var(--text-primary)' }}>Pipeline order matters —</strong> the Trend agent runs after Inventory and <em>before</em> Pricing, so trend signals are available when the Pricing agent decides hold vs. markdown.
         </span>

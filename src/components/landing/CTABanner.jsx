@@ -28,8 +28,8 @@ export default function CTABanner() {
         {/* Zap icon */}
         <div style={{
           width: 56, height: 56, borderRadius: 14,
-          background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
-          boxShadow: '0 8px 24px rgba(76,161,175,0.4)',
+          background: 'linear-gradient(135deg, #003152, #ADDFF1)',
+          boxShadow: '0 8px 24px rgba(173,223,241,0.4)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           margin: '0 auto 24px',
         }}>
@@ -67,7 +67,7 @@ export default function CTABanner() {
 
           {CHECK_ITEMS.map((item) => (
             <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: 4 }}>
-              <CheckCircle size={13} color="#4CA1AF" />
+              <CheckCircle size={13} color="#ADDFF1" />
               {item}
             </div>
           ))}

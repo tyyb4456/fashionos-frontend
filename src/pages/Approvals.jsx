@@ -13,7 +13,7 @@ function Tab({ label, active, count, onClick }) {
       className="px-4 py-2 text-sm font-medium rounded-xl transition-all"
       style={active ? {
         background: 'var(--active-nav)',
-        color: '#4CA1AF', border: '1px solid var(--card-border)',
+        color: '#ADDFF1', border: '1px solid var(--card-border)',
       } : { color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}
     >
       {label} {count > 0 && <span className="ml-1 opacity-70 text-xs">({count})</span>}
@@ -95,7 +95,7 @@ function RestockCard({ rec, onApprove, onReject }) {
       <input value={supplierNum} onChange={e => setSupplierNum(e.target.value)}
         placeholder="Supplier WhatsApp (923001234567) — optional"
         style={inputS} className="mb-2"
-        onFocus={e => e.target.style.borderColor = '#4CA1AF'}
+        onFocus={e => e.target.style.borderColor = '#ADDFF1'}
         onBlur={e => e.target.style.borderColor = 'var(--input-border)'}
       />
       <ActionBtns
@@ -167,7 +167,7 @@ export default function Approvals() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(76,161,175,0.25)', borderTopColor: '#4CA1AF' }} />
+        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
     </div>
   )
 

@@ -64,7 +64,7 @@ export default function HeroSection() {
       >
         {stats.map((s) => (
           <div className="stat-chip" key={s.label}>
-            <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '2rem', color: '#4CA1AF', lineHeight: 1 }}>
+            <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '2rem', color: '#ADDFF1', lineHeight: 1 }}>
               {s.value}<span style={{ fontSize: '1.2rem' }}>{s.suffix}</span>
             </span>
             <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: 4 }}>{s.label}</span>

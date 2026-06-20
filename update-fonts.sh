@@ -2,7 +2,7 @@
 # Run this from the ROOT of your fashionos-frontend project
 # e.g.  bash update-fonts.sh
 
-echo "🎨 Updating FashionOS font references..."
+echo " Updating FashionOS font references..."
 
 # Replace 'Grape Nuts' (headings) → 'Fascinate Inline'
 find src -type f \( -name "*.jsx" -o -name "*.js" -o -name "*.css" \) \
@@ -19,7 +19,7 @@ find src -type f \( -name "*.jsx" -o -name "*.js" -o -name "*.css" \) \
 find src -type f \( -name "*.jsx" -o -name "*.js" -o -name "*.css" \) \
   -exec sed -i 's/"Molle", cursive/"Story Script", cursive/g' {} +
 
-echo "✅ Done! Font references updated across all src files."
+echo "Done! Font references updated across all src files."
 echo ""
 echo "Next steps:"
 echo "  1. Replace your index.html  with the provided index.html"

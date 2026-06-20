@@ -11,7 +11,7 @@ export default function Footer() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <div style={{
           width: 24, height: 24, borderRadius: 7,
-          background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
+          background: 'linear-gradient(135deg, #003152, #ADDFF1)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Zap size={11} color="white" />

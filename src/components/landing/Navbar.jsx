@@ -14,8 +14,8 @@ export default function Navbar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{
           width: 34, height: 34, borderRadius: 10,
-          background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
-          boxShadow: '0 4px 14px rgba(76,161,175,0.35)',
+          background: 'linear-gradient(135deg, #003152, #ADDFF1)',
+          boxShadow: '0 4px 14px rgba(173,223,241,0.35)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Zap size={16} color="white" />
@@ -29,7 +29,7 @@ export default function Navbar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 4 }}>
           <span className="live-dot" />
-          <span style={{ fontSize: '0.75rem', color: '#4CA1AF' }}>Live</span>
+          <span style={{ fontSize: '0.75rem', color: '#ADDFF1' }}>Live</span>
         </div>
 
         <button

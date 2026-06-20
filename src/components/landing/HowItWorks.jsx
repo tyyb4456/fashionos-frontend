@@ -52,7 +52,7 @@ export default function HowItWorks() {
             {/* Step number badge */}
             <div style={{
               minWidth: 48, height: 48, borderRadius: 12,
-              background: 'linear-gradient(135deg, #2C3E50, #4CA1AF)',
+              background: 'linear-gradient(135deg, #003152, #ADDFF1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: "'Fascinate Inline', cursive", fontSize: '1.1rem', color: '#fff', flexShrink: 0,
             }}>

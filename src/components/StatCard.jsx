@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const palette = {
-  teal:   { bar: '#4CA1AF', text: '#4CA1AF', rgb: '76,161,175'  },
+  teal:   { bar: '#ADDFF1', text: '#ADDFF1', rgb: '173,223,241'  },
   purple: { bar: '#a78bfa', text: '#a78bfa', rgb: '167,139,250' },
   red:    { bar: '#f87171', text: '#f87171', rgb: '239,68,68'   },
   yellow: { bar: '#facc15', text: '#facc15', rgb: '250,204,21'  },

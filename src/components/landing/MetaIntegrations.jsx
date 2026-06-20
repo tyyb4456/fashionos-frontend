@@ -109,7 +109,7 @@ export default function MetaIntegrations() {
         background: 'var(--subtle-bg)', border: '1px solid var(--subtle-border)',
         display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap',
       }}>
-        <Zap size={15} color="#4CA1AF" style={{ flexShrink: 0 }} />
+        <Zap size={15} color="#ADDFF1" style={{ flexShrink: 0 }} />
         <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
           <strong style={{ color: 'var(--text-primary)' }}>Model Context Protocol (MCP)</strong> — each integration runs as an isolated MCP server, so agents talk to real APIs without ever holding credentials in the pipeline itself.
         </span>
