@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import { UserButton } from '@clerk/clerk-react'
-import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, Menu, X } from 'lucide-react'
+import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, MessageSquare, Menu, X } from 'lucide-react'
 
 const GOLD = '#C9A84C'
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/chat',      icon: MessageSquare,   label: 'Chat'      },
   { to: '/runs',      icon: History,          label: 'Runs'      },
-  { to: '/approvals', icon: CheckSquare,       label: 'Approvals' },
-  { to: '/content',   icon: FileText,          label: 'Content'   },
-  { to: '/returns',   icon: RotateCcw,         label: 'Returns'   },
-  { to: '/settings',  icon: Settings,          label: 'Settings'  },
+  { to: '/approvals', icon: CheckSquare,      label: 'Approvals' },
+  { to: '/content',   icon: FileText,         label: 'Content'   },
+  { to: '/returns',   icon: RotateCcw,        label: 'Returns'   },
+  { to: '/settings',  icon: Settings,         label: 'Settings'  },
 ]
 
 export default function Layout() {

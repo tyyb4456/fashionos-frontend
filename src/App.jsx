@@ -9,6 +9,7 @@ import Approvals from './pages/Approvals'
 import Content from './pages/Content'
 import Returns from './pages/Returns'
 import Settings from './pages/Settings'
+import Chat from './pages/Chat'
 
 function ProtectedRoute({ children }) {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="content" element={<Content />} />
           <Route path="returns" element={<Returns />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="chat" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>
