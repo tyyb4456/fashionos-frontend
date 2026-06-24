@@ -3,9 +3,11 @@ import { useAuth, SignInButton } from '@clerk/clerk-react'
 import { Zap, ArrowRight, CheckCircle } from 'lucide-react'
 
 const CHECK_ITEMS = [
-  'No agents to configure — ready out of the box',
-  'Shopify + Meta integrations via MCP servers',
+  'Shopify + Meta connected via OAuth — no manual exports',
+  'LangGraph pipeline auto-runs daily, hourly & on webhooks',
+  'Long-term brand memory that learns your preferences',
   'WhatsApp alerts and daily digests included',
+  'Human-in-the-loop approval queue for high-stakes decisions',
 ]
 
 export default function CTABanner() {
@@ -21,7 +23,7 @@ export default function CTABanner() {
       <div style={{
         padding: '56px 40px', borderRadius: 24,
         background: 'var(--card-bg)', border: '1px solid var(--card-border)',
-        maxWidth: 640, width: '100%',
+        maxWidth: 680, width: '100%',
         boxShadow: '0 40px 80px rgba(0,0,0,0.15)',
         backdropFilter: 'blur(8px)',
       }}>
@@ -45,7 +47,8 @@ export default function CTABanner() {
         </h2>
 
         <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', margin: '0 0 32px', lineHeight: 1.7 }}>
-          Sign in to access your dashboard and let FashionOS take the operational load off your plate.
+          Connect your Shopify store and let FashionOS handle the operational work —
+          inventory, pricing, ads, content, returns, and DMs. Built for Pakistani fashion brands.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
@@ -65,12 +68,14 @@ export default function CTABanner() {
             </SignInButton>
           )}
 
-          {CHECK_ITEMS.map((item) => (
-            <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: 4 }}>
-              <CheckCircle size={13} color="#ADDFF1" />
-              {item}
-            </div>
-          ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 8, width: '100%', alignItems: 'flex-start' }}>
+            {CHECK_ITEMS.map((item) => (
+              <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                <CheckCircle size={13} color="#ADDFF1" style={{ flexShrink: 0 }} />
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

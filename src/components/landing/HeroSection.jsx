@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth, SignInButton } from '@clerk/clerk-react'
-import { ArrowRight, Activity } from 'lucide-react'
+import { ArrowRight, Cpu } from 'lucide-react'
 import { stats } from './LandingData.jsx'
 
 export default function HeroSection() {
@@ -16,20 +16,22 @@ export default function HeroSection() {
       padding: '120px 24px 80px',
       position: 'relative', zIndex: 1,
     }}>
+      {/* Top badge */}
       <div className="hero-badge">
-        <Activity size={13} />
-        Autonomous Multi-Agent Fashion OS
+        <Cpu size={13} />
+        LangGraph · 8 Agents · Gemini 2.5 Flash
       </div>
 
       <h1 className="hero-title">
-        Your Brand.<br />
-        <span className="accent">Always On.</span>
+        Your Pakistani<br />
+        Fashion Brand.<br />
+        <span className="accent">On Autopilot.</span>
       </h1>
 
       <p className="hero-sub" style={{ margin: '24px auto 40px' }}>
         FashionOS runs 8 specialised AI agents 24/7 — managing inventory,
-        pricing, content, ads, and customer DMs for your fashion brand.
-        You just approve the big calls.
+        pricing, content, ads, and DMs for your Shopify fashion brand in Pakistan.
+        You approve the big calls. Everything else just happens.
       </p>
 
       {/* CTA buttons */}
@@ -47,9 +49,9 @@ export default function HeroSection() {
         )}
         <button
           className="cta-secondary"
-          onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' })}
         >
-          See how it works
+          See the agent pipeline
         </button>
       </div>
 
@@ -69,6 +71,22 @@ export default function HeroSection() {
             </span>
             <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: 4 }}>{s.label}</span>
           </div>
+        ))}
+      </div>
+
+      {/* Powered-by strip */}
+      <div style={{
+        marginTop: 40, display: 'flex', alignItems: 'center', gap: 10,
+        flexWrap: 'wrap', justifyContent: 'center',
+        fontSize: '0.72rem', color: 'var(--text-muted)',
+      }}>
+        <span style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>Powered by</span>
+        {['LangGraph', 'Gemini 2.5 Flash Lite', 'FastAPI', 'Celery + Redis', 'Clerk'].map(tech => (
+          <span key={tech} style={{
+            padding: '3px 10px', borderRadius: 999,
+            background: 'var(--card-bg)', border: '1px solid var(--card-border)',
+            color: 'var(--text-secondary)',
+          }}>{tech}</span>
         ))}
       </div>
     </section>

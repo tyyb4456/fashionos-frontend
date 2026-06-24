@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import { Wifi, Zap } from 'lucide-react'
-import { metaIntegrations } from './LandingData.jsx'
+import { integrations } from './LandingData.jsx'
 
-export default function MetaIntegrations() {
-  const [hoveredMeta, setHoveredMeta] = useState(null)
+export default function Integrations() {
+  const [hovered, setHovered] = useState(null)
 
   return (
-    <section style={{ padding: '20px 24px 80px', maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+    <section style={{ padding: '20px 24px 80px', maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
       {/* Section header */}
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
         <div className="section-label" style={{ margin: '0 auto 14px' }}>
           <Wifi size={11} />
-          Meta Ecosystem
+          Platform Integrations
         </div>
         <h2 style={{
           fontFamily: "'Fascinate Inline', cursive",
@@ -19,28 +19,29 @@ export default function MetaIntegrations() {
           color: 'var(--text-primary)',
           margin: 0, lineHeight: 1.2,
         }}>
-          Built on Meta's stack.
+          Every platform. One OS.
         </h2>
-        <p style={{ color: 'var(--text-secondary)', marginTop: 12, fontSize: '1rem', maxWidth: 500, margin: '12px auto 0', lineHeight: 1.7 }}>
-          FashionOS connects directly to Meta Ads, Instagram, Facebook, and WhatsApp through dedicated MCP servers — no manual exports, no copy-paste.
+        <p style={{ color: 'var(--text-secondary)', marginTop: 12, fontSize: '1rem', maxWidth: 520, margin: '12px auto 0', lineHeight: 1.7 }}>
+          FashionOS connects Shopify, Meta Ads, Instagram, Facebook, and WhatsApp through
+          isolated MCP servers — agents call real APIs without ever holding credentials in the pipeline.
         </p>
       </div>
 
-      {/* Cards grid */}
+      {/* Cards — 5 in a row, responsive */}
       <div
-        className="meta-grid"
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}
+        className="integrations-grid"
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14 }}
       >
-        {metaIntegrations.map((m, i) => {
-          const isHovered = hoveredMeta === i
+        {integrations.map((m, i) => {
+          const isHovered = hovered === i
           return (
             <div
               key={m.name}
               className="meta-card"
-              onMouseEnter={() => setHoveredMeta(i)}
-              onMouseLeave={() => setHoveredMeta(null)}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
               style={{
-                animation: `slide-up 0.6s ease ${0.1 + i * 0.08}s both`,
+                animation: `slide-up 0.6s ease ${0.1 + i * 0.07}s both`,
                 borderColor: isHovered ? `${m.color}40` : 'var(--card-border)',
                 boxShadow: isHovered ? `0 20px 40px ${m.color}15` : 'none',
               }}
@@ -57,7 +58,7 @@ export default function MetaIntegrations() {
                   <m.Icon size={20} color={m.color} />
                 </div>
                 <span style={{
-                  fontSize: '0.65rem', padding: '3px 8px', borderRadius: 999,
+                  fontSize: '0.6rem', padding: '3px 8px', borderRadius: 999,
                   background: 'var(--inner-bg)', border: '1px solid var(--item-border)',
                   color: 'var(--text-muted)', fontFamily: 'monospace',
                 }}>
@@ -69,18 +70,18 @@ export default function MetaIntegrations() {
               <div>
                 <h3 style={{
                   fontFamily: "'Fascinate Inline', cursive",
-                  fontSize: '1.1rem', color: 'var(--text-primary)', margin: '0 0 6px',
+                  fontSize: '1rem', color: 'var(--text-primary)', margin: '0 0 6px',
                 }}>{m.name}</h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.65 }}>
+                <p style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>
                   {m.desc}
                 </p>
               </div>
 
-              {/* Capability pills */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {/* Pills */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                 {m.pills.map(pill => (
                   <span key={pill} style={{
-                    fontSize: '0.68rem', padding: '3px 9px', borderRadius: 999,
+                    fontSize: '0.65rem', padding: '3px 8px', borderRadius: 999,
                     background: isHovered ? `${m.color}12` : 'var(--subtle-bg)',
                     border: `1px solid ${isHovered ? m.color + '35' : 'var(--subtle-border)'}`,
                     color: isHovered ? m.color : 'var(--text-secondary)',
@@ -91,7 +92,7 @@ export default function MetaIntegrations() {
                 ))}
               </div>
 
-              {/* Bottom accent line */}
+              {/* Bottom accent */}
               <div style={{
                 height: 2, borderRadius: 4,
                 background: `linear-gradient(90deg, ${m.color}60, transparent)`,
@@ -105,13 +106,13 @@ export default function MetaIntegrations() {
 
       {/* MCP architecture note */}
       <div style={{
-        marginTop: 28, padding: '18px 24px', borderRadius: 12,
+        marginTop: 24, padding: '16px 22px', borderRadius: 12,
         background: 'var(--subtle-bg)', border: '1px solid var(--subtle-border)',
         display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap',
       }}>
-        <Zap size={15} color="#ADDFF1" style={{ flexShrink: 0 }} />
+        <Zap size={14} color="#ADDFF1" style={{ flexShrink: 0 }} />
         <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          <strong style={{ color: 'var(--text-primary)' }}>Model Context Protocol (MCP)</strong> — each integration runs as an isolated MCP server, so agents talk to real APIs without ever holding credentials in the pipeline itself.
+          <strong style={{ color: 'var(--text-primary)' }}>Model Context Protocol (MCP)</strong> — each integration runs as an isolated MCP server (shopify_mcp · ads_mcp · social_mcp · trends_mcp · notify_mcp). Agents call tools via MCP without ever holding credentials in the LangGraph pipeline itself.
         </span>
       </div>
     </section>

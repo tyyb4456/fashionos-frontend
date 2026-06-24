@@ -1,31 +1,9 @@
 import { Clock } from 'lucide-react'
-
-const STEPS = [
-  {
-    step: '01',
-    title: 'Connect your Shopify store',
-    desc: 'Link your store via OAuth. Agents start reading your catalog, orders, and ad campaigns immediately.',
-  },
-  {
-    step: '02',
-    title: 'Agents run on schedule',
-    desc: 'Hourly inventory sweeps, daily full pipeline runs, and event-triggered webhooks keep everything current.',
-  },
-  {
-    step: '03',
-    title: 'Review the Approvals queue',
-    desc: 'High-stakes decisions land in your queue with full context. One tap to approve or reject.',
-  },
-  {
-    step: '04',
-    title: 'Get WhatsApp alerts',
-    desc: 'Critical stockouts, approval reminders, and daily pipeline digests land straight on your phone via WhatsApp.',
-  },
-]
+import { howItWorksSteps } from './LandingData.jsx'
 
 export default function HowItWorks() {
   return (
-    <section style={{ padding: '20px 24px 80px', maxWidth: 860, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+    <section style={{ padding: '20px 24px 80px', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
       {/* Section header */}
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
         <div className="section-label" style={{ margin: '0 auto 14px' }}>
@@ -39,11 +17,15 @@ export default function HowItWorks() {
         }}>
           Set it. Supervise it.
         </h2>
+        <p style={{ color: 'var(--text-secondary)', marginTop: 12, fontSize: '1rem', maxWidth: 480, margin: '12px auto 0' }}>
+          From OAuth connect to daily AI digest — everything runs on schedule.
+          You stay in control of what matters.
+        </p>
       </div>
 
       {/* Step cards */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {STEPS.map((item, i) => (
+        {howItWorksSteps.map((item, i) => (
           <div
             key={item.step}
             className="step-card"
