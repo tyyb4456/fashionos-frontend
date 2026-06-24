@@ -27,21 +27,26 @@ export default function Returns() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
+        style={{ borderColor: 'rgba(201,168,76,0.22)', borderTopColor: '#C9A84C' }} />
     </div>
   )
 
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Returns Fix Queue</h1>
+    <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
+      <div>
+        <div className="section-pill">↩ Quality Intelligence</div>
+        <h1 className="page-title-shimmer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>Returns Fix Queue</h1>
+        <div className="gradient-accent-line" />
+      </div>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">
         {['all', 'critical', 'warning', 'info'].map(f => (
           <button key={f} onClick={() => setFilter(f)}
-            className="px-3 py-1.5 text-xs rounded-xl capitalize transition-all"
+            className="px-3 py-1.5 text-xs capitalize transition-all"
             style={filter === f ? {
-              background: 'var(--active-nav)',
-              color: '#ADDFF1', border: '1px solid var(--card-border)',
-            } : { color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+              background: 'rgba(201,168,76,0.12)',
+              color: '#C9A84C', border: '1px solid rgba(201,168,76,0.35)',
+              fontFamily: "'Inter', sans-serif", letterSpacing: '0.08em',
+            } : { color: 'var(--text-secondary)', background: 'none', border: '1px solid transparent', cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
             {f}
           </button>
         ))}

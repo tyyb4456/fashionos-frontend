@@ -4,13 +4,13 @@ import { useSearchParams } from 'react-router-dom'
 import { Check, ExternalLink, Trash2 } from 'lucide-react'
 
 const gradBtn = {
-  background: 'linear-gradient(135deg, #003152, #ADDFF1)',
+  background: 'linear-gradient(135deg, #0D0D0D, #C9A84C)',
   color: 'white', border: 'none',
 }
 
 function ConnectCard({ title, connected, onConnect, onDisconnect, children }) {
   return (
-    <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '20px' }} className="space-y-4">
+    <div className="page-card space-y-4" style={{ padding: '20px' }}>
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{title}</h2>
         {connected
@@ -45,7 +45,7 @@ function Field({ label, name, value, onChange, placeholder }) {
     <div>
       <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>{label}</label>
       <input name={name} value={value} onChange={onChange} placeholder={placeholder} style={inputBase}
-        onFocus={e => e.target.style.borderColor = '#ADDFF1'}
+        onFocus={e => e.target.style.borderColor = '#C9A84C'}
         onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
     </div>
   )
@@ -86,7 +86,7 @@ export default function Settings() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
+        style={{ borderColor: 'rgba(201,168,76,0.22)', borderTopColor: '#C9A84C' }} />
     </div>
   )
 
@@ -97,10 +97,12 @@ export default function Settings() {
   }
 
   return (
-    <div className="p-6 max-w-2xl space-y-6">
+    <div className="p-6 max-w-2xl space-y-6" style={{ position: 'relative', zIndex: 1 }}>
       <div>
-        <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Settings</h1>
-        {brand && <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{brand.owner_email} · {brand.plan} plan</p>}
+        <div className="section-pill">⚙ Configuration</div>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Settings</h1>
+        {brand && <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{brand.owner_email} · {brand.plan} plan</p>}
+        <div className="gradient-accent-line" />
       </div>
 
       {searchParams.get('shopify') === 'connected' && (
@@ -116,7 +118,7 @@ export default function Settings() {
         </div>
       )}
 
-      <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', padding: '20px' }} className="space-y-4">
+      <div className="page-card space-y-4" style={{ padding: '20px' }}>
         <h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Brand Info</h2>
         <Field label="Brand Name"                   name="brand_name"           value={form.brand_name           || ''} onChange={onChange} />
         <Field label="Owner WhatsApp (for alerts)"  name="brand_owner_whatsapp" value={form.brand_owner_whatsapp || ''} onChange={onChange} placeholder="923001234567" />
@@ -138,7 +140,7 @@ export default function Settings() {
             <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Shop name</label>
             <input value={shopInput} onChange={e => setShopInput(e.target.value)}
               placeholder="mybrand (without .myshopify.com)" style={inputBase}
-              onFocus={e => e.target.style.borderColor = '#ADDFF1'}
+              onFocus={e => e.target.style.borderColor = '#C9A84C'}
               onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
           </div>
         )}

@@ -99,7 +99,7 @@ const STYLES = `
 const Spinner = () => (
   <div className="flex items-center justify-center h-64">
     <div className="w-8 h-8 rounded-full border-2 animate-spin"
-      style={{ borderColor: 'rgba(173,223,241,0.2)', borderTopColor: '#ADDFF1' }} />
+      style={{ borderColor: 'rgba(201,168,76,0.18)', borderTopColor: '#C9A84C' }} />
   </div>
 )
 
@@ -137,7 +137,7 @@ const SectionHeader = ({ title }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 12 }}>
     <div style={{
       width: 3, height: 15, borderRadius: 2, flexShrink: 0,
-      background: 'linear-gradient(180deg, #ADDFF1, rgba(0,49,82,0.8))',
+      background: 'linear-gradient(180deg, #C9A84C, rgba(0,49,82,0.8))',
     }} />
     <span style={{
       fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.09em',
@@ -152,9 +152,9 @@ const AgentChip = ({ name }) => (
   <span style={{
     fontSize: '0.58rem', fontWeight: 600, textTransform: 'capitalize',
     padding: '2px 7px', borderRadius: 99,
-    background: 'rgba(173,223,241,0.1)',
-    border: '1px solid rgba(173,223,241,0.2)',
-    color: '#ADDFF1',
+    background: 'rgba(201,168,76,0.1)',
+    border: '1px solid rgba(201,168,76,0.18)',
+    color: '#C9A84C',
     whiteSpace: 'nowrap',
   }}>
     {name}
@@ -162,8 +162,8 @@ const AgentChip = ({ name }) => (
 )
 
 const gradBtn = {
-  background: 'linear-gradient(135deg, #003152, #ADDFF1)',
-  boxShadow: '0 4px 16px rgba(173,223,241,0.22)',
+  background: 'linear-gradient(135deg, #0D0D0D, #C9A84C)',
+  boxShadow: '0 4px 16px rgba(201,168,76,0.22)',
   color: 'white', border: 'none',
 }
 
@@ -198,10 +198,10 @@ export default function Dashboard() {
         {/* ── Header ─────────────────────────────────────────── */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
           <div>
+            <div className="section-pill">⚡ FashionOS Command Center</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
-              <h1 style={{
-                fontFamily: "'Fascinate Inline', cursive",
-                color: 'var(--text-primary)',
+              <h1 className="page-title-shimmer" style={{
+                fontFamily: "'Cormorant Garamond', serif",
                 fontSize: '1.75rem',
                 margin: 0, lineHeight: 1,
               }}>
@@ -237,7 +237,7 @@ export default function Dashboard() {
               transform: btnHov && !running ? 'translateY(-1px)' : 'none',
               boxShadow: btnHov && !running
                 ? '0 6px 22px rgba(0,0,0,0.22)'
-                : '0 4px 16px rgba(173,223,241,0.22)',
+                : '0 4px 16px rgba(201,168,76,0.22)',
               transition: 'transform 0.2s ease, box-shadow 0.2s ease',
             }}>
             <Play size={13} />
@@ -251,10 +251,10 @@ export default function Dashboard() {
             borderRadius: 12, padding: '13px 15px',
             background: 'var(--subtle-bg)',
             border: '1px solid var(--subtle-border)',
-            borderLeft: '3px solid rgba(173,223,241,0.4)',
+            borderLeft: '3px solid rgba(201,168,76,0.45)',
             display: 'flex', alignItems: 'flex-start', gap: 10,
           }}>
-            <Activity size={14} style={{ color: '#ADDFF1', marginTop: 2, flexShrink: 0 }} />
+            <Activity size={14} style={{ color: '#C9A84C', marginTop: 2, flexShrink: 0 }} />
             <p style={{ fontSize: '0.82rem', color: 'var(--text-body)', margin: 0, lineHeight: 1.55 }}>
               {data.last_run_summary}
             </p>
@@ -265,13 +265,7 @@ export default function Dashboard() {
         <div className="dash-split">
 
           {/* LEFT — System Overview */}
-          <div style={{
-            background: 'var(--item-bg)',
-            border: '1px solid var(--item-border)',
-            borderRadius: 16,
-            padding: '18px 16px',
-            minHeight: 380,
-          }}>
+          <div className="page-inner-card" style={{ padding: '18px 16px', minHeight: 380 }}>
             <SectionHeader title="System Overview" />
             <div className="stat-scroll-wrap">
               <div className="stat-grid">
@@ -338,13 +332,7 @@ export default function Dashboard() {
           </div>
 
           {/* RIGHT — Recent Runs */}
-          <div style={{
-            background: 'var(--item-bg)',
-            border: '1px solid var(--item-border)',
-            borderRadius: 16,
-            padding: '18px 16px',
-            minHeight: 380,
-          }}>
+          <div className="page-inner-card" style={{ padding: '18px 16px', minHeight: 380 }}>
             <SectionHeader title="Recent Runs" />
             <div className="runs-scroll">
               {data.recent_runs?.map(run => {
@@ -478,7 +466,7 @@ function StatsPieCharts({ data }) {
   const alerts = Object.entries(alertsByAgentMap).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value,
-    color: agentColorMap[name.toLowerCase()] || '#ADDFF1',
+    color: agentColorMap[name.toLowerCase()] || '#C9A84C',
   }))
 
   const totalAlerts = alerts.reduce((s, d) => s + d.value, 0)
@@ -494,7 +482,7 @@ function StatsPieCharts({ data }) {
   }
 
   const automation = [
-    { name: 'Auto Run',    value: autoCount,    color: '#ADDFF1' },
+    { name: 'Auto Run',    value: autoCount,    color: '#C9A84C' },
     { name: 'Needs Review',value: pendingCount, color: '#f87171' },
   ].filter(d => d.value > 0)
 
@@ -562,9 +550,9 @@ function RunRow({ run, crit, onClick }) {
         borderRadius: 12,
         background: hov ? 'var(--item-bg-hover, var(--item-bg))' : 'var(--item-bg)',
         border: `1px solid ${hov
-          ? (crit ? 'rgba(239,68,68,0.3)' : 'rgba(173,223,241,0.3)')
+          ? (crit ? 'rgba(239,68,68,0.3)' : 'rgba(201,168,76,0.3)')
           : 'var(--item-border)'}`,
-        borderLeft: `3px solid ${crit ? 'rgba(239,68,68,0.5)' : 'rgba(173,223,241,0.4)'}`,
+        borderLeft: `3px solid ${crit ? 'rgba(239,68,68,0.5)' : 'rgba(201,168,76,0.45)'}`,
         cursor: 'pointer',
         transform: hov ? 'translateX(3px)' : 'translateX(0)',
         transition: 'transform 0.2s ease, border-color 0.2s ease, background 0.2s ease',

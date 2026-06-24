@@ -16,19 +16,22 @@ export default function Runs() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
+        style={{ borderColor: 'rgba(201,168,76,0.22)', borderTopColor: '#C9A84C' }} />
     </div>
   )
 
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>Run History</h1>
+    <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
+      <div>
+        <div className="section-pill">↺ Pipeline History</div>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Run History</h1>
+        <div className="gradient-accent-line" />
+      </div>
       <div className="space-y-2">
         {runs.map(run => (
           <div key={run.run_id} onClick={() => nav(`/runs/${run.run_id}`)}
-            className="rounded-2xl p-4 cursor-pointer transition-all"
-            style={{ background: 'var(--item-bg)', border: '1px solid var(--item-border)' }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(173,223,241,0.32)'}
+            className="page-inner-card p-4 cursor-pointer"
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(201,168,76,0.45)'}
             onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--item-border)'}
           >
             <div className="flex items-start justify-between">

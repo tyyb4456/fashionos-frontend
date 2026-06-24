@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
 const palette = {
-  teal:   { bar: '#ADDFF1', text: '#ADDFF1', rgb: '173,223,241'  },
+  gold:   { bar: '#C9A84C', text: '#C9A84C', rgb: '201,168,76'  },
+  teal:   { bar: '#C9A84C', text: '#C9A84C', rgb: '201,168,76'  },
   purple: { bar: '#a78bfa', text: '#a78bfa', rgb: '167,139,250' },
   red:    { bar: '#f87171', text: '#f87171', rgb: '239,68,68'   },
   yellow: { bar: '#facc15', text: '#facc15', rgb: '250,204,21'  },
@@ -9,8 +10,8 @@ const palette = {
   blue:   { bar: '#60a5fa', text: '#60a5fa', rgb: '96,165,250'  },
 }
 
-export default function StatCard({ label, value, sub, color = 'teal', icon: Icon }) {
-  const c = palette[color] || palette.teal
+export default function StatCard({ label, value, sub, color = 'gold', icon: Icon }) {
+  const c = palette[color] || palette.gold
   const [hov, setHov] = useState(false)
 
   return (
@@ -22,24 +23,20 @@ export default function StatCard({ label, value, sub, color = 'teal', icon: Icon
         display: 'flex',
         alignItems: 'stretch',
         minHeight: 72,
-        borderRadius: 12,
         overflow: 'hidden',
         background: 'var(--item-bg)',
-        border: `1px solid ${hov ? `rgba(${c.rgb},0.3)` : 'var(--item-border)'}`,
-        boxShadow: hov
-          ? '0 4px 18px rgba(0,0,0,0.13)'
-          : '0 1px 3px rgba(0,0,0,0.06)',
-        transform: hov ? 'translateY(-1px)' : 'translateY(0)',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+        border: `1px solid ${hov ? `rgba(${c.rgb},0.45)` : 'var(--item-border)'}`,
+        boxShadow: hov ? '0 4px 18px rgba(0,0,0,0.2)' : 'none',
+        transition: 'border-color 0.22s ease, box-shadow 0.22s ease',
         cursor: 'default',
       }}
     >
       {/* Left accent bar */}
       <div style={{
-        width: 3,
+        width: 2,
         flexShrink: 0,
         background: c.bar,
-        opacity: hov ? 0.85 : 0.38,
+        opacity: hov ? 0.9 : 0.45,
         transition: 'opacity 0.2s ease',
       }} />
 
@@ -47,72 +44,57 @@ export default function StatCard({ label, value, sub, color = 'teal', icon: Icon
       {Icon && (
         <>
           <div style={{
-            width: 58,
+            width: 54,
             flexShrink: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
             <div style={{
-              width: 33,
-              height: 33,
-              borderRadius: 9,
+              width: 32,
+              height: 32,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               background: `rgba(${c.rgb},${hov ? 0.1 : 0.06})`,
-              border: `1px solid rgba(${c.rgb},${hov ? 0.2 : 0.1})`,
+              border: `1px solid rgba(${c.rgb},${hov ? 0.22 : 0.12})`,
               transition: 'background 0.2s ease, border-color 0.2s ease',
             }}>
-              <Icon size={13} style={{
+              <Icon size={12} style={{
                 color: c.text,
-                opacity: hov ? 1 : 0.6,
+                opacity: hov ? 1 : 0.65,
                 transition: 'opacity 0.2s ease',
               }} />
             </div>
           </div>
 
-          {/* Vertical divider */}
           <div style={{
-            width: 1,
-            flexShrink: 0,
-            alignSelf: 'stretch',
-            background: 'var(--item-border)',
-            opacity: 0.5,
+            width: 1, flexShrink: 0, alignSelf: 'stretch',
+            background: 'var(--item-border)', opacity: 0.5,
           }} />
         </>
       )}
 
       {/* Label + Value */}
       <div style={{
-        flex: 1,
-        padding: '13px 16px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        gap: 5,
-        minWidth: 0,
+        flex: 1, padding: '12px 14px',
+        display: 'flex', flexDirection: 'column',
+        justifyContent: 'center', gap: 4, minWidth: 0,
       }}>
         <span style={{
-          fontSize: '0.57rem',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          color: 'var(--text-secondary)',
-          lineHeight: 1,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+          fontSize: '0.55rem', fontWeight: 600,
+          textTransform: 'uppercase', letterSpacing: '0.12em',
+          color: 'var(--text-secondary)', lineHeight: 1,
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          fontFamily: "'Inter', sans-serif",
         }}>
           {label}
         </span>
 
         <div style={{
-          fontSize: '1.8rem',
-          fontWeight: 800,
-          lineHeight: 1,
-          letterSpacing: '-0.03em',
+          fontSize: '1.7rem', fontWeight: 300, lineHeight: 1,
           color: 'var(--text-primary)',
+          fontFamily: "'Cormorant Garamond', serif",
           fontVariantNumeric: 'tabular-nums',
         }}>
           {value ?? '—'}
@@ -120,10 +102,9 @@ export default function StatCard({ label, value, sub, color = 'teal', icon: Icon
 
         {sub && (
           <div style={{
-            fontSize: '0.63rem',
-            fontWeight: 500,
-            color: c.text,
-            lineHeight: 1,
+            fontSize: '0.6rem', fontWeight: 500,
+            color: c.text, lineHeight: 1,
+            fontFamily: "'Inter', sans-serif",
           }}>
             {sub}
           </div>

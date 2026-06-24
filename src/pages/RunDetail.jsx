@@ -27,7 +27,7 @@ export default function RunDetail() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(173,223,241,0.25)', borderTopColor: '#ADDFF1' }} />
+        style={{ borderColor: 'rgba(201,168,76,0.22)', borderTopColor: '#C9A84C' }} />
     </div>
   )
   if (!run) return <div className="p-8" style={{ color: '#f87171' }}>Run not found.</div>
@@ -43,9 +43,11 @@ export default function RunDetail() {
       </button>
 
       <div>
-        <h1 className="text-2xl capitalize" style={{ fontFamily: "'Fascinate Inline', cursive", color: 'var(--text-primary)' }}>
+        <div className="section-pill">↺ Run Detail</div>
+        <h1 className="page-title-shimmer capitalize" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>
           {run.trigger} Run
         </h1>
+        <div className="gradient-accent-line" />
         <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{new Date(run.started_at).toLocaleString()}</p>
         {run.run_summary && (
           <p className="text-sm mt-3 rounded-xl p-3"
