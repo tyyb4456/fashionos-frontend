@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import { UserButton } from '@clerk/clerk-react'
-import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, Sun, Moon, Menu, X } from 'lucide-react'
-import { useTheme } from '../context/ThemeContext'
+import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, Menu, X } from 'lucide-react'
 
 const GOLD = '#C9A84C'
 
@@ -16,11 +15,10 @@ const navItems = [
 ]
 
 export default function Layout() {
-  const { theme, toggleTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden" style={{ background: 'var(--bg)', transition: 'background 0.25s' }}>
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden" style={{ background: 'var(--bg)' }}>
 
       {/* Mobile Top Bar */}
       <header className="flex md:hidden items-center justify-between px-4 py-3"
@@ -44,18 +42,7 @@ export default function Layout() {
             FASHION<span style={{ color: '#F2EDE4' }}>OS</span>
           </span>
         </div>
-        <div className="flex items-center gap-3">
-          <button onClick={toggleTheme} style={{
-            background: 'transparent',
-            border: `1px solid rgba(201,168,76,0.22)`,
-            borderRadius: 0, padding: '5px 7px',
-            cursor: 'pointer', color: 'rgba(242,237,228,0.5)',
-            display: 'flex', alignItems: 'center',
-          }}>
-            {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
-          </button>
-          <UserButton afterSignOutUrl="/" />
-        </div>
+        <UserButton afterSignOutUrl="/" />
       </header>
 
       {/* Mobile Backdrop */}
@@ -122,34 +109,16 @@ export default function Layout() {
         </nav>
 
         {/* Bottom */}
-        <div className="p-4 flex items-center justify-between" style={{ borderTop: `1px solid rgba(201,168,76,0.14)` }}>
-          <div className="flex items-center gap-2.5">
-            <UserButton afterSignOutUrl="/" />
-            <span style={{ fontSize: '0.65rem', color: 'rgba(242,237,228,0.35)', fontFamily: "'Inter', sans-serif", textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              Account
-            </span>
-          </div>
-          <button
-            onClick={toggleTheme}
-            style={{
-              background: 'transparent',
-              border: `1px solid rgba(201,168,76,0.22)`,
-              borderRadius: 0, padding: '6px 8px',
-              cursor: 'pointer', color: 'rgba(242,237,228,0.45)',
-              display: 'flex', alignItems: 'center',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = GOLD }}
-            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(242,237,228,0.45)'; e.currentTarget.style.borderColor = 'rgba(201,168,76,0.22)' }}
-          >
-            {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
-          </button>
+        <div className="p-4 flex items-center gap-2.5" style={{ borderTop: `1px solid rgba(201,168,76,0.14)` }}>
+          <UserButton afterSignOutUrl="/" />
+          <span style={{ fontSize: '0.65rem', color: 'rgba(242,237,228,0.35)', fontFamily: "'Inter', sans-serif", textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            Account
+          </span>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto h-full w-full" style={{ position: 'relative' }}>
-        {/* Ambient gold orbs */}
         <div className="page-orb" style={{ width: 500, height: 500, background: 'rgba(201,168,76,0.08)', top: -150, right: -100, animationDelay: '0s' }} />
         <div className="page-orb" style={{ width: 320, height: 320, background: 'rgba(201,168,76,0.05)', top: 300, left: -80, animationDelay: '-8s' }} />
         <div className="page-orb" style={{ width: 280, height: 280, background: 'rgba(201,168,76,0.06)', bottom: 60, right: '25%', animationDelay: '-15s' }} />
