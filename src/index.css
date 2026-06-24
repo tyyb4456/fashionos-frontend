@@ -54,8 +54,8 @@
   --gradient: linear-gradient(135deg, #003152, #ADDFF1);
 }
 
-* { font-family: 'Story Script', cursive; box-sizing: border-box; }
-body { background-color: var(--bg); color: var(--text-primary); margin: 0; transition: background-color 0.25s, color 0.25s; }
+* { box-sizing: border-box; }
+body { font-family: 'Story Script', cursive; background-color: var(--bg); color: var(--text-primary); margin: 0; transition: background-color 0.25s, color 0.25s; }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
