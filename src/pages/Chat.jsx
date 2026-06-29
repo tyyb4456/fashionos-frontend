@@ -763,8 +763,8 @@ export default function Chat() {
     setIsStreaming(false)
     setThreadId(tid)
     setMessages([])
-    setMessagesLoading(true)
 
+    setMessagesLoading(true)
     try {
       const token = await getToken()
       const res   = await fetch(`${API_BASE}/api/v1/conversations/${tid}/messages`, {
@@ -772,7 +772,14 @@ export default function Chat() {
       })
       if (res.ok) {
         const msgs = await res.json()
-        setMessages(msgs.map((m, i) => ({ id: i, ...m, subagents: [] })))
+        setMessages(msgs.map((m, i) => ({
+          id:       i,
+          role:     m.role,
+          content:  m.content,
+          streaming: false,
+          // API now returns persisted subagent results — mark them done for rendering
+          subagents: (m.subagents || []).map(sa => ({ ...sa, status: 'done' })),
+        })))
       }
     } catch { /* network / dev fallback */ }
     finally { setMessagesLoading(false) }
