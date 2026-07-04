@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-react'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080' || "https://rinsing-treat-glitzy.ngrok-free.dev"
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
 export function useApi() {
   const { getToken } = useAuth()
