@@ -547,6 +547,189 @@ function SubagentCard({ name, status, summary, data }) {
   )
 }
 
+// ── Generic pretty JSON renderer for raw tool results ──────────────────────────
+const KEY_LABEL_OVERRIDES = { sku: 'SKU', roas_7d: 'ROAS (7d)', ctr_7d: 'CTR (7d)' }
+
+function labelize(key) {
+  if (KEY_LABEL_OVERRIDES[key]) return KEY_LABEL_OVERRIDES[key]
+  return key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+}
+
+function formatPrimitive(val) {
+  if (val === null || val === undefined || val === '') {
+    return <span style={{ color: 'rgba(242,237,228,0.25)' }}>—</span>
+  }
+  if (typeof val === 'boolean') {
+    return badge(val ? 'yes' : 'no', val ? '#22c55e' : 'rgba(242,237,228,0.4)')
+  }
+  if (typeof val === 'number') {
+    return <span style={{ color: '#F2EDE4' }}>{Number.isInteger(val) ? val.toLocaleString() : val}</span>
+  }
+  if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(val)) {
+    try { return <span style={{ color: 'rgba(242,237,228,0.6)' }}>{new Date(val).toLocaleString()}</span> }
+    catch { /* fall through */ }
+  }
+  return <span style={{ color: 'rgba(242,237,228,0.75)' }}>{String(val)}</span>
+}
+
+function isFlatObject(obj) {
+  return obj && typeof obj === 'object' && !Array.isArray(obj) &&
+    Object.values(obj).every(v => v === null || typeof v !== 'object')
+}
+
+function PrettyJSON({ value, depth = 0 }) {
+  if (value === null || value === undefined || typeof value !== 'object') {
+    return formatPrimitive(value)
+  }
+
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.66rem', color: 'rgba(242,237,228,0.25)' }}>No items</span>
+    }
+    if (value.every(isFlatObject)) {
+      const cols = [...new Set(value.flatMap(o => Object.keys(o)))]
+      return (
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: "'Inter', sans-serif", fontSize: '0.63rem' }}>
+            <thead>
+              <tr style={{ color: 'rgba(242,237,228,0.3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                {cols.map(c => (
+                  <th key={c} style={{ padding: '4px 8px', textAlign: 'left', fontWeight: 400, borderBottom: '1px solid rgba(255,255,255,0.07)', whiteSpace: 'nowrap' }}>
+                    {labelize(c)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {value.map((row, i) => (
+                <tr key={i} style={{ background: i % 2 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
+                  {cols.map(c => (
+                    <td key={c} style={{ padding: '5px 8px', whiteSpace: 'nowrap' }}>{formatPrimitive(row[c])}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {value.map((item, i) => (
+          <div key={i} style={{ background: '#0d0d0d', border: '1px solid rgba(255,255,255,0.06)', padding: '7px 9px' }}>
+            <PrettyJSON value={item} depth={depth + 1} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const entries = Object.entries(value)
+  if (entries.length === 0) {
+    return <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.66rem', color: 'rgba(242,237,228,0.25)' }}>Empty</span>
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: depth === 0 ? 6 : 4 }}>
+      {entries.map(([k, v]) => {
+        const isComplex = v && typeof v === 'object'
+        return (
+          <div key={k} style={{
+            display: 'flex', gap: 10,
+            flexDirection: isComplex ? 'column' : 'row',
+            alignItems: isComplex ? 'stretch' : 'baseline',
+            padding: depth === 0 ? '3px 0' : 0,
+            borderBottom: depth === 0 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+          }}>
+            <span style={{
+              fontFamily: "'Inter', sans-serif", fontSize: '0.62rem',
+              letterSpacing: '0.06em', color: 'rgba(242,237,228,0.4)',
+              minWidth: isComplex ? 'auto' : 110, flexShrink: 0,
+            }}>
+              {labelize(k)}
+            </span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <PrettyJSON value={v} depth={depth + 1} />
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// ── Tool call card — DB tool invocation + result, collapsed by default ─────────
+const TOOL_LABELS = {
+  get_pipeline_status:   'Pipeline Status',
+  get_inventory_status:  'Inventory Status',
+  get_critical_skus:     'Critical SKUs',
+  get_open_alerts:       'Open Alerts',
+  get_pending_approvals: 'Pending Approvals',
+  get_sku_history:       'SKU History',
+  get_return_insights:   'Return Insights',
+  get_content_queue:     'Content Queue',
+  get_run_history:       'Run History',
+  read_file:             'Read Memory',
+  edit_file:             'Edit Memory',
+}
+
+function ToolCallCard({ call }) {
+  const [expanded, setExpanded] = useState(false)
+  const label   = TOOL_LABELS[call.name] || call.name
+  const hasData = call.status === 'done'
+
+  return (
+    <div style={{ background: '#0f0f0f', border: '1px solid rgba(242,237,228,0.08)', width: '100%' }}>
+      <div
+        onClick={() => hasData && setExpanded(e => !e)}
+        style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', cursor: hasData ? 'pointer' : 'default' }}
+      >
+        <BarChart2 size={11} color="rgba(242,237,228,0.4)" />
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.63rem', letterSpacing: '0.06em', color: 'rgba(242,237,228,0.55)', flex: 1 }}>
+          {call.status === 'running' ? 'Calling ' : 'Called '}
+          <span style={{ color: GOLD }}>{label}</span>
+        </span>
+        {call.status === 'running'
+          ? <Loader2 size={10} color={GOLD} style={{ animation: 'spin 1s linear infinite' }} />
+          : <CheckCircle2 size={10} color="#22c55e" />}
+        {hasData && (expanded ? <ChevronUp size={11} color="rgba(242,237,228,0.3)" /> : <ChevronDown size={11} color="rgba(242,237,228,0.3)" />)}
+      </div>
+      {expanded && hasData && (
+        <div style={{ padding: '4px 12px 12px', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
+          <PrettyJSON value={call.data} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Reasoning block — model's internal thinking, collapsed by default ──────────
+function ReasoningBlock({ text, streaming }) {
+  const [expanded, setExpanded] = useState(false)
+  if (!text) return null
+
+  return (
+    <div style={{ background: '#0f0f0f', border: '1px solid rgba(167,139,250,0.18)', width: '100%' }}>
+      <div onClick={() => setExpanded(e => !e)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', cursor: 'pointer' }}>
+        <span style={{ fontSize: '0.75rem' }}>🧠</span>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#a78bfa', flex: 1 }}>
+          {streaming ? 'Thinking…' : 'Reasoning'}
+        </span>
+        {streaming && <Loader2 size={10} color="#a78bfa" style={{ animation: 'spin 1s linear infinite' }} />}
+        {expanded ? <ChevronUp size={11} color="rgba(167,139,250,0.6)" /> : <ChevronDown size={11} color="rgba(167,139,250,0.6)" />}
+      </div>
+      {expanded && (
+        <div style={{ padding: '2px 12px 12px' }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(242,237,228,0.5)', lineHeight: 1.7, margin: 0, whiteSpace: 'pre-wrap', fontStyle: 'italic' }}>
+            {text}
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
 // ── Message bubble ─────────────────────────────────────────────────────────────
 function MessageBubble({ msg }) {
   const isUser = msg.role === 'user'
@@ -605,6 +788,19 @@ function MessageBubble({ msg }) {
         </div>
       )}
 
+      {/* Reasoning — model's internal thinking, hidden by default */}
+      {!isUser && msg.reasoning && (
+        <ReasoningBlock text={msg.reasoning} streaming={msg.streaming && !msg.content} />
+      )}
+
+      {/* Tool calls — DB tool invocations, hidden by default */}
+      {!isUser && msg.toolCalls && msg.toolCalls.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+          {msg.toolCalls.map(call => <ToolCallCard key={call.id} call={call} />)}
+        </div>
+      )}
+
+
       {/* Final response bubble — only shown when there's content */}
       {(msg.content || msg.streaming) && (
         <div style={{
@@ -631,7 +827,9 @@ function MessageBubble({ msg }) {
       )}
 
       {/* Streaming: agent is thinking but no text yet — show pulse */}
-      {!isUser && msg.streaming && !msg.content && msg.subagents?.length === 0 && (
+
+      {!isUser && msg.streaming && !msg.content && !msg.reasoning &&
+        msg.subagents?.length === 0 && (!msg.toolCalls || msg.toolCalls.length === 0) && (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '10px 14px',
@@ -773,12 +971,13 @@ export default function Chat() {
       if (res.ok) {
         const msgs = await res.json()
         setMessages(msgs.map((m, i) => ({
-          id:       i,
-          role:     m.role,
-          content:  m.content,
+          id:        i,
+          role:      m.role,
+          content:   m.content,
           streaming: false,
-          // API now returns persisted subagent results — mark them done for rendering
           subagents: (m.subagents || []).map(sa => ({ ...sa, status: 'done' })),
+          toolCalls: [],   // not persisted server-side yet — only live during streaming
+          reasoning: '',   // not persisted server-side yet — only live during streaming
         })))
       }
     } catch { /* network / dev fallback */ }
@@ -823,7 +1022,7 @@ export default function Chat() {
     const asstId  = Date.now() + 1
     setMessages(prev => [...prev,
       userMsg,
-      { id: asstId, role: 'assistant', content: '', subagents: [], streaming: true },
+      { id: asstId, role: 'assistant', content: '', subagents: [], toolCalls: [], reasoning: '', streaming: true },
     ])
 
     try {
@@ -885,6 +1084,28 @@ export default function Chat() {
                         ? { ...s, status: 'done', summary: evt.summary || '', data: evt.data || null }
                         : s
                     ) }
+                  : m
+              ))
+              break
+
+            case 'reasoning':
+              setMessages(prev => prev.map(m =>
+                m.id === asstId ? { ...m, reasoning: (m.reasoning || '') + evt.content } : m
+              ))
+              break
+
+            case 'tool_call':
+              setMessages(prev => prev.map(m =>
+                m.id === asstId
+                  ? { ...m, toolCalls: [...(m.toolCalls || []), { id: evt.id, name: evt.name, args: evt.args, status: 'running', data: null }] }
+                  : m
+              ))
+              break
+
+            case 'tool_result':
+              setMessages(prev => prev.map(m =>
+                m.id === asstId
+                  ? { ...m, toolCalls: (m.toolCalls || []).map(c => c.id === evt.id ? { ...c, status: 'done', data: evt.data } : c) }
                   : m
               ))
               break
