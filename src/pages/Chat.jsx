@@ -69,8 +69,11 @@ export default function Chat() {
           role:      m.role,
           content:   m.content,
           streaming: false,
-          subagents: (m.subagents || []).map(sa => ({ ...sa, status: 'done' })),
-          toolCalls: [],   // not persisted server-side yet — only live during streaming
+          // Subagents don't exist anymore — replay persisted tool results
+          // through the same ToolCallCard used for live streaming.
+          toolCalls: (m.subagents || []).map((sa, j) => ({
+            id: `${i}-${j}-${sa.name}`, name: sa.name, args: {}, status: 'done', data: sa.data,
+          })),
           reasoning: '',   // not persisted server-side yet — only live during streaming
         })))
       }
@@ -116,7 +119,7 @@ export default function Chat() {
     const asstId  = Date.now() + 1
     setMessages(prev => [...prev,
       userMsg,
-      { id: asstId, role: 'assistant', content: '', subagents: [], toolCalls: [], reasoning: '', streaming: true },
+      { id: asstId, role: 'assistant', content: '', toolCalls: [], reasoning: '', streaming: true },
     ])
 
     try {
@@ -158,27 +161,6 @@ export default function Chat() {
             case 'token':
               setMessages(prev => prev.map(m =>
                 m.id === asstId ? { ...m, content: m.content + evt.content } : m
-              ))
-              break
-
-            case 'subagent_start':
-              setMessages(prev => prev.map(m =>
-                m.id === asstId
-                  ? { ...m, subagents: [...m.subagents.filter(s => s.name !== evt.name),
-                      { name: evt.name, status: 'running', summary: '', data: null }] }
-                  : m
-              ))
-              break
-
-            case 'subagent_done':
-              setMessages(prev => prev.map(m =>
-                m.id === asstId
-                  ? { ...m, subagents: m.subagents.map(s =>
-                      s.name === evt.name
-                        ? { ...s, status: 'done', summary: evt.summary || '', data: evt.data || null }
-                        : s
-                    ) }
-                  : m
               ))
               break
 

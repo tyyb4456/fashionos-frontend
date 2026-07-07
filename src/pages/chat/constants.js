@@ -3,15 +3,6 @@ import { Package, TrendingUp, Tag, Megaphone, FileText } from 'lucide-react'
 export const GOLD     = '#C9A84C'
 export const GOLD_DIM  = 'rgba(201,168,76,0.14)'
 
-// ── Subagent display metadata ──────────────────────────────────────────────────
-export const SUBAGENT_META = {
-  'inventory-agent': { label: 'Inventory',  Icon: Package,    color: '#22c55e' },
-  'trend-agent':     { label: 'Trends',     Icon: TrendingUp, color: '#a78bfa' },
-  'pricing-agent':   { label: 'Pricing',    Icon: Tag,        color: GOLD      },
-  'marketing-agent': { label: 'Marketing',  Icon: Megaphone,  color: '#f97316' },
-  'content-agent':   { label: 'Content',    Icon: FileText,   color: '#60a5fa' },
-}
-
 // ── Urgency / level colour helpers ─────────────────────────────────────────────
 export const URGENCY_COLOR = {
   critical: '#ef4444',
@@ -22,7 +13,25 @@ export const URGENCY_COLOR = {
   info:     '#60a5fa',
 }
 
+// ── Icon/colour per underlying pipeline agent — used to render chips when a
+// tool result spans multiple agents (e.g. check_agent_analysis_status once
+// done → "inventory,trend,pricing"). Replaces the old SUBAGENT_META, which
+// was keyed by "-agent" suffixed subagent names that don't exist anymore.
+export const AGENT_META = {
+  inventory: { label: 'Inventory', Icon: Package,    color: '#22c55e' },
+  trend:     { label: 'Trends',    Icon: TrendingUp, color: '#a78bfa' },
+  pricing:   { label: 'Pricing',   Icon: Tag,        color: GOLD      },
+  marketing: { label: 'Marketing', Icon: Megaphone,  color: '#f97316' },
+  content:   { label: 'Content',   Icon: FileText,   color: '#60a5fa' },
+  restock:   { label: 'Restock',   Icon: Package,    color: '#38bdf8' },
+  returns:   { label: 'Returns',   Icon: Tag,        color: '#f87171' },
+  dm:        { label: 'DMs',       Icon: Megaphone,  color: '#e879f9' },
+}
+
 // ── Tool call → display label ──────────────────────────────────────────────────
+// Single source of truth for ToolCallCard labels. There are no more per-agent
+// subagent_start/subagent_done events — everything streams as generic
+// tool_call/tool_result now.
 export const TOOL_LABELS = {
   get_pipeline_status:   'Pipeline Status',
   get_inventory_status:  'Inventory Status',
@@ -33,6 +42,8 @@ export const TOOL_LABELS = {
   get_return_insights:   'Return Insights',
   get_content_queue:     'Content Queue',
   get_run_history:       'Run History',
+  start_agent_analysis:        'Queue Pipeline Run',
+  check_agent_analysis_status: 'Pipeline Status Check',
   read_file:             'Read Memory',
   edit_file:             'Edit Memory',
 }

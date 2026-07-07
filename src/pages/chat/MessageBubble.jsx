@@ -1,6 +1,5 @@
 import { Bot, User, Loader2 } from 'lucide-react'
 import { GOLD, GOLD_DIM } from './constants'
-import SubagentCard from './SubagentCard'
 import ReasoningBlock from './ReasoningBlock'
 import ToolCallCard from './ToolCallCard'
 import MarkdownContent from './MarkdownContent'
@@ -37,30 +36,6 @@ export default function MessageBubble({ msg }) {
           {isUser ? 'You' : 'FashionOS'}
         </span>
       </div>
-
-      {/* Subagent cards — shown ABOVE the final response bubble */}
-      {!isUser && msg.subagents && msg.subagents.length > 0 && (
-        <div style={{ maxWidth: '100%', width: '100%' }}>
-          <div style={{
-            fontFamily: "'Inter', sans-serif", fontSize: '0.56rem',
-            letterSpacing: '0.14em', textTransform: 'uppercase',
-            color: 'rgba(242,237,228,0.22)', marginBottom: 7,
-          }}>
-            Specialist agents · {msg.subagents.filter(s => s.status === 'done').length}/{msg.subagents.length} completed
-          </div>
-          <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
-            {msg.subagents.map(sa => (
-              <SubagentCard
-                key={sa.name}
-                name={sa.name}
-                status={sa.status}
-                summary={sa.summary}
-                data={sa.data}
-              />
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Reasoning — model's internal thinking, hidden by default */}
       {!isUser && msg.reasoning && (
@@ -108,7 +83,7 @@ export default function MessageBubble({ msg }) {
 
       {/* Streaming: agent is thinking but no text yet — show pulse */}
       {!isUser && msg.streaming && !msg.content && !msg.reasoning &&
-        msg.subagents?.length === 0 && (!msg.toolCalls || msg.toolCalls.length === 0) && (
+        (!msg.toolCalls || msg.toolCalls.length === 0) && (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '10px 14px',
