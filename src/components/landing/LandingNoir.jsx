@@ -375,9 +375,9 @@ export default function LandingNoir() {
         {/* Right: Fashion photo */}
         <div className="noir-hero-right">
           <img
-            src="https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=900&q=80"
+            src="\pexels-ahcapture-29817596.jpg"
             alt="Fashion editorial"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0D0D0D 0%, transparent 45%, rgba(13,13,13,0.2) 100%)' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0D0D0D 0%, transparent 20%)' }} />
