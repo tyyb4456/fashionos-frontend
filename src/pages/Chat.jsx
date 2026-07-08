@@ -71,10 +71,10 @@ export default function Chat() {
           streaming: false,
           // Subagents don't exist anymore — replay persisted tool results
           // through the same ToolCallCard used for live streaming.
-          toolCalls: (m.subagents || []).map((sa, j) => ({
-            id: `${i}-${j}-${sa.name}`, name: sa.name, args: {}, status: 'done', data: sa.data,
+          toolCalls: (m.tool_results || []).map((tr, j) => ({
+            id: `${i}-${j}-${tr.name}`, name: tr.name, args: {}, status: 'done', data: tr.data,
           })),
-          reasoning: '',   // not persisted server-side yet — only live during streaming
+          reasoning: m.reasoning || '',
         })))
       }
     } catch { /* network / dev fallback */ }

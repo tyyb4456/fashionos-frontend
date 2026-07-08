@@ -3,7 +3,7 @@ import { useApi } from '../api/client'
 import { useNavigate } from 'react-router-dom'
 import StatCard from '../components/StatCard'
 import Badge from '../components/Badge'
-import { AlertTriangle, DollarSign, Package, Megaphone, FileText, RotateCcw, Play, Activity } from 'lucide-react'
+import { AlertTriangle, DollarSign, Package, Megaphone, FileText, RotateCcw, Play, Activity, CalendarDays } from 'lucide-react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 
 /* ── Styles ────────────────────────────────────────────────────── */
@@ -167,6 +167,58 @@ const gradBtn = {
   color: 'white', border: 'none',
 }
 
+const SeasonalPulseCard = ({ seasonal }) => {
+  if (!seasonal) return null
+
+  const isActive = seasonal.demand_multiplier > 1.05
+  const label = seasonal.season_label
+    .split('_')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+
+  return (
+    <div style={{
+      borderRadius: 12, padding: '13px 16px',
+      background: isActive ? 'rgba(201,168,76,0.08)' : 'var(--subtle-bg)',
+      border: `1px solid ${isActive ? 'rgba(201,168,76,0.28)' : 'var(--subtle-border)'}`,
+      borderLeft: `3px solid ${isActive ? '#C9A84C' : 'rgba(201,168,76,0.3)'}`,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      gap: 14, flexWrap: 'wrap',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <CalendarDays size={15} style={{ color: '#C9A84C', flexShrink: 0 }} />
+        <div>
+          <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
+            Seasonal Demand
+          </div>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600, marginTop: 2 }}>
+            {label}
+            {isActive && (
+              <span style={{ marginLeft: 8, fontSize: '0.68rem', fontWeight: 700, color: '#C9A84C' }}>
+                ×{seasonal.demand_multiplier} demand
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {seasonal.next_peak_label && (
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
+            Next Peak
+          </div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-primary)', marginTop: 2 }}>
+            {seasonal.next_peak_label.replace(/_/g, ' ')} · in {seasonal.days_until_next_peak}d
+            {!seasonal.next_peak_confirmed && (
+              <span style={{ marginLeft: 6, fontSize: '0.62rem', color: 'var(--text-muted)' }}>(estimated)</span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 /* ── Main ──────────────────────────────────────────────────────── */
 export default function Dashboard() {
   const api  = useApi()
@@ -260,6 +312,9 @@ export default function Dashboard() {
             </p>
           </div>
         )}
+
+        {/* ── Seasonal pulse ─────────────────────────────────── */}
+        <SeasonalPulseCard seasonal={data.seasonal_context} />
 
         {/* ── Two-column panel: Stat cards (left) + Recent runs (right) ── */}
         <div className="dash-split">
