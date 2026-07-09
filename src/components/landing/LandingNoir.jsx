@@ -325,6 +325,83 @@ const styles = `
     color: rgba(242,237,228,0.55); max-width: 580px; margin: 0;
   }
 
+  /* Light theme override — scoped to .noir-section-light only */
+  .noir-section-light {
+    background: #F3EEE3;
+  }
+  .noir-section-light .noir-section-title { color: #14201B; }
+  .noir-section-light .noir-section-sub { color: rgba(20,32,27,0.6); }
+  .noir-section-light .glass-card {
+    background: rgba(255,255,255,0.55);
+    border-color: rgba(47,158,110,0.18);
+  }
+  .noir-section-light .glass-card:hover {
+    background: rgba(255,255,255,0.8);
+    border-color: rgba(47,158,110,0.5);
+    box-shadow: 0 16px 36px rgba(20,32,27,0.12), 0 0 20px rgba(47,158,110,0.06);
+  }
+  .noir-section-light .noir-agent-slide-center .noir-agent-card-inner {
+    border-color: rgba(47,158,110,0.4);
+    box-shadow: 0 30px 60px rgba(20,32,27,0.16), 0 0 30px rgba(47,158,110,0.1);
+  }
+  .noir-section-light .noir-agent-icon-box {
+    background: rgba(47,158,110,0.07);
+    border-color: rgba(47,158,110,0.25);
+    color: ${GOLD};
+  }
+  .noir-section-light .glass-card:hover .noir-agent-icon-box {
+    background: ${GOLD};
+    color: #FFFFFF;
+  }
+  .noir-section-light .noir-agent-step { color: rgba(47,158,110,0.3); }
+  .noir-section-light .noir-agent-name { color: #14201B; }
+  .noir-section-light .glass-card:hover .noir-agent-name { color: ${GOLD}; }
+  .noir-section-light .noir-agent-desc { color: rgba(20,32,27,0.6); }
+  .noir-section-light .noir-badge-auto {
+    border-color: rgba(47,158,110,0.5); color: ${GOLD}; background: rgba(47,158,110,0.06);
+  }
+  .noir-section-light .noir-badge-approval {
+    border-color: rgba(20,32,27,0.15); color: rgba(20,32,27,0.5); background: rgba(20,32,27,0.03);
+  }
+  .noir-section-light .noir-carousel-arrow {
+    background: rgba(255,255,255,0.85);
+    border-color: rgba(47,158,110,0.3);
+    color: #14201B;
+  }
+  .noir-section-light .noir-carousel-arrow:hover:not(:disabled) {
+    border-color: ${GOLD}; color: ${GOLD}; background: #FFFFFF;
+  }
+  .noir-section-light .noir-carousel-dot { background: rgba(20,32,27,0.15); }
+  .noir-section-light .noir-carousel-dot.active { background: ${GOLD}; }
+
+  /* CTA-specific light overrides */
+  .noir-section-light.noir-cta-section {
+    border-top-color: rgba(47,158,110,0.12);
+  }
+  .noir-section-light .noir-cta-glow {
+    background: radial-gradient(circle, rgba(47,158,110,0.1) 0%, rgba(47,158,110,0) 70%);
+  }
+  .noir-section-light .noir-cta-title { color: #14201B; }
+  .noir-section-light .noir-cta-sub { color: rgba(20,32,27,0.6); }
+  .noir-section-light .noir-check-item { color: rgba(20,32,27,0.7); }
+  .noir-section-light .noir-cta-btn { box-shadow: 0 0 35px rgba(47,158,110,0.15); }
+  .noir-section-light .noir-cta-btn:hover { box-shadow: 0 12px 35px rgba(47,158,110,0.25); }
+  @media (hover: none) {
+    .noir-section-light .glass-card:hover {
+      background: rgba(255,255,255,0.55);
+      border-color: rgba(47,158,110,0.18);
+      box-shadow: none;
+    }
+    .noir-section-light .glass-card:hover .noir-agent-icon-box {
+      background: rgba(47,158,110,0.07);
+      color: ${GOLD};
+    }
+    .noir-section-light .glass-card:hover .noir-agent-name { color: #14201B; }
+    .noir-section-light .noir-carousel-arrow:hover:not(:disabled) {
+      border-color: rgba(47,158,110,0.3); color: #14201B; background: rgba(255,255,255,0.85);
+    }
+  }
+
   /* Glass Cards Grid */
   .glass-card {
     background: rgba(18, 18, 18, 0.45);
@@ -947,7 +1024,7 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Agents ("The Atelier") ────────────────────── */}
-      <div id="agents" className="noir-section-border">
+      <div id="agents" className="noir-section-border noir-section-light">
         <div className="noir-section">
           <div className="noir-section-title-wrap reveal-on-scroll">
             <div className="noir-section-title">The <em>Atelier</em></div>
@@ -1100,7 +1177,7 @@ export default function LandingNoir() {
       </div>
 
       {/* ── CTA Section ───────────────────────────────── */}
-      <div className="noir-cta-section">
+      <div className="noir-cta-section noir-section-light">
         <div className="noir-cta-glow" />
         <div className="noir-cta-title reveal-on-scroll">
           Automate Your Brand<br />
