@@ -674,7 +674,7 @@ export default function LandingNoir() {
         {/* Right: Editorial Image */}
         <div className="noir-hero-right">
           <img
-            src="/pexels-ahcapture-29817596.jpg"
+            src="pexels-ba-tik-3754246.jpg"
             alt="Fashion editorial background"
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
           />
