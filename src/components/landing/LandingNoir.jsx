@@ -441,6 +441,15 @@ const styles = `
     opacity: 1;
   }
 
+  /* ── Agent carousel: NO translateY on the inner card — the fan transform is on
+     the outer .noir-agent-slide. Lifting the inner card too creates a hover
+     feedback loop (card moves away → hover lost → falls back → re-enters = jitter). */
+  .noir-agent-carousel-wrap .glass-card:hover {
+    transform: none;
+    border-color: rgba(47, 158, 110, 0.5);
+    box-shadow: 0 0 0 1px rgba(47,158,110,0.2), 0 20px 40px rgba(0,0,0,0.4), 0 0 24px rgba(47,158,110,0.08);
+  }
+
   /* Agent cards — carousel */
   .noir-agent-carousel-wrap { position: relative; }
   .noir-agent-viewport {
@@ -609,6 +618,86 @@ const styles = `
   .glass-card:hover .noir-pill {
     border-color: var(--platform-accent-alpha, rgba(47,158,110,0.3));
     color: ${CREAM};
+  }
+
+  /* ── Seamless Connectivity: white cards on dark background ─────────── */
+  .noir-connectivity {
+    background: rgba(10, 16, 13, 0.85);
+  }
+  /* White card base */
+  .noir-connectivity .glass-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.06);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+    transition: box-shadow 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  /* ── No translateY lift — prevents the hover feedback loop jitter ── */
+  .noir-connectivity .glass-card:hover {
+    transform: translateY(-6px);
+    background: #FFFFFF;
+    border-color: var(--platform-accent, ${GOLD});
+    box-shadow:
+      0 0 0 1px var(--platform-accent, ${GOLD}),
+      0 16px 40px rgba(0,0,0,0.14),
+      0 4px 12px rgba(0,0,0,0.06);
+  }
+  .noir-connectivity .glass-card:hover::before { opacity: 0; }
+
+  /* Icon box: light tinted bg + brand color */
+  .noir-connectivity .noir-platform-icon-glow {
+    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 10%, #fff);
+    border: 1px solid color-mix(in srgb, var(--platform-accent, ${GOLD}) 20%, transparent);
+  }
+  .noir-connectivity .glass-card:hover .noir-platform-icon-glow {
+    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 18%, #fff);
+    transform: scale(1.05);
+  }
+
+  /* Text colors */
+  .noir-connectivity .noir-platform-name { color: #0A0A0A; }
+  .noir-connectivity .glass-card:hover .noir-platform-name { color: var(--platform-accent, ${GOLD}); }
+  .noir-connectivity .noir-platform-desc { color: rgba(10,10,10,0.58); }
+
+  /* Pills */
+  .noir-connectivity .noir-pill {
+    border-color: rgba(0,0,0,0.1);
+    color: rgba(10,10,10,0.5);
+    background: rgba(0,0,0,0.03);
+  }
+  .noir-connectivity .glass-card:hover .noir-pill {
+    border-color: color-mix(in srgb, var(--platform-accent, ${GOLD}) 40%, transparent);
+    color: var(--platform-accent, ${GOLD});
+    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 6%, transparent);
+  }
+
+  /* Section title & sub on dark bg */
+  .noir-connectivity .noir-section-title { color: ${CREAM}; }
+  .noir-connectivity .noir-section-sub { color: rgba(242,237,228,0.55); }
+
+  /* Mobile: 1 col, keep white cards */
+  @media (max-width: 640px) {
+    .noir-connectivity .noir-platform-grid { gap: 16px; }
+    .noir-connectivity .glass-card {
+      box-shadow: 0 2px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .noir-connectivity .noir-platform-name { font-size: 1.3rem; }
+    .noir-connectivity .noir-platform-desc { font-size: 0.82rem; }
+  }
+
+  /* touch devices — lock hover state so card stays white */
+  @media (hover: none) {
+    .noir-connectivity .glass-card:hover {
+      transform: none;
+      border-color: rgba(0,0,0,0.06);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .noir-connectivity .glass-card:hover .noir-platform-icon-glow { transform: none; }
+    .noir-connectivity .glass-card:hover .noir-platform-name { color: #0A0A0A; }
+    .noir-connectivity .glass-card:hover .noir-pill {
+      border-color: rgba(0,0,0,0.1); color: rgba(10,10,10,0.5); background: rgba(0,0,0,0.03);
+    }
   }
 
   /* How it works */
@@ -1234,7 +1323,7 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Integrations ("Seamless Connectivity") ──────── */}
-      <div id="integrations" className="noir-section-border" style={{ background: 'rgba(13,21,18,0.3)' }}>
+      <div id="integrations" className="noir-section-border noir-connectivity">
         <div className="noir-section">
           <div className="noir-section-title-wrap reveal-on-scroll">
             <div className="noir-section-title">Seamless <em>Connectivity</em></div>
