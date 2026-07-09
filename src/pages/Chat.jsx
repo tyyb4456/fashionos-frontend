@@ -390,6 +390,10 @@ export default function Chat() {
       <style>{`
         @keyframes spin  { to { transform: rotate(360deg); } }
         @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
       `}</style>
     </div>
   )

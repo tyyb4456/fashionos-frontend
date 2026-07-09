@@ -81,19 +81,30 @@ export default function MessageBubble({ msg }) {
         </div>
       )}
 
-      {/* Streaming: agent is thinking but no text yet — show pulse */}
+      {/* Streaming: agent is thinking but no text yet — show 3 dot bounce */}
       {!isUser && msg.streaming && !msg.content && !msg.reasoning &&
         (!msg.toolCalls || msg.toolCalls.length === 0) && (
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          padding: '10px 14px',
+          display: 'flex', alignItems: 'center', gap: 5,
+          padding: '12px 18px',
           background: '#14201B',
           border: '1px solid rgba(242,237,228,0.07)',
+          height: 36,
         }}>
-          <Loader2 size={12} color={GOLD} style={{ animation: 'spin 1s linear infinite' }} />
-          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(242,237,228,0.35)', letterSpacing: '0.06em' }}>
-            Thinking…
-          </span>
+          <div style={{
+            width: 6, height: 6, borderRadius: '50%', background: GOLD,
+            animation: 'bounce 1.4s infinite ease-in-out',
+          }} />
+          <div style={{
+            width: 6, height: 6, borderRadius: '50%', background: GOLD,
+            animation: 'bounce 1.4s infinite ease-in-out',
+            animationDelay: '0.2s',
+          }} />
+          <div style={{
+            width: 6, height: 6, borderRadius: '50%', background: GOLD,
+            animation: 'bounce 1.4s infinite ease-in-out',
+            animationDelay: '0.4s',
+          }} />
         </div>
       )}
     </div>
