@@ -14,3 +14,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ThemeProvider>
   </ClerkProvider>
 )
+
+// wtf
