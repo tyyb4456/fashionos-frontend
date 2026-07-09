@@ -327,51 +327,55 @@ const styles = `
 
   /* Light theme override — scoped to .noir-section-light only */
   .noir-section-light {
-    background: #F3EEE3;
+    background: #FFFFFF;
   }
-  .noir-section-light .noir-section-title { color: #14201B; }
-  .noir-section-light .noir-section-sub { color: rgba(20,32,27,0.6); }
+  .noir-section-light .noir-section-title { color: #0A0A0A; }
+  .noir-section-light .noir-section-sub { color: rgba(10,10,10,0.55); }
+
+  /* ── Desktop/tablet glass cards (light section) */
   .noir-section-light .glass-card {
-    background: rgba(255,255,255,0.55);
-    border-color: rgba(47,158,110,0.18);
+    background: #111111;
+    border-color: rgba(255,255,255,0.06);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .noir-section-light .glass-card:hover {
-    background: rgba(255,255,255,0.8);
+    background: #1a1a1a;
     border-color: rgba(47,158,110,0.5);
-    box-shadow: 0 16px 36px rgba(20,32,27,0.12), 0 0 20px rgba(47,158,110,0.06);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 24px rgba(47,158,110,0.08);
   }
   .noir-section-light .noir-agent-slide-center .noir-agent-card-inner {
-    border-color: rgba(47,158,110,0.4);
-    box-shadow: 0 30px 60px rgba(20,32,27,0.16), 0 0 30px rgba(47,158,110,0.1);
+    border-color: rgba(47,158,110,0.45);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(47,158,110,0.12);
   }
   .noir-section-light .noir-agent-icon-box {
-    background: rgba(47,158,110,0.07);
-    border-color: rgba(47,158,110,0.25);
+    background: rgba(47,158,110,0.12);
+    border-color: rgba(47,158,110,0.3);
     color: ${GOLD};
   }
   .noir-section-light .glass-card:hover .noir-agent-icon-box {
     background: ${GOLD};
     color: #FFFFFF;
   }
-  .noir-section-light .noir-agent-step { color: rgba(47,158,110,0.3); }
-  .noir-section-light .noir-agent-name { color: #14201B; }
+  .noir-section-light .noir-agent-step { color: rgba(47,158,110,0.25); }
+  .noir-section-light .noir-agent-name { color: ${CREAM}; }
   .noir-section-light .glass-card:hover .noir-agent-name { color: ${GOLD}; }
-  .noir-section-light .noir-agent-desc { color: rgba(20,32,27,0.6); }
+  .noir-section-light .noir-agent-desc { color: rgba(242,237,228,0.5); }
   .noir-section-light .noir-badge-auto {
-    border-color: rgba(47,158,110,0.5); color: ${GOLD}; background: rgba(47,158,110,0.06);
+    border-color: rgba(47,158,110,0.5); color: ${GOLD}; background: rgba(47,158,110,0.08);
   }
   .noir-section-light .noir-badge-approval {
-    border-color: rgba(20,32,27,0.15); color: rgba(20,32,27,0.5); background: rgba(20,32,27,0.03);
+    border-color: rgba(242,237,228,0.12); color: rgba(242,237,228,0.4); background: rgba(255,255,255,0.02);
   }
   .noir-section-light .noir-carousel-arrow {
-    background: rgba(255,255,255,0.85);
-    border-color: rgba(47,158,110,0.3);
-    color: #14201B;
+    background: #111111;
+    border-color: rgba(255,255,255,0.12);
+    color: ${CREAM};
   }
   .noir-section-light .noir-carousel-arrow:hover:not(:disabled) {
-    border-color: ${GOLD}; color: ${GOLD}; background: #FFFFFF;
+    border-color: ${GOLD}; color: ${GOLD}; background: #1a1a1a;
   }
-  .noir-section-light .noir-carousel-dot { background: rgba(20,32,27,0.15); }
+  .noir-section-light .noir-carousel-dot { background: rgba(10,10,10,0.15); }
   .noir-section-light .noir-carousel-dot.active { background: ${GOLD}; }
 
   /* CTA-specific light overrides */
@@ -388,17 +392,21 @@ const styles = `
   .noir-section-light .noir-cta-btn:hover { box-shadow: 0 12px 35px rgba(47,158,110,0.25); }
   @media (hover: none) {
     .noir-section-light .glass-card:hover {
-      background: rgba(255,255,255,0.55);
-      border-color: rgba(47,158,110,0.18);
+      background: #111111;
+      border-color: rgba(255,255,255,0.06);
       box-shadow: none;
+      transform: none;
     }
+    .noir-section-light .glass-card:hover::before { opacity: 0; }
     .noir-section-light .glass-card:hover .noir-agent-icon-box {
-      background: rgba(47,158,110,0.07);
+      background: rgba(47,158,110,0.12);
       color: ${GOLD};
+      box-shadow: none;
+      transform: none;
     }
-    .noir-section-light .glass-card:hover .noir-agent-name { color: #14201B; }
+    .noir-section-light .glass-card:hover .noir-agent-name { color: ${CREAM}; }
     .noir-section-light .noir-carousel-arrow:hover:not(:disabled) {
-      border-color: rgba(47,158,110,0.3); color: #14201B; background: rgba(255,255,255,0.85);
+      border-color: rgba(255,255,255,0.12); color: ${CREAM}; background: #111111;
     }
   }
 
@@ -452,6 +460,7 @@ const styles = `
     box-sizing: border-box;
     padding: 0 6px;
     position: relative;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .noir-agent-card-inner {
@@ -459,42 +468,55 @@ const styles = `
     display: flex;
     flex-direction: column;
     border-radius: 16px;
-    transform-origin: center bottom;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+    transition: opacity 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
   }
 
-  /* Fanned coverflow effect — center card raised, sides tilted back */
-  .noir-agent-slide-center { z-index: 4; }
-  .noir-agent-slide-center .noir-agent-card-inner {
+  /* Fanned coverflow effect — center card raised, sides tilted back.
+     Transform lives on .noir-agent-slide (not .noir-agent-card-inner) because that
+     card-inner element also has overflow:hidden + border-radius (via .glass-card),
+     and combining a transform with overflow:hidden+border-radius on the SAME element
+     is a known mobile Chrome/Safari bug that lets content paint outside the rounded
+     card instead of clipping to it. Keeping the transform one level up avoids it. */
+  .noir-agent-slide-center {
+    z-index: 4;
     transform: scale(1.06) translateY(-10px);
+    transform-origin: center bottom;
+  }
+  .noir-agent-slide-center .noir-agent-card-inner {
     border-color: rgba(47, 158, 110, 0.4);
     box-shadow: 0 30px 60px rgba(0,0,0,0.55), 0 0 30px rgba(47,158,110,0.1);
   }
 
-  .noir-agent-slide-left,
-  .noir-agent-slide-right { z-index: 2; }
-  .noir-agent-slide-left .noir-agent-card-inner {
+  .noir-agent-slide-left {
+    z-index: 2;
     transform: scale(0.9) translateY(10px) rotate(-3deg);
-    opacity: 0.55;
     transform-origin: right bottom;
   }
-  .noir-agent-slide-right .noir-agent-card-inner {
+  .noir-agent-slide-right {
+    z-index: 2;
     transform: scale(0.9) translateY(10px) rotate(3deg);
-    opacity: 0.55;
     transform-origin: left bottom;
+  }
+  .noir-agent-slide-left .noir-agent-card-inner,
+  .noir-agent-slide-right .noir-agent-card-inner {
+    opacity: 0.55;
+  }
+  .noir-agent-slide-left:hover,
+  .noir-agent-slide-right:hover {
+    z-index: 3;
+    transform: scale(0.94) translateY(4px) rotate(0deg);
   }
   .noir-agent-slide-left:hover .noir-agent-card-inner,
   .noir-agent-slide-right:hover .noir-agent-card-inner {
     opacity: 0.9;
-    transform: scale(0.94) translateY(4px) rotate(0deg);
   }
-  .noir-agent-slide-left:hover,
-  .noir-agent-slide-right:hover { z-index: 3; }
 
   /* Fallback flat hover for mobile/tablet (1 or 2-up view, no fan classes) */
   .noir-agent-slide:hover { z-index: 5; }
-  .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
+  .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover {
     transform: scale(1.02);
+  }
+  .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
     border-color: rgba(47, 158, 110, 0.45);
     box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 20px rgba(47,158,110,0.08);
   }
@@ -717,38 +739,110 @@ const styles = `
     .noir-hero-left { padding: 56px 32px; }
     .noir-hero-right { min-height: 480px; height: 60vh; }
   }
+
+  /* ── Tablet: 2 cards wide ──────────────────────────── */
+  @media (max-width: 900px) and (min-width: 641px) {
+    .noir-agent-carousel-wrap { margin: 0 -8px; }
+    .noir-carousel-arrow-left { left: -2px; }
+    .noir-carousel-arrow-right { right: -2px; }
+    .noir-agent-slide .glass-card { padding: 28px 24px; }
+    .noir-agent-name { font-size: 1.55rem; }
+    .noir-agent-desc { font-size: 0.84rem; }
+  }
+
+  /* ── Mobile: 1 card — premium full-width black card ── */
   @media (max-width: 640px) {
     .noir-platform-grid { grid-template-columns: 1fr; }
     .noir-cta-row { gap: 16px; }
     .noir-cta-primary, .noir-cta-btn { width: 100%; justify-content: center; }
     .noir-cta-checklist { flex-direction: column; align-items: center; gap: 12px; }
     .noir-footer { flex-direction: column; text-align: center; gap: 16px; }
-    .noir-carousel-arrow-left { left: 2px; }
-    .noir-carousel-arrow-right { right: 2px; }
-    .noir-carousel-arrow { width: 30px; height: 30px; background: rgba(11,19,16,0.9); }
-    .noir-carousel-arrow svg { width: 16px; height: 16px; }
-    .noir-agent-viewport { padding: 10px 0 18px; margin: -10px 0 -18px; }
-    .noir-agent-slide { padding: 0 3px; }
-    .noir-agent-slide .glass-card { padding: 12px 10px; border-radius: 12px; }
-    .noir-agent-header { margin-bottom: 10px; }
-    .noir-agent-step { font-size: 1rem; }
-    .noir-agent-name { font-size: 0.88rem; margin-bottom: 5px; line-height: 1.2; }
-    .noir-agent-desc { font-size: 0.62rem; line-height: 1.4; }
-    .noir-agent-icon-box { width: 26px; height: 26px; border-radius: 7px; }
-    .noir-agent-icon-box svg { width: 14px; height: 14px; }
-    .noir-agent-badge { font-size: 0.44rem; padding: 3px 7px; letter-spacing: 0.08em; white-space: nowrap; }
-    .noir-carousel-dots { margin-top: 20px; gap: 8px; }
-    .noir-carousel-dot { width: 6px; height: 6px; }
-    .noir-agent-slide-center .noir-agent-card-inner { transform: scale(1.03) translateY(-6px); }
-    .noir-agent-slide-left .noir-agent-card-inner { transform: scale(0.88) translateY(6px) rotate(-2deg); }
-    .noir-agent-slide-right .noir-agent-card-inner { transform: scale(0.88) translateY(6px) rotate(2deg); }
+    .noir-section { padding: 64px 20px; }
+
+    /* Single-card carousel — tight horizontal padding, no overflow bleed needed */
+    .noir-agent-carousel-wrap { margin: 0; }
+    .noir-carousel-arrow { display: none; }  /* hide arrows on mobile — swipe only */
+    .noir-agent-viewport { padding: 12px 0 20px; margin: -12px 0 -20px; overflow: hidden; }
+    .noir-agent-slide { padding: 0 0; }
+
+    /* ── Mobile card: deep black, spacious, large type ── */
+    .noir-agent-slide .glass-card {
+      padding: 32px 28px 28px;
+      border-radius: 20px;
+      background: #0D0D0D;
+      border: 1px solid rgba(255,255,255,0.07);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.04) inset;
+    }
+    /* Remove fan transforms on mobile — 1 card fills full width */
+    .noir-agent-slide-center,
+    .noir-agent-slide-left,
+    .noir-agent-slide-right {
+      transform: none !important;
+      z-index: 1;
+    }
+    .noir-agent-slide-left .noir-agent-card-inner,
+    .noir-agent-slide-right .noir-agent-card-inner {
+      opacity: 1;
+    }
+
+    /* Mobile typography scale */
+    .noir-agent-header { margin-bottom: 20px; align-items: flex-start; }
+    .noir-agent-step {
+      font-size: 4rem; color: rgba(47,158,110,0.18); line-height: 1;
+      position: absolute; top: 24px; right: 24px;
+    }
+    .noir-agent-icon-box {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: rgba(47,158,110,0.14);
+      border-color: rgba(47,158,110,0.35);
+    }
+    .noir-agent-icon-box svg { width: 24px; height: 24px; }
+    .noir-agent-name {
+      font-size: 2rem; color: #F2EDE4;
+      margin-top: 20px; margin-bottom: 12px; line-height: 1.1;
+    }
+    .noir-agent-desc {
+      font-size: 0.9rem; line-height: 1.7;
+      color: rgba(242,237,228,0.55);
+      margin-bottom: 0;
+    }
+    .noir-agent-badge {
+      font-size: 0.6rem; padding: 6px 14px;
+      letter-spacing: 0.14em; white-space: nowrap;
+    }
+    .noir-carousel-dots { margin-top: 28px; gap: 8px; }
+    .noir-carousel-dot { width: 7px; height: 7px; }
+
+    /* Mobile light-section overrides — force black card regardless */
+    .noir-section-light .glass-card {
+      background: #0D0D0D !important;
+      border-color: rgba(255,255,255,0.07) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset !important;
+    }
+    .noir-section-light .noir-agent-name { color: #F2EDE4 !important; }
+    .noir-section-light .noir-agent-desc { color: rgba(242,237,228,0.55) !important; }
+    .noir-section-light .noir-carousel-dot { background: rgba(10,10,10,0.18); }
+
+    /* Swipe hint — subtle gradient edges on the viewport */
+    .noir-agent-viewport::after {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0; width: 28px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.06));
+      pointer-events: none; border-radius: 0 20px 20px 0;
+    }
+    .noir-section-light .noir-agent-viewport::after {
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.12));
+    }
   }
+
   @media (max-width: 400px) {
-    .noir-agent-slide .glass-card { padding: 10px 8px; }
-    .noir-agent-step { font-size: 0.85rem; }
-    .noir-agent-name { font-size: 0.78rem; }
-    .noir-agent-desc { font-size: 0.56rem; }
-    .noir-agent-icon-box { width: 22px; height: 22px; }
+    .noir-agent-slide .glass-card { padding: 28px 22px 24px; }
+    .noir-agent-name { font-size: 1.7rem; }
+    .noir-agent-desc { font-size: 0.84rem; }
+    .noir-agent-icon-box { width: 44px; height: 44px; }
+    .noir-agent-step { font-size: 3.2rem; }
   }
 
   /* Bigger invisible tap target for carousel dots without changing visual size */
@@ -759,6 +853,21 @@ const styles = `
     top: 50%; left: 50%;
     width: 34px; height: 34px;
     transform: translate(-50%, -50%);
+  }
+
+  /* Mobile swipe hint */
+  .noir-swipe-hint {
+    display: none;
+    text-align: center;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(10,10,10,0.35);
+    margin-top: 12px;
+    font-weight: 500;
+  }
+  @media (max-width: 640px) {
+    .noir-swipe-hint { display: block; }
   }
 
   /* Prevent hover effects from getting visually "stuck" after a tap on touch devices */
@@ -777,16 +886,16 @@ const styles = `
       transform: none;
     }
     .glass-card:hover .noir-agent-name { color: ${CREAM}; }
-    .noir-agent-slide-left:hover .noir-agent-card-inner {
-      opacity: 0.55;
-      transform: scale(0.9) translateY(10px) rotate(-3deg);
-    }
+    .noir-agent-slide-left:hover { transform: scale(0.9) translateY(10px) rotate(-3deg); }
+    .noir-agent-slide-right:hover { transform: scale(0.9) translateY(10px) rotate(3deg); }
+    .noir-agent-slide-left:hover .noir-agent-card-inner,
     .noir-agent-slide-right:hover .noir-agent-card-inner {
       opacity: 0.55;
-      transform: scale(0.9) translateY(10px) rotate(3deg);
+    }
+    .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover {
+      transform: none;
     }
     .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
-      transform: none;
       border-color: rgba(47, 158, 110, 0.12);
       box-shadow: none;
     }
@@ -844,7 +953,18 @@ export default function LandingNoir() {
     }
   }, [])
 
-  // Agent carousel always shows 3 cards, including on mobile
+  // Responsive cardsPerView: 1 on mobile, 2 on tablet, 3 on desktop
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      const w = window.innerWidth
+      if (w <= 640) setCardsPerView(1)
+      else if (w <= 900) setCardsPerView(2)
+      else setCardsPerView(3)
+    }
+    updateCardsPerView()
+    window.addEventListener('resize', updateCardsPerView)
+    return () => window.removeEventListener('resize', updateCardsPerView)
+  }, [])
 
   const maxAgentIndex = Math.max(0, agents.length - cardsPerView)
 
@@ -1033,7 +1153,8 @@ export default function LandingNoir() {
             </p>
           </div>
 
-          <div className="noir-agent-carousel-wrap reveal-on-scroll">
+          <div className="noir-agent-carousel-wrap reveal-on-scroll" style={{ position: 'relative' }}>
+            {/* Arrows — hidden on mobile via CSS */}
             <button
               className="noir-carousel-arrow noir-carousel-arrow-left"
               onClick={prevAgent}
@@ -1043,7 +1164,7 @@ export default function LandingNoir() {
               <ChevronLeft size={20} />
             </button>
 
-            <div className="noir-agent-viewport">
+            <div className="noir-agent-viewport" style={{ position: 'relative' }}>
               <div
                 className="noir-agent-track"
                 style={{ transform: `translateX(-${agentIndex * (100 / cardsPerView)}%)`, touchAction: 'pan-y' }}
@@ -1059,7 +1180,7 @@ export default function LandingNoir() {
                     <div
                       key={agent.step}
                       className={`noir-agent-slide ${getSlidePosition(index)}`}
-                      style={{ flex: `0 0 ${100 / cardsPerView}%` }}
+                      style={{ flex: `0 0 ${100 / cardsPerView}%`, position: 'relative' }}
                     >
                       <div className="glass-card noir-agent-card-inner">
                         <div className="noir-agent-header">
@@ -1093,6 +1214,7 @@ export default function LandingNoir() {
             </button>
           </div>
 
+          {/* Dots — show card index / total on mobile as text hint */}
           <div className="noir-carousel-dots">
             {Array.from({ length: maxAgentIndex + 1 }).map((_, i) => (
               <button
@@ -1103,6 +1225,11 @@ export default function LandingNoir() {
               />
             ))}
           </div>
+
+          {/* Mobile only: swipe hint text */}
+          <p className="noir-swipe-hint">
+            Swipe to explore all 8 agents &rarr;
+          </p>
         </div>
       </div>
 
