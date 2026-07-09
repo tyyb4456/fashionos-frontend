@@ -22,7 +22,7 @@ export default function Content() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(201,168,76,0.22)', borderTopColor: '#C9A84C' }} />
+        style={{ borderColor: 'rgba(47,158,110,0.22)', borderTopColor: '#2F9E6E' }} />
     </div>
   )
 
@@ -30,7 +30,7 @@ export default function Content() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">✦ Content Pipeline</div>
-        <h1 className="page-title-shimmer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>Content Queue</h1>
+        <h1 className="page-title-shimmer" style={{ fontFamily: "'Permanent Marker', cursive", fontSize: '2rem', fontWeight: 300 }}>Content Queue</h1>
         <div className="gradient-accent-line" />
       </div>
       <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
@@ -76,7 +76,7 @@ export default function Content() {
                     {post.instagram_caption}
                   </p>
                   {post.instagram_hashtags && (
-                    <p className="text-xs mt-2" style={{ color: '#C9A84C' }}>
+                    <p className="text-xs mt-2" style={{ color: '#2F9E6E' }}>
                       #{post.instagram_hashtags.slice(0, 10).join(' #')}
                     </p>
                   )}

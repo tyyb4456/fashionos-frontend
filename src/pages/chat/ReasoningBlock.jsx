@@ -7,7 +7,7 @@ export default function ReasoningBlock({ text, streaming }) {
   if (!text) return null
 
   return (
-    <div style={{ background: '#0f0f0f', border: '1px solid rgba(167,139,250,0.18)', width: '100%' }}>
+    <div style={{ background: '#111A15', border: '1px solid rgba(167,139,250,0.18)', width: '100%' }}>
       <div onClick={() => setExpanded(e => !e)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', cursor: 'pointer' }}>
         <span style={{ fontSize: '0.75rem' }}>🧠</span>
         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#a78bfa', flex: 1 }}>

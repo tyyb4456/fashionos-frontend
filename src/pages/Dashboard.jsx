@@ -99,7 +99,7 @@ const STYLES = `
 const Spinner = () => (
   <div className="flex items-center justify-center h-64">
     <div className="w-8 h-8 rounded-full border-2 animate-spin"
-      style={{ borderColor: 'rgba(201,168,76,0.18)', borderTopColor: '#C9A84C' }} />
+      style={{ borderColor: 'rgba(47,158,110,0.18)', borderTopColor: '#2F9E6E' }} />
   </div>
 )
 
@@ -137,7 +137,7 @@ const SectionHeader = ({ title }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 12 }}>
     <div style={{
       width: 3, height: 15, borderRadius: 2, flexShrink: 0,
-      background: 'linear-gradient(180deg, #C9A84C, rgba(0,49,82,0.8))',
+      background: 'linear-gradient(180deg, #2F9E6E, rgba(0,49,82,0.8))',
     }} />
     <span style={{
       fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.09em',
@@ -152,9 +152,9 @@ const AgentChip = ({ name }) => (
   <span style={{
     fontSize: '0.58rem', fontWeight: 600, textTransform: 'capitalize',
     padding: '2px 7px', borderRadius: 99,
-    background: 'rgba(201,168,76,0.1)',
-    border: '1px solid rgba(201,168,76,0.18)',
-    color: '#C9A84C',
+    background: 'rgba(47,158,110,0.1)',
+    border: '1px solid rgba(47,158,110,0.18)',
+    color: '#2F9E6E',
     whiteSpace: 'nowrap',
   }}>
     {name}
@@ -162,8 +162,8 @@ const AgentChip = ({ name }) => (
 )
 
 const gradBtn = {
-  background: 'linear-gradient(135deg, #0D0D0D, #C9A84C)',
-  boxShadow: '0 4px 16px rgba(201,168,76,0.22)',
+  background: 'linear-gradient(135deg, #0D1512, #2F9E6E)',
+  boxShadow: '0 4px 16px rgba(47,158,110,0.22)',
   color: 'white', border: 'none',
 }
 
@@ -179,14 +179,14 @@ const SeasonalPulseCard = ({ seasonal }) => {
   return (
     <div style={{
       borderRadius: 12, padding: '13px 16px',
-      background: isActive ? 'rgba(201,168,76,0.08)' : 'var(--subtle-bg)',
-      border: `1px solid ${isActive ? 'rgba(201,168,76,0.28)' : 'var(--subtle-border)'}`,
-      borderLeft: `3px solid ${isActive ? '#C9A84C' : 'rgba(201,168,76,0.3)'}`,
+      background: isActive ? 'rgba(47,158,110,0.08)' : 'var(--subtle-bg)',
+      border: `1px solid ${isActive ? 'rgba(47,158,110,0.28)' : 'var(--subtle-border)'}`,
+      borderLeft: `3px solid ${isActive ? '#2F9E6E' : 'rgba(47,158,110,0.3)'}`,
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       gap: 14, flexWrap: 'wrap',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <CalendarDays size={15} style={{ color: '#C9A84C', flexShrink: 0 }} />
+        <CalendarDays size={15} style={{ color: '#2F9E6E', flexShrink: 0 }} />
         <div>
           <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
             Seasonal Demand
@@ -194,7 +194,7 @@ const SeasonalPulseCard = ({ seasonal }) => {
           <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600, marginTop: 2 }}>
             {label}
             {isActive && (
-              <span style={{ marginLeft: 8, fontSize: '0.68rem', fontWeight: 700, color: '#C9A84C' }}>
+              <span style={{ marginLeft: 8, fontSize: '0.68rem', fontWeight: 700, color: '#2F9E6E' }}>
                 ×{seasonal.demand_multiplier} demand
               </span>
             )}
@@ -253,7 +253,7 @@ export default function Dashboard() {
             <div className="section-pill">⚡ FashionOS Command Center</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
               <h1 className="page-title-shimmer" style={{
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: "'Permanent Marker', cursive",
                 fontSize: '1.75rem',
                 margin: 0, lineHeight: 1,
               }}>
@@ -289,7 +289,7 @@ export default function Dashboard() {
               transform: btnHov && !running ? 'translateY(-1px)' : 'none',
               boxShadow: btnHov && !running
                 ? '0 6px 22px rgba(0,0,0,0.22)'
-                : '0 4px 16px rgba(201,168,76,0.22)',
+                : '0 4px 16px rgba(47,158,110,0.22)',
               transition: 'transform 0.2s ease, box-shadow 0.2s ease',
             }}>
             <Play size={13} />
@@ -303,10 +303,10 @@ export default function Dashboard() {
             borderRadius: 12, padding: '13px 15px',
             background: 'var(--subtle-bg)',
             border: '1px solid var(--subtle-border)',
-            borderLeft: '3px solid rgba(201,168,76,0.45)',
+            borderLeft: '3px solid rgba(47,158,110,0.45)',
             display: 'flex', alignItems: 'flex-start', gap: 10,
           }}>
-            <Activity size={14} style={{ color: '#C9A84C', marginTop: 2, flexShrink: 0 }} />
+            <Activity size={14} style={{ color: '#2F9E6E', marginTop: 2, flexShrink: 0 }} />
             <p style={{ fontSize: '0.82rem', color: 'var(--text-body)', margin: 0, lineHeight: 1.55 }}>
               {data.last_run_summary}
             </p>
@@ -521,7 +521,7 @@ function StatsPieCharts({ data }) {
   const alerts = Object.entries(alertsByAgentMap).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value,
-    color: agentColorMap[name.toLowerCase()] || '#C9A84C',
+    color: agentColorMap[name.toLowerCase()] || '#2F9E6E',
   }))
 
   const totalAlerts = alerts.reduce((s, d) => s + d.value, 0)
@@ -537,7 +537,7 @@ function StatsPieCharts({ data }) {
   }
 
   const automation = [
-    { name: 'Auto Run',    value: autoCount,    color: '#C9A84C' },
+    { name: 'Auto Run',    value: autoCount,    color: '#2F9E6E' },
     { name: 'Needs Review',value: pendingCount, color: '#f87171' },
   ].filter(d => d.value > 0)
 
@@ -605,9 +605,9 @@ function RunRow({ run, crit, onClick }) {
         borderRadius: 12,
         background: hov ? 'var(--item-bg-hover, var(--item-bg))' : 'var(--item-bg)',
         border: `1px solid ${hov
-          ? (crit ? 'rgba(239,68,68,0.3)' : 'rgba(201,168,76,0.3)')
+          ? (crit ? 'rgba(239,68,68,0.3)' : 'rgba(47,158,110,0.3)')
           : 'var(--item-border)'}`,
-        borderLeft: `3px solid ${crit ? 'rgba(239,68,68,0.5)' : 'rgba(201,168,76,0.45)'}`,
+        borderLeft: `3px solid ${crit ? 'rgba(239,68,68,0.5)' : 'rgba(47,158,110,0.45)'}`,
         cursor: 'pointer',
         transform: hov ? 'translateX(3px)' : 'translateX(0)',
         transition: 'transform 0.2s ease, border-color 0.2s ease, background 0.2s ease',

@@ -36,7 +36,7 @@ export default function MarkdownContent({ text, color = 'rgba(242,237,228,0.8)',
             ),
           pre: ({ children }) => (
             <pre style={{
-              background: '#0d0d0d', border: '1px solid rgba(242,237,228,0.08)',
+              background: '#0d1512', border: '1px solid rgba(242,237,228,0.08)',
               padding: '10px 12px', overflowX: 'auto', margin: '0 0 10px',
             }}>{children}</pre>
           ),

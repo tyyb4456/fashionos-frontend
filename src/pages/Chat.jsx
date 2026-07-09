@@ -229,7 +229,7 @@ export default function Chat() {
   return (
     <div style={{
       display: 'flex', height: '100%',
-      background: '#0D0D0D', position: 'relative', overflow: 'hidden',
+      background: '#0D1512', position: 'relative', overflow: 'hidden',
     }}>
 
       <ConversationsSidebar
@@ -250,19 +250,19 @@ export default function Chat() {
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
           <div style={{
             position: 'absolute', top: -100, right: -80, width: 400, height: 400, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(47,158,110,0.06) 0%, transparent 70%)',
           }} />
         </div>
 
         {/* Header */}
         <div style={{
           padding: '18px 24px 14px',
-          borderBottom: '1px solid rgba(201,168,76,0.1)',
+          borderBottom: '1px solid rgba(47,158,110,0.1)',
           position: 'relative', zIndex: 1, flexShrink: 0,
         }}>
           <div className="section-pill">✦ AI Intelligence</div>
           <h1 style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Permanent Marker', cursive",
             fontSize: '1.7rem', fontWeight: 300, color: '#F2EDE4',
             margin: 0, lineHeight: 1.1,
           }}>
@@ -282,7 +282,7 @@ export default function Chat() {
         }}>
           {messagesLoading ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Loader2 size={22} color="rgba(201,168,76,0.4)"
+              <Loader2 size={22} color="rgba(47,158,110,0.4)"
                 style={{ animation: 'spin 1s linear infinite' }} />
             </div>
           ) : messages.length === 0 ? (
@@ -292,14 +292,14 @@ export default function Chat() {
             }}>
               <div style={{
                 width: 50, height: 50,
-                border: '1px solid rgba(201,168,76,0.22)',
+                border: '1px solid rgba(47,158,110,0.22)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <Bot size={20} color={GOLD} />
               </div>
               <div style={{ textAlign: 'center' }}>
                 <p style={{
-                  fontFamily: "'Cormorant Garamond', serif", fontSize: '1.25rem',
+                  fontFamily: "'Permanent Marker', cursive", fontSize: '1.25rem',
                   fontWeight: 300, color: 'rgba(242,237,228,0.45)', margin: '0 0 6px',
                 }}>
                   Ask me anything about your brand
@@ -315,14 +315,14 @@ export default function Chat() {
                 {SUGGESTIONS.map(s => (
                   <button key={s} onClick={() => sendMessage(s)} style={{
                     padding: '7px 13px',
-                    background: 'rgba(201,168,76,0.06)',
-                    border: '1px solid rgba(201,168,76,0.18)',
+                    background: 'rgba(47,158,110,0.06)',
+                    border: '1px solid rgba(47,158,110,0.18)',
                     color: 'rgba(242,237,228,0.5)', cursor: 'pointer',
                     fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
                     transition: 'all 0.2s',
                   }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(201,168,76,0.12)'; e.currentTarget.style.color = GOLD }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(201,168,76,0.06)'; e.currentTarget.style.color = 'rgba(242,237,228,0.5)' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(47,158,110,0.12)'; e.currentTarget.style.color = GOLD }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(47,158,110,0.06)'; e.currentTarget.style.color = 'rgba(242,237,228,0.5)' }}
                   >{s}</button>
                 ))}
               </div>

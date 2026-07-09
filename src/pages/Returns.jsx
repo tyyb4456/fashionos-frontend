@@ -27,7 +27,7 @@ export default function Returns() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(201,168,76,0.22)', borderTopColor: '#C9A84C' }} />
+        style={{ borderColor: 'rgba(47,158,110,0.22)', borderTopColor: '#2F9E6E' }} />
     </div>
   )
 
@@ -35,7 +35,7 @@ export default function Returns() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">↩ Quality Intelligence</div>
-        <h1 className="page-title-shimmer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>Returns Fix Queue</h1>
+        <h1 className="page-title-shimmer" style={{ fontFamily: "'Permanent Marker', cursive", fontSize: '2rem', fontWeight: 300 }}>Returns Fix Queue</h1>
         <div className="gradient-accent-line" />
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">
@@ -43,8 +43,8 @@ export default function Returns() {
           <button key={f} onClick={() => setFilter(f)}
             className="px-3 py-1.5 text-xs capitalize transition-all"
             style={filter === f ? {
-              background: 'rgba(201,168,76,0.12)',
-              color: '#C9A84C', border: '1px solid rgba(201,168,76,0.35)',
+              background: 'rgba(47,158,110,0.12)',
+              color: '#2F9E6E', border: '1px solid rgba(47,158,110,0.35)',
               fontFamily: "'Inter', sans-serif", letterSpacing: '0.08em',
             } : { color: 'var(--text-secondary)', background: 'none', border: '1px solid transparent', cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
             {f}

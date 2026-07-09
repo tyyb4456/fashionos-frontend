@@ -14,7 +14,7 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
       style={{
         padding: '10px 12px',
         background: isActive
-          ? 'rgba(201,168,76,0.1)'
+          ? 'rgba(47,158,110,0.1)'
           : hovered ? 'rgba(242,237,228,0.04)' : 'transparent',
         borderLeft: `2px solid ${isActive ? GOLD : 'transparent'}`,
         cursor: 'pointer',
@@ -72,9 +72,9 @@ export default function ConversationsSidebar({
       <div style={{
         width: collapsed ? 0 : 240,
         minWidth: collapsed ? 0 : 240,
-        borderRight: collapsed ? 'none' : '1px solid rgba(201,168,76,0.12)',
+        borderRight: collapsed ? 'none' : '1px solid rgba(47,158,110,0.12)',
         display: 'flex', flexDirection: 'column',
-        background: '#0A0A0A',
+        background: '#0B1310',
         transition: 'width 0.25s ease, min-width 0.25s ease',
         overflow: 'hidden',
         position: 'relative', zIndex: 2,
@@ -82,7 +82,7 @@ export default function ConversationsSidebar({
         {/* Sidebar header */}
         <div style={{
           padding: '18px 14px 12px',
-          borderBottom: '1px solid rgba(201,168,76,0.1)',
+          borderBottom: '1px solid rgba(47,158,110,0.1)',
           flexShrink: 0,
         }}>
           <div style={{
@@ -96,16 +96,16 @@ export default function ConversationsSidebar({
             onClick={onNewThread}
             style={{
               width: '100%', padding: '8px 10px',
-              background: 'rgba(201,168,76,0.08)',
-              border: '1px solid rgba(201,168,76,0.22)',
+              background: 'rgba(47,158,110,0.08)',
+              border: '1px solid rgba(47,158,110,0.22)',
               color: GOLD, cursor: 'pointer',
               fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
               letterSpacing: '0.08em', textTransform: 'uppercase',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(201,168,76,0.14)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'rgba(201,168,76,0.08)'}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(47,158,110,0.14)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(47,158,110,0.08)'}
           >
             <Plus size={12} /> New Chat
           </button>
@@ -118,7 +118,7 @@ export default function ConversationsSidebar({
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               padding: 24,
             }}>
-              <Loader2 size={16} color="rgba(201,168,76,0.4)"
+              <Loader2 size={16} color="rgba(47,158,110,0.4)"
                 style={{ animation: 'spin 1s linear infinite' }} />
             </div>
           ) : conversations.length === 0 ? (
@@ -151,9 +151,9 @@ export default function ConversationsSidebar({
           left: collapsed ? 0 : 240,
           top: '50%', transform: 'translateY(-50%)',
           zIndex: 10,
-          background: '#1A1A1A',
-          border: '1px solid rgba(201,168,76,0.2)',
-          borderLeft: collapsed ? '1px solid rgba(201,168,76,0.2)' : 'none',
+          background: '#16211C',
+          border: '1px solid rgba(47,158,110,0.2)',
+          borderLeft: collapsed ? '1px solid rgba(47,158,110,0.2)' : 'none',
           color: 'rgba(242,237,228,0.4)',
           cursor: 'pointer', padding: '6px 4px',
           transition: 'left 0.25s ease',

@@ -21,7 +21,7 @@ export default function MessageBubble({ msg }) {
         <div style={{
           width: 22, height: 22,
           background: isUser ? GOLD_DIM : 'rgba(242,237,228,0.06)',
-          border: `1px solid ${isUser ? 'rgba(201,168,76,0.35)' : 'rgba(242,237,228,0.1)'}`,
+          border: `1px solid ${isUser ? 'rgba(47,158,110,0.35)' : 'rgba(242,237,228,0.1)'}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           {isUser
@@ -53,8 +53,8 @@ export default function MessageBubble({ msg }) {
       {(msg.content || msg.streaming) && (
         <div style={{
           maxWidth: '80%',
-          background: isUser ? GOLD_DIM : '#141414',
-          border: `1px solid ${isUser ? 'rgba(201,168,76,0.22)' : 'rgba(242,237,228,0.07)'}`,
+          background: isUser ? GOLD_DIM : '#14201B',
+          border: `1px solid ${isUser ? 'rgba(47,158,110,0.22)' : 'rgba(242,237,228,0.07)'}`,
           padding: '11px 15px',
         }}>
           {msg.content ? (
@@ -87,7 +87,7 @@ export default function MessageBubble({ msg }) {
         <div style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '10px 14px',
-          background: '#141414',
+          background: '#14201B',
           border: '1px solid rgba(242,237,228,0.07)',
         }}>
           <Loader2 size={12} color={GOLD} style={{ animation: 'spin 1s linear infinite' }} />

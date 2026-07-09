@@ -51,7 +51,7 @@ export default function ToolCallCard({ call }) {
   const pStatus = isPipeline ? pipelineStatus(call) : null
 
   return (
-    <div style={{ background: '#0f0f0f', border: '1px solid rgba(242,237,228,0.08)', width: '100%' }}>
+    <div style={{ background: '#111A15', border: '1px solid rgba(242,237,228,0.08)', width: '100%' }}>
       <div
         onClick={() => hasData && setExpanded(e => !e)}
         style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', cursor: hasData ? 'pointer' : 'default' }}

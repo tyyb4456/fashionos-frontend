@@ -1,9 +1,9 @@
 const badgeMap = {
   critical: { bg: 'rgba(239,68,68,0.12)',    border: 'rgba(239,68,68,0.35)',    text: '#f87171' },
   warning:  { bg: 'rgba(250,204,21,0.12)',   border: 'rgba(250,204,21,0.35)',   text: '#facc15' },
-  info:     { bg: 'rgba(201,168,76,0.12)',   border: 'rgba(201,168,76,0.35)',   text: '#C9A84C' },
+  info:     { bg: 'rgba(47,158,110,0.12)',   border: 'rgba(47,158,110,0.35)',   text: '#2F9E6E' },
   healthy:  { bg: 'rgba(74,222,128,0.12)',   border: 'rgba(74,222,128,0.35)',   text: '#4ade80' },
-  pending:  { bg: 'rgba(201,168,76,0.12)',   border: 'rgba(201,168,76,0.35)',   text: '#C9A84C' },
+  pending:  { bg: 'rgba(47,158,110,0.12)',   border: 'rgba(47,158,110,0.35)',   text: '#2F9E6E' },
   posted:   { bg: 'rgba(74,222,128,0.12)',   border: 'rgba(74,222,128,0.35)',   text: '#4ade80' },
   skipped:  { bg: 'rgba(148,163,184,0.12)',  border: 'rgba(148,163,184,0.35)',  text: '#94a3b8' },
 }

@@ -9,14 +9,14 @@ const ChatComposer = forwardRef(function ChatComposer(
   return (
     <div style={{
       padding: '12px 24px 18px',
-      borderTop: '1px solid rgba(201,168,76,0.1)',
+      borderTop: '1px solid rgba(47,158,110,0.1)',
       position: 'relative', zIndex: 1, flexShrink: 0,
       background: 'rgba(13,13,13,0.96)',
     }}>
       <div style={{
         display: 'flex', gap: 10, alignItems: 'flex-end',
         background: '#111',
-        border: `1px solid rgba(201,168,76,${isStreaming ? '0.32' : '0.18'})`,
+        border: `1px solid rgba(47,158,110,${isStreaming ? '0.32' : '0.18'})`,
         padding: '9px 11px', transition: 'border-color 0.2s',
       }}>
         <textarea
@@ -44,7 +44,7 @@ const ChatComposer = forwardRef(function ChatComposer(
           disabled={!input.trim() || isStreaming}
           style={{
             width: 33, height: 33, flexShrink: 0,
-            background: (!input.trim() || isStreaming) ? 'rgba(201,168,76,0.12)' : GOLD,
+            background: (!input.trim() || isStreaming) ? 'rgba(47,158,110,0.12)' : GOLD,
             border: 'none', cursor: (!input.trim() || isStreaming) ? 'not-allowed' : 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'background 0.2s',
@@ -52,7 +52,7 @@ const ChatComposer = forwardRef(function ChatComposer(
         >
           {isStreaming
             ? <Loader2 size={13} color={GOLD} style={{ animation: 'spin 1s linear infinite' }} />
-            : <Send    size={13} color={!input.trim() ? 'rgba(201,168,76,0.35)' : '#0D0D0D'} />}
+            : <Send    size={13} color={!input.trim() ? 'rgba(47,158,110,0.35)' : '#0D1512'} />}
         </button>
       </div>
       <p style={{

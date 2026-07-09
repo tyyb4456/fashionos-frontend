@@ -1,82 +1,89 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────────
 #  FashionOS — Color Palette Patch
-#  Old: Navy #2C3E50  + Teal  #4CA1AF
-#  New: Dark Azure #003152 + Soft Blue #ADDFF1
+#  Old: Black #0D0D0D + Gold #C9A84C
+#  New: Emerald Ivory
+#         Deep green-black  #0D1512   (bg)
+#         Card green-black  #16211C
+#         Emerald           #2F9E6E   (primary accent, was gold)
+#         Emerald light     #4FBE94   (hover accent, was gold-light)
+#         Ivory             #F2EDE4   (text — unchanged, already neutral)
 #
 #  Run from your project ROOT:
-#    bash color-patch.sh
+#    bash color-patch-emerald.sh
 # ─────────────────────────────────────────────────────────────────
 
-echo "🎨 Patching FashionOS palette → Dark Azure + Soft Blue..."
+echo "🎨 Patching FashionOS palette → Emerald Ivory..."
 
 FILES=$(find src -type f \( -name "*.jsx" -o -name "*.js" -o -name "*.css" \))
 
 for f in $FILES; do
 
-  # ── Primary brand hex colors ───────────────────────────────────
-  sed -i "s/#4CA1AF/#ADDFF1/g" "$f"
-  sed -i "s/#4ca1af/#ADDFF1/g" "$f"
-  sed -i "s/#2C3E50/#003152/g" "$f"
-  sed -i "s/#2c3e50/#003152/g" "$f"
+  # ── Primary accent (gold → emerald) ────────────────────────────
+  sed -i "s/#C9A84C/#2F9E6E/g" "$f"
+  sed -i "s/#c9a84c/#2f9e6e/g" "$f"
+  sed -i "s/#D4A87A/#4FBE94/g" "$f"
+  sed -i "s/#d4a87a/#4fbe94/g" "$f"
 
-  # ── Teal family variants (used in hero shimmer, feature cards) ─
-  sed -i "s/#5db8c5/#9dd6ed/g" "$f"
-  sed -i "s/#5DB8C5/#9DD6ED/g" "$f"
-  sed -i "s/#7dd3db/#c5ebf8/g" "$f"
-  sed -i "s/#7DD3DB/#C5EBF8/g" "$f"
+  # ── Gold RGB triplet → Emerald RGB triplet (covers every rgba() opacity variant) ─
+  sed -i "s/201,168,76/47,158,110/g"   "$f"
+  sed -i "s/201, 168, 76/47, 158, 110/g" "$f"
 
-  # ── Light-mode teal (darkened for readability) ─────────────────
-  sed -i "s/#3a8fa0/#0077a8/g" "$f"
-  sed -i "s/#3A8FA0/#0077A8/g" "$f"
+  # ── Light-mode accent (dark gold → dark emerald) ────────────────
+  sed -i "s/#8B6914/#1F7A52/g" "$f"
+  sed -i "s/#8b6914/#1f7a52/g" "$f"
+  sed -i "s/#A0792A/#26935F/g" "$f"
+  sed -i "s/#a0792a/#26935f/g" "$f"
+  sed -i "s/139,105,20/31,122,82/g" "$f"
+  sed -i "s/139, 105, 20/31, 122, 82/g" "$f"
 
-  # ── RGBA teal  76,161,175  → soft blue  173,223,241 ───────────
-  sed -i "s/rgba(76,161,175,/rgba(173,223,241,/g"   "$f"
-  sed -i "s/rgba(76, 161, 175,/rgba(173, 223, 241,/g" "$f"
+  # ── Dark-mode backgrounds (black → deep green-black) ────────────
+  sed -i "s/#0D0D0D/#0D1512/g" "$f"
+  sed -i "s/#0d0d0d/#0d1512/g" "$f"
+  sed -i "s/#111111/#131F1A/g" "$f"
+  sed -i "s/#1A1A1A/#16211C/g" "$f"
+  sed -i "s/#1a1a1a/#16211c/g" "$f"
+  sed -i "s/#151515/#121A16/g" "$f"
+  sed -i "s/#0A0A0A/#0B1310/g" "$f"
+  sed -i "s/#0a0a0a/#0b1310/g" "$f"
+  sed -i "s/#0f0f0f/#111A15/g" "$f"
+  sed -i "s/#0F0F0F/#111A15/g" "$f"
+  sed -i "s/#141414/#14201B/g" "$f"
+  sed -i "s/#080808/#081410/g" "$f"
 
-  # ── RGBA navy  44,62,80  → dark azure  0,49,82 ────────────────
-  sed -i "s/rgba(44,62,80,/rgba(0,49,82,/g"         "$f"
-  sed -i "s/rgba(44, 62, 80,/rgba(0, 49, 82,/g"     "$f"
+  # ── Navbar backdrop rgba(10,10,10,x) → rgba(11,19,16,x) ─────────
+  sed -i "s/10, 10, 10,/11, 19, 16,/g" "$f"
+  sed -i "s/10,10,10,/11,19,16,/g" "$f"
 
-  # ── RGBA deep-navy (navbar bg)  10,22,40 → 0,14,31 ───────────
-  sed -i "s/rgba(10,22,40,/rgba(0,14,31,/g"         "$f"
-  sed -i "s/rgba(10, 22, 40,/rgba(0, 14, 31,/g"     "$f"
+  # ── Misc near-black overlay tints used in LandingNoir sections ──
+  sed -i "s/12, 12, 12,/13, 21, 18,/g" "$f"
+  sed -i "s/12,12,12,/13,21,18,/g" "$f"
+  sed -i "s/15, 15, 15,/16, 24, 20,/g" "$f"
+  sed -i "s/15,15,15,/16,24,20,/g" "$f"
 
-  # ── RGB string inside StatCard palette object ──────────────────
-  sed -i "s/'76,161,175'/'173,223,241'/g"            "$f"
-  sed -i "s/'44,62,80'/'0,49,82'/g"                 "$f"
+  # ── Light-mode backgrounds (warm cream → soft mint-ivory) ───────
+  sed -i "s/#F5F0E8/#EEF5F0/g" "$f"
+  sed -i "s/#EDE5D4/#DDEEE4/g" "$f"
+  sed -i "s/#E5DCC8/#CFE6D8/g" "$f"
 
-  # ── Dark-mode background ───────────────────────────────────────
-  sed -i "s/#0a1628/#000e1f/g" "$f"
-  sed -i "s/#0A1628/#000E1F/g" "$f"
-
-  # ── Light-mode background ─────────────────────────────────────
-  sed -i "s/#eef3f8/#e4f4fc/g" "$f"
-  sed -i "s/#EEF3F8/#E4F4FC/g" "$f"
-
-  # ── Light-mode navbar backdrop ────────────────────────────────
-  sed -i "s/rgba(238,243,248,/rgba(228,244,252,/g"   "$f"
-  sed -i "s/rgba(238, 243, 248,/rgba(228, 244, 252,/g" "$f"
-
-  # ── Light-mode active-nav bg ─────────────────────────────────
-  sed -i "s/rgba(190,215,232,/rgba(173,223,241,/g"   "$f"
-  sed -i "s/rgba(190, 215, 232,/rgba(173, 223, 241,/g" "$f"
-
-  # ── Light-mode sidebar gradient stops ────────────────────────
-  sed -i "s/#d4e4ef/#c8e8f7/g" "$f"
-  sed -i "s/#D4E4EF/#C8E8F7/g" "$f"
-  sed -i "s/#c2d8e8/#b5dcf0/g" "$f"
-  sed -i "s/#C2D8E8/#B5DCF0/g" "$f"
+  # ── Light-mode text (brown/gold-tinted → green-neutral) ─────────
+  sed -i "s/#1A1204/#0F1D16/g" "$f"
+  sed -i "s/#5C4A1E/#3D5A4C/g" "$f"
+  sed -i "s/#8A7040/#6B8577/g" "$f"
+  sed -i "s/#2E2008/#16241D/g" "$f"
+  sed -i "s/#6B5020/#4A6B58/g" "$f"
 
 done
 
 echo ""
 echo "✅  Done! Palette applied across all src files."
 echo ""
-echo "   Dark Azure  #003152  (backgrounds, navbars, gradients)"
-echo "   Soft Blue   #ADDFF1  (accents, borders, highlights)"
+echo "   Deep green-black  #0D1512  (page bg, dark mode)"
+echo "   Emerald           #2F9E6E  (accent — was gold)"
+echo "   Ivory             #F2EDE4  (text — unchanged)"
 echo ""
-echo "📌  Don't forget: also replace src/index.css with the"
-echo "    provided version (sidebar gradient stops need it)."
+echo "📌  Variable/constant NAMES (--gold, GOLD, --teal, GOLD_DIM, etc.) were"
+echo "    left as-is — only their color VALUES changed. Same approach as your"
+echo "    original color-patch.sh. Harmless, just cosmetic tech debt if it bugs you."
 echo ""
 echo "🚀  Restart dev server:  npm run dev"

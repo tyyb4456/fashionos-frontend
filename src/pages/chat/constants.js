@@ -1,7 +1,7 @@
 import { Package, TrendingUp, Tag, Megaphone, FileText } from 'lucide-react'
 
-export const GOLD     = '#C9A84C'
-export const GOLD_DIM  = 'rgba(201,168,76,0.14)'
+export const GOLD     = '#2F9E6E'
+export const GOLD_DIM  = 'rgba(47,158,110,0.14)'
 
 // ── Urgency / level colour helpers ─────────────────────────────────────────────
 export const URGENCY_COLOR = {
