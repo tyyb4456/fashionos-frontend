@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, SignInButton } from '@clerk/clerk-react'
-import { Sparkles, ArrowRight, ArrowDown, ChevronRight, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
+import { Sparkles, ArrowRight, ArrowDown, ChevronRight, CheckCircle2, ShieldCheck, Zap, Activity } from 'lucide-react'
 import { agents, howItWorksSteps, integrations, marqueeItems } from './LandingData.jsx'
 
 const GOLD = '#2F9E6E'
@@ -170,6 +170,25 @@ const styles = `
     overflow: hidden;
     min-height: 100vh;
   }
+  .noir-hero-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 30%;
+    animation: hero-ken-burns 24s ease-in-out infinite alternate;
+    filter: saturate(1.05) contrast(1.05);
+  }
+  .noir-hero-duotone {
+    position: absolute; inset: 0;
+    background: linear-gradient(150deg, rgba(47,158,110,0.28) 0%, rgba(11,19,16,0.08) 45%, rgba(11,19,16,0.5) 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .noir-hero-grain {
+    position: absolute; inset: 0;
+    opacity: 0.06;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
   .noir-eyebrow {
     font-size: 0.68rem;
@@ -198,6 +217,7 @@ const styles = `
     -webkit-background-clip: text;
     background-clip: text;
     animation: text-shimmer 6s linear infinite;
+    filter: drop-shadow(0 0 20px rgba(47,158,110,0.25));
   }
 
   .noir-hero-sub {
@@ -211,13 +231,23 @@ const styles = `
     padding: 18px 44px; background: ${GOLD}; color: ${BG};
     border: none; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: pulse-gold 3s ease-in-out infinite;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; align-items: center; gap: 10px;
+    position: relative; overflow: hidden;
   }
-  .noir-cta-primary:hover { background: ${GOLD_LIGHT}; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(47,158,110,0.35); }
+  .noir-cta-primary:hover {
+    background: ${GOLD_LIGHT};
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(47,158,110,0.35);
+  }
+  .noir-cta-primary::after {
+    content: '';
+    position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+  .noir-cta-primary:hover::after { left: 125%; }
 
   .noir-cta-secondary {
     font-family: 'Permanent Marker', cursive !important;
@@ -230,48 +260,44 @@ const styles = `
   }
   .noir-cta-secondary:hover { color: ${GOLD_LIGHT}; border-bottom-color: ${GOLD_LIGHT}; padding-left: 4px; }
 
-  /* Scroll Indicator */
-  .noir-scroll-indicator {
-    position: absolute;
-    bottom: 32px;
-    left: 80px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: rgba(242,237,228,0.4);
-    cursor: pointer;
-    z-index: 10;
-    transition: color 0.3s;
+  
+  .noir-stat-bar {
+    position: absolute; bottom: 48px; left: 48px; z-index: 5;
+    display: flex; align-items: stretch;
+    background: rgba(11, 19, 16, 0.5);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(47, 158, 110, 0.2);
+    border-radius: 14px;
+    overflow: hidden;
   }
-  .noir-scroll-indicator:hover { color: ${GOLD}; }
-  .noir-scroll-indicator svg { animation: bounce-down 2s infinite; }
-
-  /* Floating Hero Chips */
-  .noir-chips { position: absolute; bottom: 48px; left: 48px; display: flex; gap: 16px; flex-wrap: wrap; z-index: 5; }
-  .noir-chip {
-    background: rgba(11, 19, 16, 0.65);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(47, 158, 110, 0.25);
-    border-radius: 12px;
-    padding: 14px 22px;
-    transition: all 0.3s;
+  .noir-stat-item {
+    padding: 16px 26px;
+    display: flex; flex-direction: column; gap: 5px;
   }
-  .noir-chip:hover {
-    border-color: ${GOLD};
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  .noir-stat-item + .noir-stat-item { border-left: 1px solid rgba(47, 158, 110, 0.15); }
+  .noir-stat-label {
+    font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.18em;
+    color: rgba(242,237,228,0.45);
   }
-  .noir-chip-label {
-    display: block; font-size: 0.6rem; text-transform: uppercase;
-    letter-spacing: 0.2em; color: rgba(242,237,228,0.5); margin-bottom: 4px;
-  }
-  .noir-chip-val {
+  .noir-stat-val {
     font-family: 'Permanent Marker', cursive !important;
-    font-size: 1.4rem; color: ${GOLD}; font-weight: 600;
+    font-size: 1.2rem; color: ${GOLD}; font-weight: 500;
+  }
+
+  .noir-scroll-mouse {
+    width: 18px; height: 28px;
+    border: 1px solid rgba(242,237,228,0.4);
+    border-radius: 10px;
+    display: flex; justify-content: center;
+    position: relative;
+  }
+  .noir-scroll-mouse::before {
+    content: '';
+    width: 3px; height: 6px; border-radius: 2px;
+    background: ${GOLD};
+    position: absolute; top: 6px;
+    animation: scroll-wheel 1.6s ease infinite;
   }
 
   /* Marquee */
@@ -551,6 +577,19 @@ const styles = `
     .noir-cta-checklist { flex-direction: column; align-items: center; gap: 12px; }
     .noir-footer { flex-direction: column; text-align: center; gap: 16px; }
   }
+
+  @keyframes hero-ken-burns {
+    0%   { transform: scale(1.06) translate(0, 0); }
+    100% { transform: scale(1.14) translate(-1.5%, -1%); }
+  }
+  @keyframes chip-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+  @keyframes scroll-wheel {
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(8px); }
+  }
 `
 
 export default function LandingNoir() {
@@ -558,6 +597,19 @@ export default function LandingNoir() {
   const navigate = useNavigate()
   const [isScrolled, setIsScrolled] = useState(false)
   const heroRef = useRef(null)
+  const heroImgLayerRef = useRef(null) // add this
+
+  const handleHeroMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    if (heroImgLayerRef.current) {
+      heroImgLayerRef.current.style.transform = `translate(${x * -16}px, ${y * -12}px)`
+    }
+  }
+  const handleHeroMouseLeave = () => {
+    if (heroImgLayerRef.current) heroImgLayerRef.current.style.transform = 'translate(0,0)'
+  }
 
   // Track scrolling to collapse header
   useEffect(() => {
@@ -670,42 +722,44 @@ export default function LandingNoir() {
             </button>
           </div>
         </div>
+      {/* Right: Editorial Image */}
+   <div
+      className="noir-hero-right"
+      onMouseMove={handleHeroMouseMove}
+      onMouseLeave={handleHeroMouseLeave}
+    >
+      <div
+        ref={heroImgLayerRef}
+        style={{ position: 'absolute', inset: '-20px', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)' }}
+      >
+        <img
+          src="pexels-ba-tik-3754246.jpg"
+          alt="Fashion editorial background"
+          className="noir-hero-img"
+        />
+        <div className="noir-hero-duotone" />
+        <div className="noir-hero-grain" />
+      </div>
 
-        {/* Right: Editorial Image */}
-        <div className="noir-hero-right">
-          <img
-            src="pexels-ba-tik-3754246.jpg"
-            alt="Fashion editorial background"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
-          />
-          {/* Gradients to blend image cleanly with dark noir borders */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0B1310 0%, transparent 45%, rgba(11,19,16,0.4) 100%)' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0B1310 0%, transparent 25%)' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0B1310 0%, transparent 12%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0B1310 0%, transparent 45%, rgba(11,19,16,0.4) 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0B1310 0%, transparent 25%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0B1310 0%, transparent 12%)' }} />
 
-          {/* Floating stat chips */}
-          <div className="noir-chips reveal-on-scroll reveal-delay-2">
-            {[
-              { label: 'Autonomous Fleet', val: '8 Agents' },
-              { label: 'System Uptime', val: '24 / 7' },
-              { label: 'Auto threshold', val: '< 15%' },
-            ].map(c => (
-              <div key={c.label} className="noir-chip">
-                <span className="noir-chip-label">{c.label}</span>
-                <span className="noir-chip-val">{c.val}</span>
-              </div>
-            ))}
+      <div className="noir-stat-bar reveal-on-scroll reveal-delay-2">
+        {[
+          { label: 'Agents', val: '8' },
+          { label: 'Uptime', val: '24/7' },
+          { label: 'Auto', val: '<15%' },
+        ].map(s => (
+          <div key={s.label} className="noir-stat-item">
+            <span className="noir-stat-label">{s.label}</span>
+            <span className="noir-stat-val">{s.val}</span>
           </div>
-        </div>
+        ))}
+      </div>
+    </div>
 
-        {/* Scroll Indicator */}
-        <div
-          className="noir-scroll-indicator"
-          onClick={() => document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' })}
-        >
-          <ArrowDown size={14} />
-          Scroll down
-        </div>
+  
       </section>
 
       {/* ── Marquee ───────────────────────────────────── */}
