@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, SignInButton } from '@clerk/clerk-react'
-import { Sparkles, ArrowRight, ArrowDown, ChevronRight, CheckCircle2, ShieldCheck, Zap, Activity } from 'lucide-react'
+import { Sparkles, ArrowRight, ArrowDown, ChevronRight, ChevronLeft, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
 import { agents, howItWorksSteps, integrations, marqueeItems } from './LandingData.jsx'
 
 const GOLD = '#2F9E6E'
@@ -15,10 +15,6 @@ const styles = `
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
-  @keyframes pulse-gold {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(47,158,110,0); }
-    50%       { box-shadow: 0 0 0 10px rgba(47,158,110,0.18); }
-  }
   @keyframes float-slow {
     0% { transform: translate(0, 0) scale(1); }
     50% { transform: translate(30px, -30px) scale(1.05); }
@@ -27,10 +23,9 @@ const styles = `
   @keyframes text-shimmer {
     to { background-position: 200% center; }
   }
-  @keyframes bounce-down {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-8px); }
-    60% { transform: translateY(-4px); }
+  @keyframes hero-ken-burns {
+    0%   { transform: scale(1.06) translate(0, 0); }
+    100% { transform: scale(1.14) translate(-1.5%, -1%); }
   }
 
   /* Global page adjustments */
@@ -170,25 +165,6 @@ const styles = `
     overflow: hidden;
     min-height: 100vh;
   }
-  .noir-hero-img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; object-position: center 30%;
-    animation: hero-ken-burns 24s ease-in-out infinite alternate;
-    filter: saturate(1.05) contrast(1.05);
-  }
-  .noir-hero-duotone {
-    position: absolute; inset: 0;
-    background: linear-gradient(150deg, rgba(47,158,110,0.28) 0%, rgba(11,19,16,0.08) 45%, rgba(11,19,16,0.5) 100%);
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-  .noir-hero-grain {
-    position: absolute; inset: 0;
-    opacity: 0.06;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
 
   .noir-eyebrow {
     font-size: 0.68rem;
@@ -232,8 +208,11 @@ const styles = `
     border: none; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex; align-items: center; gap: 10px;
-    position: relative; overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
   }
   .noir-cta-primary:hover {
     background: ${GOLD_LIGHT};
@@ -260,7 +239,28 @@ const styles = `
   }
   .noir-cta-secondary:hover { color: ${GOLD_LIGHT}; border-bottom-color: ${GOLD_LIGHT}; padding-left: 4px; }
 
-  
+  /* Hero image treatment */
+  .noir-hero-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 30%;
+    animation: hero-ken-burns 24s ease-in-out infinite alternate;
+    filter: saturate(1.05) contrast(1.05);
+  }
+  .noir-hero-duotone {
+    position: absolute; inset: 0;
+    background: linear-gradient(150deg, rgba(47,158,110,0.28) 0%, rgba(11,19,16,0.08) 45%, rgba(11,19,16,0.5) 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .noir-hero-grain {
+    position: absolute; inset: 0;
+    opacity: 0.06;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Hero stat bar */
   .noir-stat-bar {
     position: absolute; bottom: 48px; left: 48px; z-index: 5;
     display: flex; align-items: stretch;
@@ -283,21 +283,6 @@ const styles = `
   .noir-stat-val {
     font-family: 'Permanent Marker', cursive !important;
     font-size: 1.2rem; color: ${GOLD}; font-weight: 500;
-  }
-
-  .noir-scroll-mouse {
-    width: 18px; height: 28px;
-    border: 1px solid rgba(242,237,228,0.4);
-    border-radius: 10px;
-    display: flex; justify-content: center;
-    position: relative;
-  }
-  .noir-scroll-mouse::before {
-    content: '';
-    width: 3px; height: 6px; border-radius: 2px;
-    background: ${GOLD};
-    position: absolute; top: 6px;
-    animation: scroll-wheel 1.6s ease infinite;
   }
 
   /* Marquee */
@@ -371,10 +356,97 @@ const styles = `
     opacity: 1;
   }
 
-  /* Agent cards specific */
-  .noir-agent-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  /* Agent cards — carousel */
+  .noir-agent-carousel-wrap { position: relative; }
+  .noir-agent-viewport {
+    overflow: hidden;
+    padding: 20px 0 28px;
+    margin: -20px 0 -28px;
+  }
+  .noir-agent-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: grab;
+    user-select: none;
+  }
+  .noir-agent-track:active { cursor: grabbing; }
+
+  .noir-agent-slide {
+    box-sizing: border-box;
+    padding: 0 6px;
+    position: relative;
+  }
+
+  .noir-agent-card-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    transform-origin: center bottom;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+  }
+
+  /* Fanned coverflow effect — center card raised, sides tilted back */
+  .noir-agent-slide-center { z-index: 4; }
+  .noir-agent-slide-center .noir-agent-card-inner {
+    transform: scale(1.06) translateY(-10px);
+    border-color: rgba(47, 158, 110, 0.4);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.55), 0 0 30px rgba(47,158,110,0.1);
+  }
+
+  .noir-agent-slide-left,
+  .noir-agent-slide-right { z-index: 2; }
+  .noir-agent-slide-left .noir-agent-card-inner {
+    transform: scale(0.9) translateY(10px) rotate(-3deg);
+    opacity: 0.55;
+    transform-origin: right bottom;
+  }
+  .noir-agent-slide-right .noir-agent-card-inner {
+    transform: scale(0.9) translateY(10px) rotate(3deg);
+    opacity: 0.55;
+    transform-origin: left bottom;
+  }
+  .noir-agent-slide-left:hover .noir-agent-card-inner,
+  .noir-agent-slide-right:hover .noir-agent-card-inner {
+    opacity: 0.9;
+    transform: scale(0.94) translateY(4px) rotate(0deg);
+  }
+  .noir-agent-slide-left:hover,
+  .noir-agent-slide-right:hover { z-index: 3; }
+
+  /* Fallback flat hover for mobile/tablet (1 or 2-up view, no fan classes) */
+  .noir-agent-slide:hover { z-index: 5; }
+  .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
+    transform: scale(1.02);
+    border-color: rgba(47, 158, 110, 0.45);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 20px rgba(47,158,110,0.08);
+  }
+
+  .noir-carousel-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(11,19,16,0.75);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(47,158,110,0.25);
+    color: ${CREAM};
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10;
+    transition: all 0.25s;
+  }
+  .noir-carousel-arrow:hover:not(:disabled) { border-color: ${GOLD}; color: ${GOLD}; background: rgba(11,19,16,0.92); }
+  .noir-carousel-arrow:disabled { opacity: 0.2; cursor: not-allowed; }
+  .noir-carousel-arrow-left { left: -23px; }
+  .noir-carousel-arrow-right { right: -23px; }
+
+  .noir-carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 40px; }
+  .noir-carousel-dot {
+    width: 8px; height: 8px; border-radius: 50%; padding: 0; border: none;
+    background: rgba(242,237,228,0.15); cursor: pointer; transition: all 0.3s;
+  }
+  .noir-carousel-dot.active { background: ${GOLD}; width: 24px; border-radius: 4px; }
+
   .noir-agent-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-  
+
   .noir-agent-icon-box {
     width: 48px; height: 48px;
     border-radius: 10px;
@@ -410,7 +482,7 @@ const styles = `
     transition: color 0.3s;
   }
   .glass-card:hover .noir-agent-name { color: ${GOLD}; }
-  .noir-agent-desc { font-size: 0.88rem; font-weight: 300; line-height: 1.75; color: rgba(242,237,228,0.55); }
+  .noir-agent-desc { flex: 1; font-size: 0.88rem; font-weight: 300; line-height: 1.75; color: rgba(242,237,228,0.55); }
 
   /* Platform integration cards */
   .noir-platform-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -426,7 +498,7 @@ const styles = `
   .noir-platform-name { font-family: 'Permanent Marker', cursive !important; font-size: 1.55rem; color: ${CREAM}; margin-bottom: 8px; font-weight: 500; }
   .glass-card:hover .noir-platform-name { color: var(--platform-accent, ${GOLD}); }
   .noir-platform-desc { font-size: 0.84rem; font-weight: 300; line-height: 1.7; color: rgba(242,237,228,0.52); margin-bottom: 20px; }
-  
+
   .noir-pills { display: flex; flex-wrap: wrap; gap: 8px; }
   .noir-pill {
     font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
@@ -446,7 +518,7 @@ const styles = `
     border-bottom: 1px solid rgba(47,158,110,0.08);
   }
   .noir-hiw-inner { max-width: 800px; margin: 0 auto; }
-  
+
   .timeline-container {
     position: relative;
     padding-left: 64px;
@@ -465,7 +537,7 @@ const styles = `
     padding-bottom: 56px;
   }
   .timeline-item:last-child { padding-bottom: 0; }
-  
+
   .timeline-node {
     position: absolute;
     left: -86px;
@@ -567,8 +639,6 @@ const styles = `
     .noir-hero { flex-direction: column-reverse; min-height: auto; }
     .noir-hero-left { padding: 56px 32px; }
     .noir-hero-right { min-height: 480px; height: 60vh; }
-    .noir-agent-grid { grid-template-columns: 1fr; gap: 20px; }
-    .noir-scroll-indicator { display: none; }
   }
   @media (max-width: 640px) {
     .noir-platform-grid { grid-template-columns: 1fr; }
@@ -576,19 +646,78 @@ const styles = `
     .noir-cta-primary, .noir-cta-btn { width: 100%; justify-content: center; }
     .noir-cta-checklist { flex-direction: column; align-items: center; gap: 12px; }
     .noir-footer { flex-direction: column; text-align: center; gap: 16px; }
+    .noir-carousel-arrow-left { left: 2px; }
+    .noir-carousel-arrow-right { right: 2px; }
+    .noir-carousel-arrow { width: 30px; height: 30px; background: rgba(11,19,16,0.9); }
+    .noir-carousel-arrow svg { width: 16px; height: 16px; }
+    .noir-agent-viewport { padding: 10px 0 18px; margin: -10px 0 -18px; }
+    .noir-agent-slide { padding: 0 3px; }
+    .noir-agent-slide .glass-card { padding: 12px 10px; border-radius: 12px; }
+    .noir-agent-header { margin-bottom: 10px; }
+    .noir-agent-step { font-size: 1rem; }
+    .noir-agent-name { font-size: 0.88rem; margin-bottom: 5px; line-height: 1.2; }
+    .noir-agent-desc { font-size: 0.62rem; line-height: 1.4; }
+    .noir-agent-icon-box { width: 26px; height: 26px; border-radius: 7px; }
+    .noir-agent-icon-box svg { width: 14px; height: 14px; }
+    .noir-agent-badge { font-size: 0.44rem; padding: 3px 7px; letter-spacing: 0.08em; white-space: nowrap; }
+    .noir-carousel-dots { margin-top: 20px; gap: 8px; }
+    .noir-carousel-dot { width: 6px; height: 6px; }
+    .noir-agent-slide-center .noir-agent-card-inner { transform: scale(1.03) translateY(-6px); }
+    .noir-agent-slide-left .noir-agent-card-inner { transform: scale(0.88) translateY(6px) rotate(-2deg); }
+    .noir-agent-slide-right .noir-agent-card-inner { transform: scale(0.88) translateY(6px) rotate(2deg); }
+  }
+  @media (max-width: 400px) {
+    .noir-agent-slide .glass-card { padding: 10px 8px; }
+    .noir-agent-step { font-size: 0.85rem; }
+    .noir-agent-name { font-size: 0.78rem; }
+    .noir-agent-desc { font-size: 0.56rem; }
+    .noir-agent-icon-box { width: 22px; height: 22px; }
   }
 
-  @keyframes hero-ken-burns {
-    0%   { transform: scale(1.06) translate(0, 0); }
-    100% { transform: scale(1.14) translate(-1.5%, -1%); }
+  /* Bigger invisible tap target for carousel dots without changing visual size */
+  .noir-carousel-dot { position: relative; }
+  .noir-carousel-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 34px; height: 34px;
+    transform: translate(-50%, -50%);
   }
-  @keyframes chip-float {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-5px); }
-  }
-  @keyframes scroll-wheel {
-    0%   { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(8px); }
+
+  /* Prevent hover effects from getting visually "stuck" after a tap on touch devices */
+  @media (hover: none) {
+    .glass-card:hover {
+      transform: none;
+      background: rgba(18, 18, 18, 0.45);
+      border-color: rgba(47, 158, 110, 0.12);
+      box-shadow: none;
+    }
+    .glass-card:hover::before { opacity: 0; }
+    .glass-card:hover .noir-agent-icon-box {
+      background: rgba(47, 158, 110, 0.08);
+      color: ${GOLD};
+      box-shadow: none;
+      transform: none;
+    }
+    .glass-card:hover .noir-agent-name { color: ${CREAM}; }
+    .noir-agent-slide-left:hover .noir-agent-card-inner {
+      opacity: 0.55;
+      transform: scale(0.9) translateY(10px) rotate(-3deg);
+    }
+    .noir-agent-slide-right:hover .noir-agent-card-inner {
+      opacity: 0.55;
+      transform: scale(0.9) translateY(10px) rotate(3deg);
+    }
+    .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
+      transform: none;
+      border-color: rgba(47, 158, 110, 0.12);
+      box-shadow: none;
+    }
+    .noir-carousel-arrow:hover:not(:disabled) {
+      border-color: rgba(47,158,110,0.25);
+      color: ${CREAM};
+      background: rgba(11,19,16,0.75);
+    }
   }
 `
 
@@ -597,19 +726,12 @@ export default function LandingNoir() {
   const navigate = useNavigate()
   const [isScrolled, setIsScrolled] = useState(false)
   const heroRef = useRef(null)
-  const heroImgLayerRef = useRef(null) // add this
+  const heroImgLayerRef = useRef(null)
 
-  const handleHeroMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    if (heroImgLayerRef.current) {
-      heroImgLayerRef.current.style.transform = `translate(${x * -16}px, ${y * -12}px)`
-    }
-  }
-  const handleHeroMouseLeave = () => {
-    if (heroImgLayerRef.current) heroImgLayerRef.current.style.transform = 'translate(0,0)'
-  }
+  // Agent carousel state
+  const [agentIndex, setAgentIndex] = useState(0)
+  const [cardsPerView, setCardsPerView] = useState(3)
+  const dragState = useRef({ startX: 0, isDragging: false })
 
   // Track scrolling to collapse header
   useEffect(() => {
@@ -644,6 +766,50 @@ export default function LandingNoir() {
       elements.forEach((el) => observer.unobserve(el))
     }
   }, [])
+
+  // Agent carousel always shows 3 cards, including on mobile
+
+  const maxAgentIndex = Math.max(0, agents.length - cardsPerView)
+
+  useEffect(() => {
+    setAgentIndex(i => Math.min(i, maxAgentIndex))
+  }, [maxAgentIndex])
+
+  const goToAgent = (i) => setAgentIndex(Math.min(Math.max(i, 0), maxAgentIndex))
+  const nextAgent = () => goToAgent(agentIndex + 1)
+  const prevAgent = () => goToAgent(agentIndex - 1)
+
+  // Determine fan position (center/left/right) for the coverflow effect — only meaningful at 3-up
+  const getSlidePosition = (index) => {
+    if (cardsPerView !== 3) return ''
+    const centerIndex = agentIndex + 1
+    if (index === centerIndex) return 'noir-agent-slide-center'
+    if (index === centerIndex - 1) return 'noir-agent-slide-left'
+    if (index === centerIndex + 1) return 'noir-agent-slide-right'
+    return ''
+  }
+
+  const handleDragStart = (clientX) => { dragState.current = { startX: clientX, isDragging: true } }
+  const handleDragEnd = (clientX) => {
+    if (!dragState.current.isDragging) return
+    const delta = clientX - dragState.current.startX
+    if (delta > 60) prevAgent()
+    else if (delta < -60) nextAgent()
+    dragState.current.isDragging = false
+  }
+
+  // Hero photo parallax
+  const handleHeroMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    if (heroImgLayerRef.current) {
+      heroImgLayerRef.current.style.transform = `translate(${x * -16}px, ${y * -12}px)`
+    }
+  }
+  const handleHeroMouseLeave = () => {
+    if (heroImgLayerRef.current) heroImgLayerRef.current.style.transform = 'translate(0,0)'
+  }
 
   const allMarquee = [...marqueeItems, ...marqueeItems, ...marqueeItems]
 
@@ -722,44 +888,45 @@ export default function LandingNoir() {
             </button>
           </div>
         </div>
-      {/* Right: Editorial Image */}
-   <div
-      className="noir-hero-right"
-      onMouseMove={handleHeroMouseMove}
-      onMouseLeave={handleHeroMouseLeave}
-    >
-      <div
-        ref={heroImgLayerRef}
-        style={{ position: 'absolute', inset: '-20px', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)' }}
-      >
-        <img
-          src="pexels-ba-tik-3754246.jpg"
-          alt="Fashion editorial background"
-          className="noir-hero-img"
-        />
-        <div className="noir-hero-duotone" />
-        <div className="noir-hero-grain" />
-      </div>
 
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0B1310 0%, transparent 45%, rgba(11,19,16,0.4) 100%)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0B1310 0%, transparent 25%)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0B1310 0%, transparent 12%)' }} />
-
-      <div className="noir-stat-bar reveal-on-scroll reveal-delay-2">
-        {[
-          { label: 'Agents', val: '8' },
-          { label: 'Uptime', val: '24/7' },
-          { label: 'Auto', val: '<15%' },
-        ].map(s => (
-          <div key={s.label} className="noir-stat-item">
-            <span className="noir-stat-label">{s.label}</span>
-            <span className="noir-stat-val">{s.val}</span>
+        {/* Right: Editorial Image */}
+        <div
+          className="noir-hero-right"
+          onMouseMove={handleHeroMouseMove}
+          onMouseLeave={handleHeroMouseLeave}
+        >
+          <div
+            ref={heroImgLayerRef}
+            style={{ position: 'absolute', inset: '-20px', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1)' }}
+          >
+            <img
+              src="pexels-ba-tik-3754246.jpg"
+              alt="Fashion editorial background"
+              className="noir-hero-img"
+            />
+            <div className="noir-hero-duotone" />
+            <div className="noir-hero-grain" />
           </div>
-        ))}
-      </div>
-    </div>
 
-  
+          {/* Gradients to blend image cleanly with dark noir borders */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0B1310 0%, transparent 45%, rgba(11,19,16,0.4) 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0B1310 0%, transparent 25%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0B1310 0%, transparent 12%)' }} />
+
+          {/* Stat bar */}
+          <div className="noir-stat-bar reveal-on-scroll reveal-delay-2">
+            {[
+              { label: 'Agents', val: '8' },
+              { label: 'Uptime', val: '24/7' },
+              { label: 'Auto', val: '<15%' },
+            ].map(s => (
+              <div key={s.label} className="noir-stat-item">
+                <span className="noir-stat-label">{s.label}</span>
+                <span className="noir-stat-val">{s.val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ── Marquee ───────────────────────────────────── */}
@@ -788,32 +955,76 @@ export default function LandingNoir() {
               Eight specialized agents operating in a sequenced pipeline managed by LangGraph. High-risk actions route to approvals, safe operations run autonomously.
             </p>
           </div>
-          
-          <div className="noir-agent-grid">
-            {agents.map((agent, index) => {
-              const Icon = agent.icon
-              return (
-                <div
-                  key={agent.step}
-                  className={`glass-card reveal-on-scroll reveal-delay-${(index % 2) + 1}`}
-                >
-                  <div className="noir-agent-header">
-                    <div className="noir-agent-icon-box">
-                      {Icon && <Icon size={22} />}
+
+          <div className="noir-agent-carousel-wrap reveal-on-scroll">
+            <button
+              className="noir-carousel-arrow noir-carousel-arrow-left"
+              onClick={prevAgent}
+              disabled={agentIndex === 0}
+              aria-label="Previous agents"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <div className="noir-agent-viewport">
+              <div
+                className="noir-agent-track"
+                style={{ transform: `translateX(-${agentIndex * (100 / cardsPerView)}%)`, touchAction: 'pan-y' }}
+                onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+                onTouchEnd={(e) => handleDragEnd(e.changedTouches[0].clientX)}
+                onMouseDown={(e) => handleDragStart(e.clientX)}
+                onMouseUp={(e) => handleDragEnd(e.clientX)}
+                onMouseLeave={() => { dragState.current.isDragging = false }}
+              >
+                {agents.map((agent, index) => {
+                  const Icon = agent.icon
+                  return (
+                    <div
+                      key={agent.step}
+                      className={`noir-agent-slide ${getSlidePosition(index)}`}
+                      style={{ flex: `0 0 ${100 / cardsPerView}%` }}
+                    >
+                      <div className="glass-card noir-agent-card-inner">
+                        <div className="noir-agent-header">
+                          <div className="noir-agent-icon-box">
+                            {Icon && <Icon size={22} />}
+                          </div>
+                          <span className="noir-agent-step">{agent.step}</span>
+                        </div>
+                        <div className="noir-agent-name">{agent.title}</div>
+                        <p className="noir-agent-desc">{agent.desc}</p>
+
+                        <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-start' }}>
+                          <span className={`noir-agent-badge ${agent.autoExec ? 'noir-badge-auto' : 'noir-badge-approval'}`}>
+                            {agent.autoExec ? 'Autonomous Mode' : 'Requires Approval'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="noir-agent-step">{agent.step}</span>
-                  </div>
-                  <div className="noir-agent-name">{agent.title}</div>
-                  <p className="noir-agent-desc">{agent.desc}</p>
-                  
-                  <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-start' }}>
-                    <span className={`noir-agent-badge ${agent.autoExec ? 'noir-badge-auto' : 'noir-badge-approval'}`}>
-                      {agent.autoExec ? 'Autonomous Mode' : 'Requires Approval'}
-                    </span>
-                  </div>
-                </div>
-              )
-            })}
+                  )
+                })}
+              </div>
+            </div>
+
+            <button
+              className="noir-carousel-arrow noir-carousel-arrow-right"
+              onClick={nextAgent}
+              disabled={agentIndex === maxAgentIndex}
+              aria-label="Next agents"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+
+          <div className="noir-carousel-dots">
+            {Array.from({ length: maxAgentIndex + 1 }).map((_, i) => (
+              <button
+                key={i}
+                className={`noir-carousel-dot ${i === agentIndex ? 'active' : ''}`}
+                onClick={() => goToAgent(i)}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -827,7 +1038,7 @@ export default function LandingNoir() {
               Your existing operations linked with read & write capabilities. Integrated directly via secure platform MCP clients.
             </p>
           </div>
-          
+
           <div className="noir-platform-grid">
             {integrations.map((p, index) => {
               const IconComponent = p.Icon
@@ -869,7 +1080,7 @@ export default function LandingNoir() {
               How FashionOS integrates, schedules, coordinates, and runs your business 24/7.
             </p>
           </div>
-          
+
           <div className="noir-hiw-inner reveal-on-scroll">
             <div className="timeline-container">
               {howItWorksSteps.map((step, i) => (
@@ -898,7 +1109,7 @@ export default function LandingNoir() {
         <p className="noir-cta-sub reveal-on-scroll reveal-delay-1">
           Zero coding required. Safe threshold validation safeguards your profit margins while automating day-to-day operations.
         </p>
-        
+
         <div className="noir-cta-checklist reveal-on-scroll reveal-delay-2">
           {[
             'Shopify & Meta Ads Native Integration',
