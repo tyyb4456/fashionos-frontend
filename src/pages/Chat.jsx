@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useAuth } from '@clerk/clerk-react'
-import { Bot, Loader2 } from 'lucide-react'
+import { Bot, Loader2, Menu } from 'lucide-react'
 import { GOLD, SUGGESTIONS } from './chat/constants'
 import { uuidv4 } from './chat/utils'
 import MessageBubble from './chat/MessageBubble'
@@ -21,10 +21,23 @@ export default function Chat() {
   const [convosLoading,    setConvosLoading]    = useState(true)
   const [messagesLoading,  setMessagesLoading]  = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [isMobile,         setIsMobile]         = useState(false)
 
   const messagesEndRef = useRef(null)
   const inputRef       = useRef(null)
   const abortRef       = useRef(null)
+
+  // ── Track mobile viewport ───────────────────────────────────────────────────
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768
+      setIsMobile(mobile)
+      setSidebarCollapsed(mobile)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // ── Scroll to bottom ─────────────────────────────────────────────────────────
   useEffect(() => {
@@ -55,6 +68,7 @@ export default function Chat() {
     setIsStreaming(false)
     setThreadId(tid)
     setMessages([])
+    if (isMobile) setSidebarCollapsed(true)
 
     setMessagesLoading(true)
     try {
@@ -79,7 +93,7 @@ export default function Chat() {
       }
     } catch { /* network / dev fallback */ }
     finally { setMessagesLoading(false) }
-  }, [getToken, threadId, messages.length])
+  }, [getToken, threadId, messages.length, isMobile])
 
   // ── Delete conversation ───────────────────────────────────────────────────────
   const deleteConversation = useCallback(async (tid) => {
@@ -104,6 +118,7 @@ export default function Chat() {
     setIsStreaming(false)
     setThreadId(uuidv4())
     setMessages([])
+    if (isMobile) setSidebarCollapsed(true)
     setTimeout(() => inputRef.current?.focus(), 50)
   }
 
@@ -241,7 +256,21 @@ export default function Chat() {
         onNewThread={newThread}
         collapsed={sidebarCollapsed}
         onToggleCollapsed={() => setSidebarCollapsed(p => !p)}
+        isMobile={isMobile}
       />
+
+      {isMobile && !sidebarCollapsed && (
+        <div
+          onClick={() => setSidebarCollapsed(true)}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 4,
+          }}
+        />
+      )}
 
       {/* ── Chat panel ── */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, position: 'relative' }}>
@@ -256,27 +285,42 @@ export default function Chat() {
 
         {/* Header */}
         <div style={{
-          padding: '18px 24px 14px',
+          padding: isMobile ? '12px 16px 10px' : '18px 24px 14px',
           borderBottom: '1px solid rgba(47,158,110,0.1)',
           position: 'relative', zIndex: 1, flexShrink: 0,
+          display: 'flex', alignItems: 'center', gap: 12,
         }}>
-          <div className="section-pill">✦ AI Intelligence</div>
-          <h1 style={{
-            fontFamily: "'Permanent Marker', cursive",
-            fontSize: '1.7rem', fontWeight: 300, color: '#F2EDE4',
-            margin: 0, lineHeight: 1.1,
-          }}>
-            FashionOS Chat
-          </h1>
-          <div style={{
-            width: 36, height: 1,
-            background: `linear-gradient(90deg, ${GOLD}, transparent)`, marginTop: 6,
-          }} />
+          {isMobile && (
+            <button
+              onClick={() => setSidebarCollapsed(p => !p)}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                color: GOLD, padding: '4px', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', marginRight: -2,
+              }}
+            >
+              <Menu size={20} />
+            </button>
+          )}
+          <div style={{ flex: 1 }}>
+            <div className="section-pill" style={{ display: 'inline-flex' }}>✦ AI Intelligence</div>
+            <h1 style={{
+              fontFamily: "'Permanent Marker', cursive",
+              fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 300, color: '#F2EDE4',
+              margin: 0, lineHeight: 1.1,
+            }}>
+              FashionOS Chat
+            </h1>
+            <div style={{
+              width: 36, height: 1,
+              background: `linear-gradient(90deg, ${GOLD}, transparent)`, marginTop: 4,
+            }} />
+          </div>
         </div>
 
         {/* Messages */}
         <div style={{
-          flex: 1, overflowY: 'auto', padding: '24px',
+          flex: 1, overflowY: 'auto', padding: isMobile ? '16px 12px' : '24px',
           display: 'flex', flexDirection: 'column', gap: 26,
           position: 'relative', zIndex: 1,
         }}>

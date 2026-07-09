@@ -6,9 +6,10 @@ const ChatComposer = forwardRef(function ChatComposer(
   { input, onChange, onKeyDown, onSend, isStreaming },
   ref
 ) {
+  const isMobileView = window.innerWidth <= 768;
   return (
     <div style={{
-      padding: '12px 24px 18px',
+      padding: isMobileView ? '10px 12px 14px' : '12px 24px 18px',
       borderTop: '1px solid rgba(47,158,110,0.1)',
       position: 'relative', zIndex: 1, flexShrink: 0,
       background: 'rgba(13,13,13,0.96)',

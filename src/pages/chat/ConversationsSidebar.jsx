@@ -66,6 +66,7 @@ export default function ConversationsSidebar({
   conversations, convosLoading, threadId,
   onSelect, onDelete, onNewThread,
   collapsed, onToggleCollapsed,
+  isMobile,
 }) {
   return (
     <>
@@ -77,7 +78,12 @@ export default function ConversationsSidebar({
         background: '#0B1310',
         transition: 'width 0.25s ease, min-width 0.25s ease',
         overflow: 'hidden',
-        position: 'relative', zIndex: 2,
+        position: isMobile ? 'absolute' : 'relative',
+        top: isMobile ? 0 : undefined,
+        bottom: isMobile ? 0 : undefined,
+        left: isMobile ? 0 : undefined,
+        height: isMobile ? '100%' : undefined,
+        zIndex: isMobile ? 5 : 2,
       }}>
         {/* Sidebar header */}
         <div style={{
@@ -143,27 +149,29 @@ export default function ConversationsSidebar({
         </div>
       </div>
 
-      {/* Toggle collapse button */}
-      <button
-        onClick={onToggleCollapsed}
-        style={{
-          position: 'absolute',
-          left: collapsed ? 0 : 240,
-          top: '50%', transform: 'translateY(-50%)',
-          zIndex: 10,
-          background: '#16211C',
-          border: '1px solid rgba(47,158,110,0.2)',
-          borderLeft: collapsed ? '1px solid rgba(47,158,110,0.2)' : 'none',
-          color: 'rgba(242,237,228,0.4)',
-          cursor: 'pointer', padding: '6px 4px',
-          transition: 'left 0.25s ease',
-        }}
-        title={collapsed ? 'Show conversations' : 'Hide conversations'}
-      >
-        {collapsed
-          ? <ChevronRight size={12} />
-          : <ChevronLeft  size={12} />}
-      </button>
+      {/* Toggle collapse button (Desktop only) */}
+      {!isMobile && (
+        <button
+          onClick={onToggleCollapsed}
+          style={{
+            position: 'absolute',
+            left: collapsed ? 0 : 240,
+            top: '50%', transform: 'translateY(-50%)',
+            zIndex: 10,
+            background: '#16211C',
+            border: '1px solid rgba(47,158,110,0.2)',
+            borderLeft: collapsed ? '1px solid rgba(47,158,110,0.2)' : 'none',
+            color: 'rgba(242,237,228,0.4)',
+            cursor: 'pointer', padding: '6px 4px',
+            transition: 'left 0.25s ease',
+          }}
+          title={collapsed ? 'Show conversations' : 'Hide conversations'}
+        >
+          {collapsed
+            ? <ChevronRight size={12} />
+            : <ChevronLeft  size={12} />}
+        </button>
+      )}
     </>
   )
 }
