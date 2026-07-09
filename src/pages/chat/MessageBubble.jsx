@@ -50,7 +50,7 @@ export default function MessageBubble({ msg }) {
       )}
 
       {/* Final response bubble — only shown when there's content */}
-      {(msg.content || msg.streaming) && (
+      {(isUser || msg.content) && (
         <div style={{
           maxWidth: window.innerWidth <= 768 ? '92%' : '80%',
           background: isUser ? GOLD_DIM : '#14201B',
