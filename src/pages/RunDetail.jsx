@@ -17,7 +17,7 @@ export default function RunDetail() {
   const { runId } = useParams()
   const api = useApi()
   const nav = useNavigate()
-  const [run, setRun]         = useState(null)
+  const [run, setRun] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -117,6 +117,11 @@ export default function RunDetail() {
                     <Badge level={p.auto_executed ? 'healthy' : 'pending'} />
                   </div>
                   <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{p.reason}</p>
+                  {p.trigger && (
+                    <span className="text-xs mt-1 inline-block" style={{ color: 'var(--text-muted)' }}>
+                      {p.trigger.replace(/_/g, ' ')}
+                    </span>
+                  )}
                 </div>
                 <div className="text-right text-xs">
                   <div style={{ color: 'var(--text-secondary)' }}>PKR {p.current_price?.toFixed(0)}</div>

@@ -53,13 +53,25 @@ function PricingCard({ rec, onApprove, onReject }) {
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{rec.sku}</span>
             <Badge level="pending" />
+            {rec.markdown_rung > 0 && (
+              <span className="text-xs px-2 py-0.5 rounded-full"
+                style={{ background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--card-border)' }}>
+                rung {rec.markdown_rung}
+              </span>
+            )}
           </div>
           <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{rec.reason}</p>
+          {rec.suggested_discount_code && (
+            <p className="text-xs mt-1 font-mono" style={{ color: '#C9A84C' }}>{rec.suggested_discount_code}</p>
+          )}
         </div>
         <div className="text-right text-xs">
           <div style={{ color: 'var(--text-secondary)' }}>PKR {rec.current_price?.toFixed(0)}</div>
           <div className="font-medium" style={{ color: 'var(--text-primary)' }}>→ PKR {rec.recommended_price?.toFixed(0)}</div>
           <div style={{ color: '#facc15' }}>{rec.discount_pct?.toFixed(0)}% off</div>
+          {rec.estimated_margin_pct != null && (
+            <div style={{ color: 'var(--text-muted)' }}>~{rec.estimated_margin_pct.toFixed(0)}% margin</div>
+          )}
         </div>
       </div>
       <ActionBtns onApprove={() => act(onApprove)} onReject={() => act(onReject)}

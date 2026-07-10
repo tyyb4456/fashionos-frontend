@@ -327,7 +327,7 @@ const styles = `
 
   /* Light theme override — scoped to .noir-section-light only */
   .noir-section-light {
-    background: #FFFFFF;
+    background: #F2EDE4;
   }
   .noir-section-light .noir-section-title { color: #0A0A0A; }
   .noir-section-light .noir-section-sub { color: rgba(10,10,10,0.55); }
@@ -620,13 +620,13 @@ const styles = `
     color: ${CREAM};
   }
 
-  /* ── Seamless Connectivity: white cards on dark background ─────────── */
+  /* ── Seamless Connectivity: cream cards on dark background ─────────── */
   .noir-connectivity {
     background: rgba(10, 16, 13, 0.85);
   }
-  /* White card base */
+  /* Cream card base */
   .noir-connectivity .glass-card {
-    background: #FFFFFF;
+    background: #F2EDE4;
     border: 1px solid rgba(0,0,0,0.06);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -636,7 +636,7 @@ const styles = `
   /* ── No translateY lift — prevents the hover feedback loop jitter ── */
   .noir-connectivity .glass-card:hover {
     transform: translateY(-6px);
-    background: #FFFFFF;
+    background: #F2EDE4;
     border-color: var(--platform-accent, ${GOLD});
     box-shadow:
       0 0 0 1px var(--platform-accent, ${GOLD}),
@@ -647,24 +647,24 @@ const styles = `
 
   /* Icon box: light tinted bg + brand color */
   .noir-connectivity .noir-platform-icon-glow {
-    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 10%, #fff);
+    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 10%, #F2EDE4);
     border: 1px solid color-mix(in srgb, var(--platform-accent, ${GOLD}) 20%, transparent);
   }
   .noir-connectivity .glass-card:hover .noir-platform-icon-glow {
-    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 18%, #fff);
+    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 18%, #F2EDE4);
     transform: scale(1.05);
   }
 
   /* Text colors */
-  .noir-connectivity .noir-platform-name { color: #0A0A0A; }
+  .noir-connectivity .noir-platform-name { color: #1A1208; }
   .noir-connectivity .glass-card:hover .noir-platform-name { color: var(--platform-accent, ${GOLD}); }
-  .noir-connectivity .noir-platform-desc { color: rgba(10,10,10,0.58); }
+  .noir-connectivity .noir-platform-desc { color: rgba(26,18,8,0.6); }
 
   /* Pills */
   .noir-connectivity .noir-pill {
-    border-color: rgba(0,0,0,0.1);
-    color: rgba(10,10,10,0.5);
-    background: rgba(0,0,0,0.03);
+    border-color: rgba(0,0,0,0.12);
+    color: rgba(26,18,8,0.5);
+    background: rgba(0,0,0,0.04);
   }
   .noir-connectivity .glass-card:hover .noir-pill {
     border-color: color-mix(in srgb, var(--platform-accent, ${GOLD}) 40%, transparent);
@@ -676,7 +676,7 @@ const styles = `
   .noir-connectivity .noir-section-title { color: ${CREAM}; }
   .noir-connectivity .noir-section-sub { color: rgba(242,237,228,0.55); }
 
-  /* Mobile: 1 col, keep white cards */
+  /* Mobile: 1 col, keep cream cards */
   @media (max-width: 640px) {
     .noir-connectivity .noir-platform-grid { gap: 16px; }
     .noir-connectivity .glass-card {
@@ -686,7 +686,7 @@ const styles = `
     .noir-connectivity .noir-platform-desc { font-size: 0.82rem; }
   }
 
-  /* touch devices — lock hover state so card stays white */
+  /* touch devices — lock hover state so card stays cream */
   @media (hover: none) {
     .noir-connectivity .glass-card:hover {
       transform: none;
@@ -694,9 +694,9 @@ const styles = `
       box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
     }
     .noir-connectivity .glass-card:hover .noir-platform-icon-glow { transform: none; }
-    .noir-connectivity .glass-card:hover .noir-platform-name { color: #0A0A0A; }
+    .noir-connectivity .glass-card:hover .noir-platform-name { color: #1A1208; }
     .noir-connectivity .glass-card:hover .noir-pill {
-      border-color: rgba(0,0,0,0.1); color: rgba(10,10,10,0.5); background: rgba(0,0,0,0.03);
+      border-color: rgba(0,0,0,0.12); color: rgba(26,18,8,0.5); background: rgba(0,0,0,0.04);
     }
   }
 

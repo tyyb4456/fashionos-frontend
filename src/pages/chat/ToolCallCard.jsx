@@ -51,25 +51,25 @@ export default function ToolCallCard({ call }) {
   const pStatus = isPipeline ? pipelineStatus(call) : null
 
   return (
-    <div style={{ background: '#111A15', border: '1px solid rgba(242,237,228,0.08)', width: '100%' }}>
+    <div style={{ background: 'var(--item-bg)', border: '1px solid var(--item-border)', width: '100%' }}>
       <div
         onClick={() => hasData && setExpanded(e => !e)}
         style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', cursor: hasData ? 'pointer' : 'default' }}
       >
-        <BarChart2 size={11} color="rgba(242,237,228,0.4)" />
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.63rem', letterSpacing: '0.06em', color: 'rgba(242,237,228,0.55)', flex: 1 }}>
+        <BarChart2 size={11} color="var(--text-muted)" style={{ opacity: 0.8 }} />
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.63rem', letterSpacing: '0.06em', color: 'var(--text-secondary)', flex: 1 }}>
           {call.status === 'running' ? 'Calling ' : 'Called '}
           <span style={{ color: GOLD }}>{label}</span>
-          {pStatus && pStatus !== 'done' && <span style={{ color: 'rgba(242,237,228,0.35)' }}> · {pStatus}</span>}
+          {pStatus && pStatus !== 'done' && <span style={{ color: 'var(--text-muted)', opacity: 0.85 }}> · {pStatus}</span>}
         </span>
         {call.status === 'running'
           ? <Loader2 size={10} color={GOLD} style={{ animation: 'spin 1s linear infinite' }} />
           : <CheckCircle2 size={10} color="#22c55e" />}
-        {hasData && (expanded ? <ChevronUp size={11} color="rgba(242,237,228,0.3)" /> : <ChevronDown size={11} color="rgba(242,237,228,0.3)" />)}
+        {hasData && (expanded ? <ChevronUp size={11} color="var(--text-muted)" style={{ opacity: 0.8 }} /> : <ChevronDown size={11} color="var(--text-muted)" style={{ opacity: 0.8 }} />)}
       </div>
       {agents.length > 0 && <AgentChips names={agents} />}
       {expanded && hasData && (
-        <div style={{ padding: '4px 12px 12px', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
+        <div style={{ padding: '4px 12px 12px', borderTop: '1px solid var(--item-border)' }}>
           <PrettyJSON value={call.data} />
         </div>
       )}
