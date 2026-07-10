@@ -8,7 +8,7 @@ import {
   RotateCcw, Play, Activity, CalendarDays, ChevronRight,
   TrendingUp, Zap, Clock, BarChart3,
 } from 'lucide-react'
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
+
 
 /* ── Styles ─────────────────────────────────────────────────────── */
 const STYLES = `
@@ -499,73 +499,65 @@ export default function Dashboard() {
   )
 }
 
-/* ── StatsPieCharts ──────────────────────────────────────────────── */
-const DONUT_ROUNDING = { cornerRadius: 4 }
-
-function MiniDonut({ title, chartData, total }) {
-  const CustomTooltip = ({ active, payload }) => {
-    if (!active || !payload?.length) return null
-    const { name, value, color } = payload[0].payload
-    return (
-      <div style={{
-        background: 'var(--card-bg)',
-        border: `1px solid ${color}44`,
-        borderRadius: 8, padding: '6px 10px',
-        fontSize: '0.7rem', color: 'var(--text-primary)',
-        boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-      }}>
-        <span style={{ color, fontWeight: 700 }}>{name}</span>
-        <span style={{ marginLeft: 6, color: 'var(--text-secondary)' }}>{value}</span>
-      </div>
-    )
-  }
+/* ── BarGroup: glowing horizontal bar chart ──────────────────────── */
+function BarGroup({ title, items, total, emptyLabel = 'None', emptyColor = '#4ade80' }) {
+  const displayItems = items.length > 0
+    ? items
+    : [{ name: emptyLabel, value: 1, color: emptyColor }]
+  const displayTotal = items.length > 0 ? total : null
+  const maxVal = Math.max(...displayItems.map(d => d.value), 1)
 
   return (
-    <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-      <span style={{
-        fontSize: '0.55rem', fontWeight: 700, textTransform: 'uppercase',
-        letterSpacing: '0.09em', color: 'var(--text-muted)', textAlign: 'center',
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {/* Header row */}
+      <div style={{
+        display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10,
       }}>
-        {title}
-      </span>
-
-      <div style={{ position: 'relative', width: '100%', height: 90 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={chartData}
-              cx="50%" cy="50%"
-              innerRadius="50%" outerRadius="74%"
-              paddingAngle={3} dataKey="value"
-              animationBegin={200} animationDuration={800}
-              {...DONUT_ROUNDING}
-            >
-              {chartData.map((entry, i) => (
-                <Cell key={i} fill={entry.color} opacity={0.9} />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-          </PieChart>
-        </ResponsiveContainer>
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center',
-          pointerEvents: 'none',
-        }}>
-          <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1, fontFamily: "'Permanent Marker', cursive" }}>{total}</span>
-          <span style={{ fontSize: '0.46rem', color: 'var(--text-muted)', letterSpacing: '0.06em', marginTop: 1 }}>TOTAL</span>
-        </div>
+        <span style={{
+          fontSize: '0.58rem', fontWeight: 700, textTransform: 'uppercase',
+          letterSpacing: '0.1em', color: 'var(--text-muted)',
+        }}>{title}</span>
+        {displayTotal !== null && (
+          <span style={{
+            fontSize: '1.15rem', fontWeight: 800, lineHeight: 1,
+            fontFamily: "'Permanent Marker', cursive",
+            color: displayItems[0]?.color ?? 'var(--gold)',
+            filter: `drop-shadow(0 0 6px ${displayItems[0]?.color ?? 'transparent'}55)`,
+          }}>{displayTotal}</span>
+        )}
       </div>
 
-      {/* Legend */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '3px 7px' }}>
-        {chartData.map((d, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: d.color, flexShrink: 0 }} />
-            <span style={{ fontSize: '0.54rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{d.name}</span>
-          </div>
-        ))}
+      {/* Bars */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+        {displayItems.map((d, i) => {
+          const pct = Math.max((d.value / maxVal) * 100, items.length > 0 ? 4 : 100)
+          return (
+            <div key={i}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{d.name}</span>
+                {items.length > 0 && (
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: d.color, fontVariantNumeric: 'tabular-nums' }}>{d.value}</span>
+                )}
+              </div>
+              {/* Track */}
+              <div style={{
+                width: '100%', height: 6, borderRadius: 99,
+                background: 'var(--inner-bg)',
+                overflow: 'hidden',
+                position: 'relative',
+              }}>
+                {/* Fill */}
+                <div style={{
+                  width: `${pct}%`, height: '100%', borderRadius: 99,
+                  background: `linear-gradient(90deg, ${d.color}99, ${d.color})`,
+                  boxShadow: `0 0 8px ${d.color}66`,
+                  transition: 'width 0.7s cubic-bezier(0.16,1,0.3,1)',
+                  animation: `bar-grow-${i} 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.08 + 0.2}s both`,
+                }} />
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
@@ -579,52 +571,94 @@ function StatsPieCharts({ data }) {
     { name: 'Content',   value: data.pending_content_posts      || 0, color: '#4ade80' },
     { name: 'Returns',   value: data.open_return_insights       || 0, color: '#f97316' },
   ].filter(d => d.value > 0)
-
   const totalPending = pending.reduce((s, d) => s + d.value, 0)
 
   const agentColorMap = {
     inventory: '#f87171', pricing: '#facc15', restock: '#60a5fa',
     marketing: '#a78bfa', content: '#4ade80', returns: '#f97316',
   }
-
   const alertsByAgentMap = {}
   data.critical_alerts?.forEach(alert => {
     const agent = alert.agent || 'unknown'
     alertsByAgentMap[agent] = (alertsByAgentMap[agent] || 0) + 1
   })
-
   const alerts = Object.entries(alertsByAgentMap).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value,
-    color: agentColorMap[name.toLowerCase()] || 'var(--gold)',
+    color: agentColorMap[name.toLowerCase()] || '#2F9E6E',
   }))
   const totalAlerts = alerts.reduce((s, d) => s + d.value, 0)
 
   let autoCount = 0, pendingCount = 0
   data.recent_runs?.forEach(run => {
-    autoCount   += (run.pricing_auto_executed || 0) + (run.marketing_auto_executed || 0)
+    autoCount    += (run.pricing_auto_executed || 0) + (run.marketing_auto_executed || 0)
     pendingCount += (run.pricing_pending_approval || 0) + (run.marketing_pending_approval || 0)
   })
-
+  const autoRate = autoCount + pendingCount > 0
+    ? Math.round((autoCount / (autoCount + pendingCount)) * 100)
+    : null
   const automation = [
-    { name: 'Auto Run',     value: autoCount,    color: 'var(--gold)' },
-    { name: 'Needs Review', value: pendingCount, color: '#f87171' },
+    { name: 'Auto-executed', value: autoCount,    color: '#2F9E6E' },
+    { name: 'Needs review',  value: pendingCount, color: '#f87171' },
   ].filter(d => d.value > 0)
   const totalAutomation = autoCount + pendingCount
-
-  const fallbackPending = [{ name: 'No Actions', value: 1, color: 'var(--item-border)' }]
-  const fallbackAlerts  = [{ name: 'System Healthy', value: 1, color: '#4ade80' }]
-  const fallbackAuto    = [{ name: 'No Runs', value: 1, color: 'var(--item-border)' }]
 
   return (
     <div style={{ paddingTop: 14, borderTop: '1px solid var(--item-border)' }}>
       <SectionLabel title="Analysis" icon={BarChart3} accent="#a78bfa" />
-      <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-        <MiniDonut title="Pending" chartData={pending.length ? pending : fallbackPending} total={totalPending} />
-        <div style={{ width: 1, alignSelf: 'stretch', background: 'var(--item-border)', flexShrink: 0 }} />
-        <MiniDonut title="Alerts" chartData={alerts.length ? alerts : fallbackAlerts} total={totalAlerts} />
-        <div style={{ width: 1, alignSelf: 'stretch', background: 'var(--item-border)', flexShrink: 0 }} />
-        <MiniDonut title="Automation" chartData={automation.length ? automation : fallbackAuto} total={totalAutomation} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+
+        {/* Pending Actions */}
+        <BarGroup
+          title="Pending Actions"
+          items={pending}
+          total={totalPending}
+          emptyLabel="No Actions"
+          emptyColor="#4ade80"
+        />
+
+        {/* Divider */}
+        <div style={{ height: 1, background: 'var(--item-border)' }} />
+
+        {/* Alerts by Agent */}
+        <BarGroup
+          title="Alerts by Agent"
+          items={alerts}
+          total={totalAlerts}
+          emptyLabel="System Healthy"
+          emptyColor="#4ade80"
+        />
+
+        {/* Divider */}
+        <div style={{ height: 1, background: 'var(--item-border)' }} />
+
+        {/* Automation Rate */}
+        <div>
+          <BarGroup
+            title="Automation Rate"
+            items={automation}
+            total={totalAutomation}
+            emptyLabel="No Runs Yet"
+            emptyColor="var(--gold)"
+          />
+          {autoRate !== null && (
+            <div style={{
+              marginTop: 10, padding: '8px 12px', borderRadius: 8,
+              background: 'rgba(47,158,110,0.07)',
+              border: '1px solid rgba(47,158,110,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Auto Rate</span>
+              <span style={{
+                fontSize: '1.1rem', fontWeight: 800,
+                fontFamily: "'Permanent Marker', cursive",
+                color: autoRate >= 70 ? '#4ade80' : autoRate >= 40 ? '#facc15' : '#f87171',
+                filter: `drop-shadow(0 0 5px currentColor)`,
+              }}>{autoRate}%</span>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   )

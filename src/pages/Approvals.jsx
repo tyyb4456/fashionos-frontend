@@ -140,16 +140,24 @@ function MarketingCard({ rec, onApprove, onReject }) {
           </div>
           {rec.sku && <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>SKU: {rec.sku}</span>}
           <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{rec.reason}</p>
+          {rec.trigger && (
+            <span className="text-xs mt-1 inline-block" style={{ color: 'var(--text-muted)' }}>
+              {rec.trigger.replace(/_/g, ' ')}
+            </span>
+          )}
         </div>
         <div className="text-right text-xs">
           <div className="capitalize" style={{ color: 'var(--text-secondary)' }}>{rec.action?.replace('_', ' ')}</div>
-          {rec.new_budget_pkr && (
+          {rec.new_budget_pkr != null && (
             <div className="font-medium" style={{ color: 'var(--text-primary)' }}>PKR {rec.new_budget_pkr?.toFixed(0)}/day</div>
           )}
           {rec.change_pct !== 0 && (
             <div style={{ color: rec.change_pct > 0 ? '#4ade80' : '#f87171' }}>
               {rec.change_pct > 0 ? '+' : ''}{rec.change_pct?.toFixed(0)}%
             </div>
+          )}
+          {rec.roas_7d != null && (
+            <div style={{ color: 'var(--text-muted)' }}>ROAS {rec.roas_7d.toFixed(1)}x</div>
           )}
         </div>
       </div>
