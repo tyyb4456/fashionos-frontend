@@ -3,20 +3,20 @@ import { useApi } from '../api/client'
 import Badge from '../components/Badge'
 
 const fixTypeLabels = {
-  update_size_guide:   '📏 Update Size Guide',
-  update_photos:       '📸 Reshoot Photos',
-  update_description:  '✏️ Update Description',
-  quality_review:      '🔍 Quality Review',
-  contact_supplier:    '📞 Contact Supplier',
-  monitor:             '👁️ Monitor',
-  no_action:           '✅ No Action',
+  update_size_guide: '📏 Update Size Guide',
+  update_photos: '📸 Reshoot Photos',
+  update_description: '✏️ Update Description',
+  quality_review: '🔍 Quality Review',
+  contact_supplier: '📞 Contact Supplier',
+  monitor: '👁️ Monitor',
+  no_action: '✅ No Action',
 }
 
 export default function Returns() {
   const api = useApi()
   const [insights, setInsights] = useState([])
-  const [filter, setFilter]     = useState('all')
-  const [loading, setLoading]   = useState(true)
+  const [filter, setFilter] = useState('all')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const q = filter !== 'all' ? `?severity=${filter}` : ''
@@ -76,6 +76,11 @@ export default function Returns() {
               <span className="capitalize" style={{ color: '#facc15' }}>
                 {insight.primary_reason?.replace('_', ' ')}
               </span>
+              {insight.evidence && (
+                <p className="mt-1.5" style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>
+                  "{insight.evidence}"
+                </p>
+              )}
             </div>
             <p className="text-xs mb-2" style={{ color: 'var(--text-body)' }}>{insight.recommended_fix}</p>
             <div className="flex items-center justify-between">
