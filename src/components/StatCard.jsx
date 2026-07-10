@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 const palette = {
-  gold:   { bar: '#2F9E6E', text: '#2F9E6E', rgb: '47,158,110'  },
-  teal:   { bar: '#2F9E6E', text: '#2F9E6E', rgb: '47,158,110'  },
+  gold:   { bar: '#e05e38', text: '#e05e38', rgb: '224,94,56'  },
+  teal:   { bar: '#e05e38', text: '#e05e38', rgb: '224,94,56'  },
   purple: { bar: '#a78bfa', text: '#a78bfa', rgb: '167,139,250' },
   red:    { bar: '#f87171', text: '#f87171', rgb: '239,68,68'   },
   yellow: { bar: '#facc15', text: '#facc15', rgb: '250,204,21'  },
@@ -94,7 +94,7 @@ export default function StatCard({ label, value, sub, color = 'gold', icon: Icon
         <div style={{
           fontSize: '1.7rem', fontWeight: 300, lineHeight: 1,
           color: 'var(--text-primary)',
-          fontFamily: "'Permanent Marker', cursive",
+          fontFamily: "'Cormorant Garamond', serif",
           fontVariantNumeric: 'tabular-nums',
         }}>
           {value ?? '—'}

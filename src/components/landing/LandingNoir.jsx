@@ -4,10 +4,10 @@ import { useAuth, SignInButton } from '@clerk/clerk-react'
 import { Sparkles, ArrowRight, ArrowDown, ChevronRight, ChevronLeft, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
 import { agents, howItWorksSteps, integrations, marqueeItems } from './LandingData.jsx'
 
-const GOLD = '#2F9E6E'
-const GOLD_LIGHT = '#4FBE94'
-const BG = '#0B1310'
-const CREAM = '#F2EDE4'
+const GOLD = '#e05e38'
+const GOLD_LIGHT = '#e87c5d'
+const BG = '#161616'
+const CREAM = '#f5f5f4'
 
 const styles = `
   /* Keyframes */
@@ -42,7 +42,7 @@ const styles = `
     box-sizing: border-box;
   }
   .noir-display {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
   }
 
   /* Ambient Blur Orbs */
@@ -51,7 +51,7 @@ const styles = `
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(47,158,110,0.06) 0%, rgba(47,158,110,0) 70%);
+    background: radial-gradient(circle, rgba(224,94,56,0.06) 0%, rgba(224,94,56,0) 70%);
     filter: blur(100px);
     pointer-events: none;
     z-index: 0;
@@ -80,21 +80,21 @@ const styles = `
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 24px 64px;
-    background: rgba(11, 19, 16, 0.75);
+    background: rgba(22, 22, 22, 0.75);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(47, 158, 110, 0.1);
+    border-bottom: 1px solid rgba(224, 94, 56, 0.1);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .noir-nav.scrolled {
     padding: 16px 64px;
-    background: rgba(11, 19, 16, 0.9);
-    border-bottom: 1px solid rgba(47, 158, 110, 0.2);
+    background: rgba(22, 22, 22, 0.9);
+    border-bottom: 1px solid rgba(224, 94, 56, 0.2);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   }
 
   .noir-logo {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.6rem; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase;
     color: ${GOLD};
@@ -125,7 +125,7 @@ const styles = `
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .noir-sign-btn:hover { background: ${GOLD}; color: ${BG}; box-shadow: 0 0 15px rgba(47,158,110,0.3); }
+  .noir-sign-btn:hover { background: ${GOLD}; color: ${BG}; box-shadow: 0 0 15px rgba(224,94,56,0.3); }
 
   .noir-dashboard-btn {
     padding: 10px 28px;
@@ -140,14 +140,14 @@ const styles = `
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .noir-dashboard-btn:hover { background: ${GOLD_LIGHT}; transform: translateY(-1px); box-shadow: 0 0 20px rgba(47,158,110,0.4); }
+  .noir-dashboard-btn:hover { background: ${GOLD_LIGHT}; transform: translateY(-1px); box-shadow: 0 0 20px rgba(224,94,56,0.4); }
 
   /* Hero */
   .noir-hero {
     display: flex;
     min-height: 100vh;
     padding-top: 88px;
-    border-bottom: 1px solid rgba(47,158,110,0.1);
+    border-bottom: 1px solid rgba(224,94,56,0.1);
     position: relative;
     overflow: hidden;
   }
@@ -179,7 +179,7 @@ const styles = `
   }
 
   .noir-h1 {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: clamp(3.4rem, 5.5vw, 5.8rem);
     line-height: 0.95; font-weight: 300;
     color: ${CREAM}; margin: 0 0 28px;
@@ -193,7 +193,7 @@ const styles = `
     -webkit-background-clip: text;
     background-clip: text;
     animation: text-shimmer 6s linear infinite;
-    filter: drop-shadow(0 0 20px rgba(47,158,110,0.25));
+    filter: drop-shadow(0 0 20px rgba(224,94,56,0.25));
   }
 
   .noir-hero-sub {
@@ -217,7 +217,7 @@ const styles = `
   .noir-cta-primary:hover {
     background: ${GOLD_LIGHT};
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(47,158,110,0.35);
+    box-shadow: 0 8px 25px rgba(224,94,56,0.35);
   }
   .noir-cta-primary::after {
     content: '';
@@ -229,9 +229,9 @@ const styles = `
   .noir-cta-primary:hover::after { left: 125%; }
 
   .noir-cta-secondary {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.3rem; font-style: italic; color: ${GOLD};
-    cursor: pointer; border: none; border-bottom: 1px solid rgba(47,158,110,0.4);
+    cursor: pointer; border: none; border-bottom: 1px solid rgba(224,94,56,0.4);
     padding-bottom: 2px; transition: all 0.25s; background: none;
     display: flex;
     align-items: center;
@@ -248,7 +248,7 @@ const styles = `
   }
   .noir-hero-duotone {
     position: absolute; inset: 0;
-    background: linear-gradient(150deg, rgba(47,158,110,0.28) 0%, rgba(11,19,16,0.08) 45%, rgba(11,19,16,0.5) 100%);
+    background: linear-gradient(150deg, rgba(224,94,56,0.28) 0%, rgba(22,22,22,0.08) 45%, rgba(22,22,22,0.5) 100%);
     mix-blend-mode: overlay;
     pointer-events: none;
   }
@@ -264,10 +264,10 @@ const styles = `
   .noir-stat-bar {
     position: absolute; bottom: 48px; left: 48px; z-index: 5;
     display: flex; align-items: stretch;
-    background: rgba(11, 19, 16, 0.5);
+    background: rgba(22, 22, 22, 0.5);
     backdrop-filter: blur(20px) saturate(140%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid rgba(47, 158, 110, 0.2);
+    border: 1px solid rgba(224, 94, 56, 0.2);
     border-radius: 14px;
     overflow: hidden;
   }
@@ -275,13 +275,13 @@ const styles = `
     padding: 16px 26px;
     display: flex; flex-direction: column; gap: 5px;
   }
-  .noir-stat-item + .noir-stat-item { border-left: 1px solid rgba(47, 158, 110, 0.15); }
+  .noir-stat-item + .noir-stat-item { border-left: 1px solid rgba(224, 94, 56, 0.15); }
   .noir-stat-label {
     font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.18em;
     color: rgba(242,237,228,0.45);
   }
   .noir-stat-val {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.2rem; color: ${GOLD}; font-weight: 500;
   }
 
@@ -290,7 +290,7 @@ const styles = `
     overflow: hidden; position: relative; padding: 28px 0;
     background: rgba(16, 24, 20, 0.5);
     backdrop-filter: blur(5px);
-    border-bottom: 1px solid rgba(47,158,110,0.1);
+    border-bottom: 1px solid rgba(224,94,56,0.1);
   }
   .noir-marquee-fade-l { position: absolute; left: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(to right, ${BG}, transparent); z-index: 2; }
   .noir-marquee-fade-r { position: absolute; right: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(to left, ${BG}, transparent); z-index: 2; }
@@ -298,7 +298,7 @@ const styles = `
   .noir-marquee-track:hover { animation-play-state: paused; }
   .noir-marquee-item {
     flex-shrink: 0; padding: 0 48px; display: flex; align-items: center; gap: 12px;
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.45rem; text-transform: uppercase; letter-spacing: 0.15em;
     color: rgba(242,237,228,0.45); white-space: nowrap;
     transition: color 0.3s;
@@ -307,14 +307,14 @@ const styles = `
 
   /* Sections */
   .noir-section { padding: 120px 80px; max-width: 1360px; margin: 0 auto; position: relative; z-index: 2; }
-  .noir-section-border { border-bottom: 1px solid rgba(47,158,110,0.08); }
+  .noir-section-border { border-bottom: 1px solid rgba(224,94,56,0.08); }
 
   .noir-section-title-wrap {
     margin-bottom: 64px;
   }
 
   .noir-section-title {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: clamp(2.8rem, 4.8vw, 4.8rem); font-weight: 300;
     line-height: 1.05; margin: 0 0 20px; color: ${CREAM};
   }
@@ -341,28 +341,28 @@ const styles = `
   }
   .noir-section-light .glass-card:hover {
     background: #1a1a1a;
-    border-color: rgba(47,158,110,0.5);
-    box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 24px rgba(47,158,110,0.08);
+    border-color: rgba(224,94,56,0.5);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 24px rgba(224,94,56,0.08);
   }
   .noir-section-light .noir-agent-slide-center .noir-agent-card-inner {
-    border-color: rgba(47,158,110,0.45);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(47,158,110,0.12);
+    border-color: rgba(224,94,56,0.45);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(224,94,56,0.12);
   }
   .noir-section-light .noir-agent-icon-box {
-    background: rgba(47,158,110,0.12);
-    border-color: rgba(47,158,110,0.3);
+    background: rgba(224,94,56,0.12);
+    border-color: rgba(224,94,56,0.3);
     color: ${GOLD};
   }
   .noir-section-light .glass-card:hover .noir-agent-icon-box {
     background: ${GOLD};
     color: #FFFFFF;
   }
-  .noir-section-light .noir-agent-step { color: rgba(47,158,110,0.25); }
+  .noir-section-light .noir-agent-step { color: rgba(224,94,56,0.25); }
   .noir-section-light .noir-agent-name { color: ${CREAM}; }
   .noir-section-light .glass-card:hover .noir-agent-name { color: ${GOLD}; }
   .noir-section-light .noir-agent-desc { color: rgba(242,237,228,0.5); }
   .noir-section-light .noir-badge-auto {
-    border-color: rgba(47,158,110,0.5); color: ${GOLD}; background: rgba(47,158,110,0.08);
+    border-color: rgba(224,94,56,0.5); color: ${GOLD}; background: rgba(224,94,56,0.08);
   }
   .noir-section-light .noir-badge-approval {
     border-color: rgba(242,237,228,0.12); color: rgba(242,237,228,0.4); background: rgba(255,255,255,0.02);
@@ -380,16 +380,16 @@ const styles = `
 
   /* CTA-specific light overrides */
   .noir-section-light.noir-cta-section {
-    border-top-color: rgba(47,158,110,0.12);
+    border-top-color: rgba(224,94,56,0.12);
   }
   .noir-section-light .noir-cta-glow {
-    background: radial-gradient(circle, rgba(47,158,110,0.1) 0%, rgba(47,158,110,0) 70%);
+    background: radial-gradient(circle, rgba(224,94,56,0.1) 0%, rgba(224,94,56,0) 70%);
   }
-  .noir-section-light .noir-cta-title { color: #14201B; }
+  .noir-section-light .noir-cta-title { color: #212121; }
   .noir-section-light .noir-cta-sub { color: rgba(20,32,27,0.6); }
   .noir-section-light .noir-check-item { color: rgba(20,32,27,0.7); }
-  .noir-section-light .noir-cta-btn { box-shadow: 0 0 35px rgba(47,158,110,0.15); }
-  .noir-section-light .noir-cta-btn:hover { box-shadow: 0 12px 35px rgba(47,158,110,0.25); }
+  .noir-section-light .noir-cta-btn { box-shadow: 0 0 35px rgba(224,94,56,0.15); }
+  .noir-section-light .noir-cta-btn:hover { box-shadow: 0 12px 35px rgba(224,94,56,0.25); }
   @media (hover: none) {
     .noir-section-light .glass-card:hover {
       background: #111111;
@@ -399,7 +399,7 @@ const styles = `
     }
     .noir-section-light .glass-card:hover::before { opacity: 0; }
     .noir-section-light .glass-card:hover .noir-agent-icon-box {
-      background: rgba(47,158,110,0.12);
+      background: rgba(224,94,56,0.12);
       color: ${GOLD};
       box-shadow: none;
       transform: none;
@@ -415,7 +415,7 @@ const styles = `
     background: rgba(18, 18, 18, 0.45);
     backdrop-filter: blur(24px) saturate(120%);
     -webkit-backdrop-filter: blur(24px) saturate(120%);
-    border: 1px solid rgba(47, 158, 110, 0.12);
+    border: 1px solid rgba(224, 94, 56, 0.12);
     border-radius: 16px;
     padding: 36px;
     position: relative;
@@ -427,15 +427,15 @@ const styles = `
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, rgba(47,158,110,0.35), transparent);
+    background: linear-gradient(90deg, rgba(224,94,56,0.35), transparent);
     opacity: 0;
     transition: opacity 0.4s;
   }
   .glass-card:hover {
-    border-color: rgba(47, 158, 110, 0.45);
+    border-color: rgba(224, 94, 56, 0.45);
     background: rgba(24, 24, 24, 0.55);
     transform: translateY(-8px);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(47, 158, 110, 0.04);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(224, 94, 56, 0.04);
   }
   .glass-card:hover::before {
     opacity: 1;
@@ -446,8 +446,8 @@ const styles = `
      feedback loop (card moves away → hover lost → falls back → re-enters = jitter). */
   .noir-agent-carousel-wrap .glass-card:hover {
     transform: none;
-    border-color: rgba(47, 158, 110, 0.5);
-    box-shadow: 0 0 0 1px rgba(47,158,110,0.2), 0 20px 40px rgba(0,0,0,0.4), 0 0 24px rgba(47,158,110,0.08);
+    border-color: rgba(224, 94, 56, 0.5);
+    box-shadow: 0 0 0 1px rgba(224,94,56,0.2), 0 20px 40px rgba(0,0,0,0.4), 0 0 24px rgba(224,94,56,0.08);
   }
 
   /* Agent cards — carousel */
@@ -492,8 +492,8 @@ const styles = `
     transform-origin: center bottom;
   }
   .noir-agent-slide-center .noir-agent-card-inner {
-    border-color: rgba(47, 158, 110, 0.4);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.55), 0 0 30px rgba(47,158,110,0.1);
+    border-color: rgba(224, 94, 56, 0.4);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.55), 0 0 30px rgba(224,94,56,0.1);
   }
 
   .noir-agent-slide-left {
@@ -526,22 +526,22 @@ const styles = `
     transform: scale(1.02);
   }
   .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
-    border-color: rgba(47, 158, 110, 0.45);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 20px rgba(47,158,110,0.08);
+    border-color: rgba(224, 94, 56, 0.45);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 20px rgba(224,94,56,0.08);
   }
 
   .noir-carousel-arrow {
     position: absolute; top: 50%; transform: translateY(-50%);
     width: 46px; height: 46px; border-radius: 50%;
-    background: rgba(11,19,16,0.75);
+    background: rgba(22,22,22,0.75);
     backdrop-filter: blur(14px);
-    border: 1px solid rgba(47,158,110,0.25);
+    border: 1px solid rgba(224,94,56,0.25);
     color: ${CREAM};
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 10;
     transition: all 0.25s;
   }
-  .noir-carousel-arrow:hover:not(:disabled) { border-color: ${GOLD}; color: ${GOLD}; background: rgba(11,19,16,0.92); }
+  .noir-carousel-arrow:hover:not(:disabled) { border-color: ${GOLD}; color: ${GOLD}; background: rgba(22,22,22,0.92); }
   .noir-carousel-arrow:disabled { opacity: 0.2; cursor: not-allowed; }
   .noir-carousel-arrow-left { left: -23px; }
   .noir-carousel-arrow-right { right: -23px; }
@@ -558,8 +558,8 @@ const styles = `
   .noir-agent-icon-box {
     width: 48px; height: 48px;
     border-radius: 10px;
-    background: rgba(47, 158, 110, 0.08);
-    border: 1px solid rgba(47, 158, 110, 0.2);
+    background: rgba(224, 94, 56, 0.08);
+    border: 1px solid rgba(224, 94, 56, 0.2);
     display: flex; align-items: center; justify-content: center;
     color: ${GOLD};
     transition: all 0.3s;
@@ -567,13 +567,13 @@ const styles = `
   .glass-card:hover .noir-agent-icon-box {
     background: ${GOLD};
     color: ${BG};
-    box-shadow: 0 0 15px rgba(47,158,110,0.4);
+    box-shadow: 0 0 15px rgba(224,94,56,0.4);
     transform: scale(1.05);
   }
 
   .noir-agent-step {
-    font-family: 'Permanent Marker', cursive !important;
-    font-size: 2.4rem; font-style: italic; color: rgba(47,158,110,0.3); line-height: 1;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 2.4rem; font-style: italic; color: rgba(224,94,56,0.3); line-height: 1;
     font-weight: 300;
   }
   .noir-agent-badge {
@@ -581,11 +581,11 @@ const styles = `
     padding: 5px 12px; border-radius: 999px; border: 1px solid;
     font-weight: 600;
   }
-  .noir-badge-auto { border-color: rgba(47,158,110,0.5); color: ${GOLD}; background: rgba(47,158,110,0.04); }
+  .noir-badge-auto { border-color: rgba(224,94,56,0.5); color: ${GOLD}; background: rgba(224,94,56,0.04); }
   .noir-badge-approval { border-color: rgba(242,237,228,0.15); color: rgba(242,237,228,0.45); background: rgba(255,255,255,0.02); }
 
   .noir-agent-name {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.8rem; color: ${CREAM}; margin-bottom: 12px; font-weight: 500;
     transition: color 0.3s;
   }
@@ -603,7 +603,7 @@ const styles = `
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .noir-platform-name { font-family: 'Permanent Marker', cursive !important; font-size: 1.55rem; color: ${CREAM}; margin-bottom: 8px; font-weight: 500; }
+  .noir-platform-name { font-family: 'Cormorant Garamond', serif !important; font-size: 1.55rem; color: ${CREAM}; margin-bottom: 8px; font-weight: 500; }
   .glass-card:hover .noir-platform-name { color: var(--platform-accent, ${GOLD}); }
   .noir-platform-desc { font-size: 0.84rem; font-weight: 300; line-height: 1.7; color: rgba(242,237,228,0.52); margin-bottom: 20px; }
 
@@ -611,12 +611,12 @@ const styles = `
   .noir-pill {
     font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
     padding: 4px 10px; border-radius: 4px;
-    border: 1px solid rgba(47,158,110,0.15); color: rgba(242,237,228,0.5);
+    border: 1px solid rgba(224,94,56,0.15); color: rgba(242,237,228,0.5);
     background: rgba(255, 255, 255, 0.01);
     transition: all 0.3s;
   }
   .glass-card:hover .noir-pill {
-    border-color: var(--platform-accent-alpha, rgba(47,158,110,0.3));
+    border-color: var(--platform-accent-alpha, rgba(224,94,56,0.3));
     color: ${CREAM};
   }
 
@@ -703,14 +703,14 @@ const styles = `
   /* How it works */
   .noir-hiw-section {
     background: rgba(13, 21, 18, 0.4);
-    border-bottom: 1px solid rgba(47,158,110,0.08);
+    border-bottom: 1px solid rgba(224,94,56,0.08);
   }
   .noir-hiw-inner { max-width: 800px; margin: 0 auto; }
 
   .timeline-container {
     position: relative;
     padding-left: 64px;
-    border-left: 1px solid rgba(47, 158, 110, 0.12);
+    border-left: 1px solid rgba(224, 94, 56, 0.12);
   }
   .timeline-container::after {
     content: '';
@@ -718,7 +718,7 @@ const styles = `
     left: -1px; bottom: 0;
     height: 120px;
     width: 1px;
-    background: linear-gradient(to bottom, rgba(47, 158, 110, 0.12), transparent);
+    background: linear-gradient(to bottom, rgba(224, 94, 56, 0.12), transparent);
   }
   .timeline-item {
     position: relative;
@@ -733,9 +733,9 @@ const styles = `
     width: 44px; height: 44px;
     border-radius: 50%;
     background: ${BG};
-    border: 1px solid rgba(47, 158, 110, 0.3);
+    border: 1px solid rgba(224, 94, 56, 0.3);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.25rem; font-style: italic; color: ${GOLD};
     font-weight: 500;
     box-shadow: 0 0 15px rgba(0,0,0,0.6);
@@ -745,12 +745,12 @@ const styles = `
     background: ${GOLD};
     color: ${BG};
     border-color: ${GOLD};
-    box-shadow: 0 0 20px rgba(47,158,110,0.5);
+    box-shadow: 0 0 20px rgba(224,94,56,0.5);
     transform: scale(1.1);
   }
 
   .timeline-title {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.6rem; color: ${CREAM}; margin-bottom: 10px; font-weight: 500;
     transition: color 0.3s;
   }
@@ -760,16 +760,16 @@ const styles = `
   /* CTA Section */
   .noir-cta-section {
     padding: 140px 64px; text-align: center; position: relative; overflow: hidden;
-    border-top: 1px solid rgba(47,158,110,0.08);
+    border-top: 1px solid rgba(224,94,56,0.08);
   }
   .noir-cta-glow {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 650px; height: 650px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(47,158,110,0.06) 0%, rgba(47,158,110,0) 70%);
+    background: radial-gradient(circle, rgba(224,94,56,0.06) 0%, rgba(224,94,56,0) 70%);
     filter: blur(100px); pointer-events: none;
   }
   .noir-cta-title {
-    font-family: 'Permanent Marker', cursive !important;
+    font-family: 'Cormorant Garamond', serif !important;
     font-size: clamp(2.8rem, 5vw, 4.8rem); font-weight: 300;
     color: ${CREAM}; margin-bottom: 24px; line-height: 1.1;
     position: relative; z-index: 1;
@@ -786,21 +786,21 @@ const styles = `
     border: none; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
     letter-spacing: 0.24em; text-transform: uppercase; cursor: pointer;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; z-index: 1;
-    box-shadow: 0 0 35px rgba(47,158,110,0.22);
+    box-shadow: 0 0 35px rgba(224,94,56,0.22);
     display: inline-flex;
     align-items: center;
     gap: 12px;
   }
-  .noir-cta-btn:hover { background: ${GOLD_LIGHT}; transform: translateY(-2px); box-shadow: 0 12px 35px rgba(47,158,110,0.35); }
+  .noir-cta-btn:hover { background: ${GOLD_LIGHT}; transform: translateY(-2px); box-shadow: 0 12px 35px rgba(224,94,56,0.35); }
 
   /* Footer */
   .noir-footer {
     padding: 44px 80px; display: flex; align-items: center; justify-content: space-between;
-    border-top: 1px solid rgba(47,158,110,0.12); flex-wrap: wrap; gap: 24px;
-    background: #081410;
+    border-top: 1px solid rgba(224,94,56,0.12); flex-wrap: wrap; gap: 24px;
+    background: #121212;
     position: relative; z-index: 2;
   }
-  .noir-footer-logo { font-family: 'Permanent Marker', cursive !important; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.16em; color: ${GOLD}; }
+  .noir-footer-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.16em; color: ${GOLD}; }
   .noir-live { display: flex; align-items: center; gap: 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(242,237,228,0.45); font-weight: 500; }
   .noir-live-dot {
     width: 8px; height: 8px; border-radius: 50%;
@@ -879,13 +879,13 @@ const styles = `
     /* Mobile typography scale */
     .noir-agent-header { margin-bottom: 20px; align-items: flex-start; }
     .noir-agent-step {
-      font-size: 4rem; color: rgba(47,158,110,0.18); line-height: 1;
+      font-size: 4rem; color: rgba(224,94,56,0.18); line-height: 1;
       position: absolute; top: 24px; right: 24px;
     }
     .noir-agent-icon-box {
       width: 52px; height: 52px; border-radius: 14px;
-      background: rgba(47,158,110,0.14);
-      border-color: rgba(47,158,110,0.35);
+      background: rgba(224,94,56,0.14);
+      border-color: rgba(224,94,56,0.35);
     }
     .noir-agent-icon-box svg { width: 24px; height: 24px; }
     .noir-agent-name {
@@ -964,12 +964,12 @@ const styles = `
     .glass-card:hover {
       transform: none;
       background: rgba(18, 18, 18, 0.45);
-      border-color: rgba(47, 158, 110, 0.12);
+      border-color: rgba(224, 94, 56, 0.12);
       box-shadow: none;
     }
     .glass-card:hover::before { opacity: 0; }
     .glass-card:hover .noir-agent-icon-box {
-      background: rgba(47, 158, 110, 0.08);
+      background: rgba(224, 94, 56, 0.08);
       color: ${GOLD};
       box-shadow: none;
       transform: none;
@@ -985,13 +985,13 @@ const styles = `
       transform: none;
     }
     .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
-      border-color: rgba(47, 158, 110, 0.12);
+      border-color: rgba(224, 94, 56, 0.12);
       box-shadow: none;
     }
     .noir-carousel-arrow:hover:not(:disabled) {
-      border-color: rgba(47,158,110,0.25);
+      border-color: rgba(224,94,56,0.25);
       color: ${CREAM};
-      background: rgba(11,19,16,0.75);
+      background: rgba(22,22,22,0.75);
     }
   }
 `
@@ -1195,9 +1195,9 @@ export default function LandingNoir() {
           </div>
 
           {/* Gradients to blend image cleanly with dark noir borders */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0B1310 0%, transparent 45%, rgba(11,19,16,0.4) 100%)' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0B1310 0%, transparent 25%)' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0B1310 0%, transparent 12%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #161616 0%, transparent 45%, rgba(22,22,22,0.4) 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #161616 0%, transparent 25%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #161616 0%, transparent 12%)' }} />
 
           {/* Stat bar */}
           <div className="noir-stat-bar reveal-on-scroll reveal-delay-2">

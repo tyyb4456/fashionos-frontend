@@ -39,7 +39,7 @@ export default function PrettyJSON({ value, depth = 0 }) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {value.map((item, i) => (
-          <div key={i} style={{ background: '#0d1512', border: '1px solid rgba(255,255,255,0.06)', padding: '7px 9px' }}>
+          <div key={i} style={{ background: '#191919', border: '1px solid rgba(255,255,255,0.06)', padding: '7px 9px' }}>
             <PrettyJSON value={item} depth={depth + 1} />
           </div>
         ))}

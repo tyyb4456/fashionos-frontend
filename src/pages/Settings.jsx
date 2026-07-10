@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Check, ExternalLink, Trash2 } from 'lucide-react'
 
 const gradBtn = {
-  background: 'linear-gradient(135deg, #0D1512, #2F9E6E)',
+  background: 'linear-gradient(135deg, #191919, #e05e38)',
   color: 'white', border: 'none',
 }
 
@@ -45,7 +45,7 @@ function Field({ label, name, value, onChange, placeholder }) {
     <div>
       <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>{label}</label>
       <input name={name} value={value} onChange={onChange} placeholder={placeholder} style={inputBase}
-        onFocus={e => e.target.style.borderColor = '#2F9E6E'}
+        onFocus={e => e.target.style.borderColor = '#e05e38'}
         onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
     </div>
   )
@@ -86,7 +86,7 @@ export default function Settings() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(47,158,110,0.22)', borderTopColor: '#2F9E6E' }} />
+        style={{ borderColor: 'rgba(224,94,56,0.22)', borderTopColor: '#e05e38' }} />
     </div>
   )
 
@@ -100,7 +100,7 @@ export default function Settings() {
     <div className="p-6 max-w-2xl space-y-6" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">⚙ Configuration</div>
-        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Permanent Marker', cursive" }}>Settings</h1>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Settings</h1>
         {brand && <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{brand.owner_email} · {brand.plan} plan</p>}
         <div className="gradient-accent-line" />
       </div>
@@ -140,7 +140,7 @@ export default function Settings() {
             <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Shop name</label>
             <input value={shopInput} onChange={e => setShopInput(e.target.value)}
               placeholder="mybrand (without .myshopify.com)" style={inputBase}
-              onFocus={e => e.target.style.borderColor = '#2F9E6E'}
+              onFocus={e => e.target.style.borderColor = '#e05e38'}
               onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
           </div>
         )}

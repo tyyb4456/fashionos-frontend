@@ -27,7 +27,7 @@ export default function RunDetail() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(47,158,110,0.22)', borderTopColor: '#2F9E6E' }} />
+        style={{ borderColor: 'rgba(224,94,56,0.22)', borderTopColor: '#e05e38' }} />
     </div>
   )
   if (!run) return <div className="p-8" style={{ color: '#f87171' }}>Run not found.</div>
@@ -44,7 +44,7 @@ export default function RunDetail() {
 
       <div>
         <div className="section-pill">↺ Run Detail</div>
-        <h1 className="page-title-shimmer capitalize" style={{ fontFamily: "'Permanent Marker', cursive", fontSize: '2rem', fontWeight: 300 }}>
+        <h1 className="page-title-shimmer capitalize" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>
           {run.trigger} Run
         </h1>
         <div className="gradient-accent-line" />

@@ -37,10 +37,10 @@ export default function Layout() {
           </button>
           <span style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: '1.2rem', fontWeight: 700,
-            letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)',
+            fontSize: '1.15rem', fontWeight: 600,
+            letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-primary)',
           }}>
-            FASHION<span style={{ color: 'var(--text-primary)' }}>OS</span>
+            Fashion<span style={{ color: 'var(--gold)', fontWeight: 700 }}>OS</span>
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -82,11 +82,10 @@ export default function Layout() {
         <div className="p-5 flex items-center justify-between" style={{ borderBottom: '1px solid var(--card-border)' }}>
           <span style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: '1.35rem', fontWeight: 700,
-            letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)',
+            fontSize: '1.25rem', fontWeight: 600,
+            letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-primary)',
           }}>
-            FASHION<span style={{ color: 'var(--text-primary)' }}>OS</span>
-            <span style={{ fontSize: '0.65rem', verticalAlign: 'super', marginLeft: 2 }}>⚡</span>
+            Fashion<span style={{ color: 'var(--gold)', fontWeight: 700 }}>OS</span>
           </span>
           <button onClick={() => setMobileOpen(false)} className="md:hidden"
             style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -100,21 +99,30 @@ export default function Layout() {
             <NavLink key={to} to={to} className="block" onClick={() => setMobileOpen(false)}>
               {({ isActive }) => (
                 <div
-                  className="flex items-center gap-3 py-2.5 px-3 text-sm transition-all cursor-pointer"
                   style={isActive ? {
                     background: 'var(--active-nav)',
-                    borderLeft: '2px solid var(--gold)',
+                    borderLeft: `2px solid var(--gold)`,
                     paddingLeft: 10,
                     color: 'var(--gold)',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '8px 12px 8px 10px',
+                    borderRadius: '0 8px 8px 0',
+                    transition: 'all 0.15s',
+                    cursor: 'pointer',
                   } : {
-                    color: 'var(--text-secondary)',
+                    color: 'var(--text-muted)',
                     borderLeft: '2px solid transparent',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '8px 12px',
+                    borderRadius: '0 8px 8px 0',
+                    transition: 'all 0.15s',
+                    cursor: 'pointer',
                   }}
-                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.color = 'var(--gold)'; e.currentTarget.style.background = 'var(--hover-bg)' } }}
-                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.background = '' } }}
+                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--hover-bg)' } }}
+                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = '' } }}
                 >
-                  <Icon size={14} style={{ color: isActive ? 'var(--gold)' : 'inherit', flexShrink: 0 }} />
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  <Icon size={15} style={{ color: isActive ? 'var(--gold)' : 'inherit', flexShrink: 0 }} />
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', letterSpacing: '0.02em' }}>
                     {label}
                   </span>
                 </div>
@@ -148,9 +156,6 @@ export default function Layout() {
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto h-full w-full" style={{ position: 'relative' }}>
-        <div className="page-orb" style={{ width: 500, height: 500, background: 'rgba(var(--gold-rgb), 0.08)', top: -150, right: -100, animationDelay: '0s' }} />
-        <div className="page-orb" style={{ width: 320, height: 320, background: 'rgba(var(--gold-rgb), 0.05)', top: 300, left: -80, animationDelay: '-8s' }} />
-        <div className="page-orb" style={{ width: 280, height: 280, background: 'rgba(var(--gold-rgb), 0.06)', bottom: 60, right: '25%', animationDelay: '-15s' }} />
         <Outlet />
       </main>
     </div>

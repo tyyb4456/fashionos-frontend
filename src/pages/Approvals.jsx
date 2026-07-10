@@ -12,8 +12,8 @@ function Tab({ label, active, count, onClick }) {
     <button onClick={onClick}
       className="px-4 py-2 text-sm transition-all"
       style={active ? {
-        background: 'rgba(47,158,110,0.12)',
-        color: '#2F9E6E', border: '1px solid rgba(47,158,110,0.35)',
+        background: 'rgba(224,94,56,0.12)',
+        color: '#e05e38', border: '1px solid rgba(224,94,56,0.35)',
         fontFamily: "'Inter', sans-serif", fontSize: '0.72rem',
         letterSpacing: '0.1em', textTransform: 'uppercase',
       } : {
@@ -114,7 +114,7 @@ function RestockCard({ rec, onApprove, onReject }) {
       <input value={supplierNum} onChange={e => setSupplierNum(e.target.value)}
         placeholder="Supplier WhatsApp (923001234567) — optional"
         style={inputS} className="mb-2"
-        onFocus={e => e.target.style.borderColor = '#2F9E6E'}
+        onFocus={e => e.target.style.borderColor = '#e05e38'}
         onBlur={e => e.target.style.borderColor = 'var(--input-border)'}
       />
       <ActionBtns
@@ -194,7 +194,7 @@ export default function Approvals() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(47,158,110,0.22)', borderTopColor: '#2F9E6E' }} />
+        style={{ borderColor: 'rgba(224,94,56,0.22)', borderTopColor: '#e05e38' }} />
     </div>
   )
 
@@ -202,7 +202,7 @@ export default function Approvals() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">✓ Pending Decisions</div>
-        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Permanent Marker', cursive" }}>Approvals</h1>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Approvals</h1>
         <div className="gradient-accent-line" />
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">

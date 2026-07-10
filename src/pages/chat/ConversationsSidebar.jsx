@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Loader2, MessageSquare, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Plus, Loader2, MessageSquare, Trash2, ChevronLeft, ChevronRight, PenSquare } from 'lucide-react'
 import { GOLD } from './constants'
 import { relativeTime } from './utils'
 
@@ -12,26 +12,25 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: '10px 12px',
-        background: isActive
-          ? 'var(--active-nav)'
-          : hovered ? 'var(--hover-bg)' : 'transparent',
-        borderLeft: `2px solid ${isActive ? GOLD : 'transparent'}`,
+        padding: '8px 14px',
+        background: isActive ? 'var(--hover-bg)' : hovered ? 'rgba(255,255,255,0.03)' : 'transparent',
+        borderRadius: 8,
+        margin: '1px 6px',
         cursor: 'pointer',
-        display: 'flex', flexDirection: 'column', gap: 3,
-        transition: 'all 0.15s',
+        display: 'flex', flexDirection: 'column', gap: 2,
+        transition: 'all 0.12s',
         position: 'relative',
+        borderLeft: `2px solid ${isActive ? GOLD : 'transparent'}`,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-        <MessageSquare size={11} color={isActive ? GOLD : 'var(--text-muted)'}
-          style={{ flexShrink: 0, marginTop: 2 }} />
         <span style={{
-          fontFamily: "'Inter', sans-serif", fontSize: '0.73rem',
+          fontFamily: "'Inter', sans-serif", fontSize: '0.78rem',
           color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
           lineHeight: 1.4, flex: 1,
           overflow: 'hidden', display: '-webkit-box',
-          WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+          WebkitLineClamp: 1, WebkitBoxOrient: 'vertical',
+          fontWeight: isActive ? 500 : 400,
         }}>
           {convo.title || 'Untitled'}
         </span>
@@ -40,8 +39,8 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
             onClick={e => { e.stopPropagation(); onDelete(convo.thread_id) }}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: 'var(--text-muted)', padding: '1px 3px', flexShrink: 0,
-              transition: 'color 0.15s',
+              color: 'var(--text-muted)', padding: '1px 2px', flexShrink: 0,
+              transition: 'color 0.12s', borderRadius: 4,
             }}
             onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
             onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
@@ -52,9 +51,8 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
         )}
       </div>
       <span style={{
-        fontFamily: "'Inter', sans-serif", fontSize: '0.58rem',
-        color: 'var(--text-muted)', opacity: 0.8, letterSpacing: '0.06em',
-        paddingLeft: 17,
+        fontFamily: "'Inter', sans-serif", fontSize: '0.65rem',
+        color: 'var(--text-muted)', opacity: 0.7,
       }}>
         {relativeTime(convo.updated_at)}
       </span>
@@ -73,7 +71,7 @@ export default function ConversationsSidebar({
       <div style={{
         width: collapsed ? 0 : 240,
         minWidth: collapsed ? 0 : 240,
-        borderRight: collapsed ? 'none' : '1px solid var(--sidebar-border)',
+        borderRight: collapsed ? 'none' : '1px solid var(--card-border)',
         display: 'flex', flexDirection: 'column',
         background: 'var(--sidebar-gradient)',
         transition: 'width 0.25s ease, min-width 0.25s ease',
@@ -85,55 +83,60 @@ export default function ConversationsSidebar({
         height: isMobile ? '100%' : undefined,
         zIndex: isMobile ? 5 : 2,
       }}>
-        {/* Sidebar header */}
+        {/* Header */}
         <div style={{
-          padding: '18px 14px 12px',
+          padding: '16px 14px 12px',
           borderBottom: '1px solid var(--card-border)',
           flexShrink: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
-          <div style={{
-            fontFamily: "'Inter', sans-serif", fontSize: '0.58rem',
-            letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: 'var(--text-muted)', marginBottom: 10,
+          <span style={{
+            fontFamily: "'Inter', sans-serif", fontSize: '0.65rem',
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+            color: 'var(--text-muted)', fontWeight: 500,
           }}>
             Conversations
-          </div>
+          </span>
           <button
             onClick={onNewThread}
             style={{
-              width: '100%', padding: '8px 10px',
-              background: 'var(--subtle-bg)',
-              border: '1px solid var(--subtle-border)',
-              color: GOLD, cursor: 'pointer',
-              fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
-              letterSpacing: '0.08em', textTransform: 'uppercase',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-              transition: 'all 0.2s',
+              width: 28, height: 28,
+              background: 'none',
+              border: '1px solid var(--card-border)',
+              borderRadius: 8,
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'all 0.15s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--hover-bg)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'var(--subtle-bg)'}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = GOLD
+              e.currentTarget.style.borderColor = 'rgba(224,94,56,0.35)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = 'var(--text-muted)'
+              e.currentTarget.style.borderColor = 'var(--card-border)'
+            }}
+            title="New chat"
           >
-            <Plus size={12} /> New Chat
+            <PenSquare size={13} />
           </button>
         </div>
 
         {/* Conversations list */}
-        <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '6px 0' }}>
           {convosLoading ? (
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              padding: 24,
-            }}>
-              <Loader2 size={16} color="var(--gold)"
-                style={{ animation: 'spin 1s linear infinite' }} />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+              <Loader2 size={16} color="var(--text-muted)"
+                style={{ animation: 'spin 1s linear infinite', opacity: 0.5 }} />
             </div>
           ) : conversations.length === 0 ? (
             <div style={{
               padding: '20px 14px',
-              fontFamily: "'Inter', sans-serif", fontSize: '0.68rem',
+              fontFamily: "'Inter', sans-serif", fontSize: '0.72rem',
               color: 'var(--text-muted)', opacity: 0.6, textAlign: 'center', lineHeight: 1.6,
             }}>
-              No conversations yet.<br />Start a new chat.
+              No chats yet.<br />Start a new conversation.
             </div>
           ) : (
             conversations.map(c => (
@@ -149,7 +152,7 @@ export default function ConversationsSidebar({
         </div>
       </div>
 
-      {/* Toggle collapse button (Desktop only) */}
+      {/* Toggle button (Desktop only) */}
       {!isMobile && (
         <button
           onClick={onToggleCollapsed}
@@ -164,12 +167,11 @@ export default function ConversationsSidebar({
             color: 'var(--text-muted)',
             cursor: 'pointer', padding: '6px 4px',
             transition: 'left 0.25s ease',
+            borderRadius: collapsed ? '0 6px 6px 0' : '0 6px 6px 0',
           }}
           title={collapsed ? 'Show conversations' : 'Hide conversations'}
         >
-          {collapsed
-            ? <ChevronRight size={12} />
-            : <ChevronLeft  size={12} />}
+          {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
         </button>
       )}
     </>

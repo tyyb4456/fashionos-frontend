@@ -1,5 +1,5 @@
-import { Bot, User, Loader2 } from 'lucide-react'
-import { GOLD, GOLD_DIM } from './constants'
+import { Bot, Loader2 } from 'lucide-react'
+import { GOLD } from './constants'
 import ReasoningBlock from './ReasoningBlock'
 import ToolCallCard from './ToolCallCard'
 import MarkdownContent from './MarkdownContent'
@@ -9,63 +9,75 @@ export default function MessageBubble({ msg }) {
 
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column',
+      display: 'flex',
+      flexDirection: 'column',
       alignItems: isUser ? 'flex-end' : 'flex-start',
-      gap: 8,
+      gap: 6,
+      animation: 'fadeUp 0.22s ease-out',
     }}>
       {/* Role label */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 6,
         flexDirection: isUser ? 'row-reverse' : 'row',
+        paddingLeft: isUser ? 0 : 2,
+        paddingRight: isUser ? 2 : 0,
       }}>
-        <div style={{
-          width: 22, height: 22,
-          background: isUser ? GOLD_DIM : 'var(--subtle-bg)',
-          border: `1px solid ${isUser ? 'var(--card-border)' : 'var(--subtle-border)'}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          {isUser
-            ? <User size={11} color={GOLD} />
-            : <Bot  size={11} color="var(--text-muted)" />}
-        </div>
+        {!isUser && (
+          <div style={{
+            width: 20, height: 20,
+            background: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+            borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <Bot size={10} color="var(--text-muted)" />
+          </div>
+        )}
         <span style={{
-          fontFamily: "'Inter', sans-serif", fontSize: '0.58rem',
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: isUser ? GOLD : 'var(--text-muted)',
+          fontFamily: "'Inter', sans-serif",
+          fontSize: '0.65rem',
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          color: isUser ? 'var(--text-muted)' : 'var(--text-muted)',
+          opacity: 0.8,
         }}>
           {isUser ? 'You' : 'FashionOS'}
         </span>
       </div>
 
-      {/* Reasoning — model's internal thinking, hidden by default */}
+      {/* Reasoning block */}
       {!isUser && msg.reasoning && (
         <ReasoningBlock text={msg.reasoning} streaming={msg.streaming && !msg.content} />
       )}
 
-      {/* Tool calls — DB tool invocations, hidden by default */}
+      {/* Tool calls */}
       {!isUser && msg.toolCalls && msg.toolCalls.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5, width: '100%' }}>
           {msg.toolCalls.map(call => <ToolCallCard key={call.id} call={call} />)}
         </div>
       )}
 
-      {/* Final response bubble — only shown when there's content */}
+      {/* Message bubble */}
       {(isUser || msg.content) && (
         <div style={{
-          maxWidth: window.innerWidth <= 768 ? '92%' : '80%',
-          background: isUser ? GOLD_DIM : 'var(--card-bg)',
-          border: `1px solid ${isUser ? 'var(--card-border)' : 'var(--card-border)'}`,
-          padding: '11px 15px',
+          maxWidth: window.innerWidth <= 768 ? '90%' : '78%',
+          background: isUser
+            ? 'var(--card-bg)'
+            : 'transparent',
+          border: isUser ? '1px solid var(--card-border)' : 'none',
+          borderRadius: isUser ? 18 : 0,
+          padding: isUser ? '10px 16px' : '2px 0',
         }}>
           {msg.content ? (
             <MarkdownContent
               text={msg.content}
               color={isUser ? 'var(--text-primary)' : 'var(--text-body)'}
-              fontSize="0.82rem"
+              fontSize="0.875rem"
             />
           ) : (
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontSize: '0.82rem',
+              fontFamily: "'Inter', sans-serif", fontSize: '0.875rem',
               lineHeight: 1.7, color: 'var(--text-body)', margin: 0,
             }}>
               {msg.streaming ? '' : '…'}
@@ -81,30 +93,22 @@ export default function MessageBubble({ msg }) {
         </div>
       )}
 
-      {/* Streaming: agent is thinking but no text yet — show 3 dot bounce */}
+      {/* Thinking indicator — 3 dot bounce */}
       {!isUser && msg.streaming && !msg.content && !msg.reasoning &&
         (!msg.toolCalls || msg.toolCalls.length === 0) && (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 5,
-          padding: '12px 18px',
-          background: 'var(--card-bg)',
-          border: '1px solid var(--card-border)',
-          height: 36,
+          padding: '12px 0',
         }}>
-          <div style={{
-            width: 6, height: 6, borderRadius: '50%', background: GOLD,
-            animation: 'bounce 1.4s infinite ease-in-out',
-          }} />
-          <div style={{
-            width: 6, height: 6, borderRadius: '50%', background: GOLD,
-            animation: 'bounce 1.4s infinite ease-in-out',
-            animationDelay: '0.2s',
-          }} />
-          <div style={{
-            width: 6, height: 6, borderRadius: '50%', background: GOLD,
-            animation: 'bounce 1.4s infinite ease-in-out',
-            animationDelay: '0.4s',
-          }} />
+          {[0, 0.2, 0.4].map((delay, i) => (
+            <div key={i} style={{
+              width: 5, height: 5, borderRadius: '50%',
+              background: 'var(--text-muted)',
+              opacity: 0.7,
+              animation: 'bounce 1.4s infinite ease-in-out',
+              animationDelay: `${delay}s`,
+            }} />
+          ))}
         </div>
       )}
     </div>
