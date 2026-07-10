@@ -244,7 +244,7 @@ export default function Chat() {
   return (
     <div style={{
       display: 'flex', height: '100%',
-      background: '#0D1512', position: 'relative', overflow: 'hidden',
+      background: 'var(--bg)', position: 'relative', overflow: 'hidden',
     }}>
 
       <ConversationsSidebar
@@ -279,14 +279,14 @@ export default function Chat() {
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
           <div style={{
             position: 'absolute', top: -100, right: -80, width: 400, height: 400, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(47,158,110,0.06) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(var(--gold-rgb), 0.05) 0%, transparent 70%)',
           }} />
         </div>
 
         {/* Header */}
         <div style={{
           padding: isMobile ? '12px 16px 10px' : '18px 24px 14px',
-          borderBottom: '1px solid rgba(47,158,110,0.1)',
+          borderBottom: '1px solid var(--card-border)',
           position: 'relative', zIndex: 1, flexShrink: 0,
           display: 'flex', alignItems: 'center', gap: 12,
         }}>
@@ -306,7 +306,7 @@ export default function Chat() {
             <div className="section-pill" style={{ display: 'inline-flex' }}>✦ AI Intelligence</div>
             <h1 style={{
               fontFamily: "'Permanent Marker', cursive",
-              fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 300, color: '#F2EDE4',
+              fontSize: isMobile ? '1.35rem' : '1.7rem', fontWeight: 300, color: 'var(--text-primary)',
               margin: 0, lineHeight: 1.1,
             }}>
               FashionOS Chat
@@ -326,8 +326,8 @@ export default function Chat() {
         }}>
           {messagesLoading ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Loader2 size={22} color="rgba(47,158,110,0.4)"
-                style={{ animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={22} color="var(--gold-light)"
+                style={{ animation: 'spin 1s linear infinite', opacity: 0.5 }} />
             </div>
           ) : messages.length === 0 ? (
             <div style={{
@@ -336,7 +336,7 @@ export default function Chat() {
             }}>
               <div style={{
                 width: 50, height: 50,
-                border: '1px solid rgba(47,158,110,0.22)',
+                border: '1px solid var(--card-border)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <Bot size={20} color={GOLD} />
@@ -344,13 +344,13 @@ export default function Chat() {
               <div style={{ textAlign: 'center' }}>
                 <p style={{
                   fontFamily: "'Permanent Marker', cursive", fontSize: '1.25rem',
-                  fontWeight: 300, color: 'rgba(242,237,228,0.45)', margin: '0 0 6px',
+                  fontWeight: 300, color: 'var(--text-muted)', margin: '0 0 6px',
                 }}>
                   Ask me anything about your brand
                 </p>
                 <p style={{
                   fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
-                  color: 'rgba(242,237,228,0.22)', letterSpacing: '0.06em', margin: 0,
+                  color: 'var(--text-muted)', opacity: 0.6, letterSpacing: '0.06em', margin: 0,
                 }}>
                   Inventory · Trends · Pricing · Marketing · Content
                 </p>
@@ -359,14 +359,14 @@ export default function Chat() {
                 {SUGGESTIONS.map(s => (
                   <button key={s} onClick={() => sendMessage(s)} style={{
                     padding: '7px 13px',
-                    background: 'rgba(47,158,110,0.06)',
-                    border: '1px solid rgba(47,158,110,0.18)',
-                    color: 'rgba(242,237,228,0.5)', cursor: 'pointer',
+                    background: 'var(--subtle-bg)',
+                    border: '1px solid var(--subtle-border)',
+                    color: 'var(--text-secondary)', cursor: 'pointer',
                     fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
                     transition: 'all 0.2s',
                   }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(47,158,110,0.12)'; e.currentTarget.style.color = GOLD }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(47,158,110,0.06)'; e.currentTarget.style.color = 'rgba(242,237,228,0.5)' }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--hover-bg)'; e.currentTarget.style.color = GOLD }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'var(--subtle-bg)'; e.currentTarget.style.color = 'var(--text-secondary)' }}
                   >{s}</button>
                 ))}
               </div>

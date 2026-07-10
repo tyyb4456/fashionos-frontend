@@ -14,8 +14,8 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
       style={{
         padding: '10px 12px',
         background: isActive
-          ? 'rgba(47,158,110,0.1)'
-          : hovered ? 'rgba(242,237,228,0.04)' : 'transparent',
+          ? 'var(--active-nav)'
+          : hovered ? 'var(--hover-bg)' : 'transparent',
         borderLeft: `2px solid ${isActive ? GOLD : 'transparent'}`,
         cursor: 'pointer',
         display: 'flex', flexDirection: 'column', gap: 3,
@@ -24,11 +24,11 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-        <MessageSquare size={11} color={isActive ? GOLD : 'rgba(242,237,228,0.3)'}
+        <MessageSquare size={11} color={isActive ? GOLD : 'var(--text-muted)'}
           style={{ flexShrink: 0, marginTop: 2 }} />
         <span style={{
           fontFamily: "'Inter', sans-serif", fontSize: '0.73rem',
-          color: isActive ? '#F2EDE4' : 'rgba(242,237,228,0.65)',
+          color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
           lineHeight: 1.4, flex: 1,
           overflow: 'hidden', display: '-webkit-box',
           WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
@@ -40,11 +40,11 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
             onClick={e => { e.stopPropagation(); onDelete(convo.thread_id) }}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: 'rgba(242,237,228,0.3)', padding: '1px 3px', flexShrink: 0,
+              color: 'var(--text-muted)', padding: '1px 3px', flexShrink: 0,
               transition: 'color 0.15s',
             }}
             onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
-            onMouseLeave={e => e.currentTarget.style.color = 'rgba(242,237,228,0.3)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
             title="Delete"
           >
             <Trash2 size={11} />
@@ -53,7 +53,7 @@ function ConvoItem({ convo, isActive, onSelect, onDelete }) {
       </div>
       <span style={{
         fontFamily: "'Inter', sans-serif", fontSize: '0.58rem',
-        color: 'rgba(242,237,228,0.25)', letterSpacing: '0.06em',
+        color: 'var(--text-muted)', opacity: 0.8, letterSpacing: '0.06em',
         paddingLeft: 17,
       }}>
         {relativeTime(convo.updated_at)}
@@ -73,9 +73,9 @@ export default function ConversationsSidebar({
       <div style={{
         width: collapsed ? 0 : 240,
         minWidth: collapsed ? 0 : 240,
-        borderRight: collapsed ? 'none' : '1px solid rgba(47,158,110,0.12)',
+        borderRight: collapsed ? 'none' : '1px solid var(--sidebar-border)',
         display: 'flex', flexDirection: 'column',
-        background: '#0B1310',
+        background: 'var(--sidebar-gradient)',
         transition: 'width 0.25s ease, min-width 0.25s ease',
         overflow: 'hidden',
         position: isMobile ? 'absolute' : 'relative',
@@ -88,13 +88,13 @@ export default function ConversationsSidebar({
         {/* Sidebar header */}
         <div style={{
           padding: '18px 14px 12px',
-          borderBottom: '1px solid rgba(47,158,110,0.1)',
+          borderBottom: '1px solid var(--card-border)',
           flexShrink: 0,
         }}>
           <div style={{
             fontFamily: "'Inter', sans-serif", fontSize: '0.58rem',
             letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: 'rgba(242,237,228,0.3)', marginBottom: 10,
+            color: 'var(--text-muted)', marginBottom: 10,
           }}>
             Conversations
           </div>
@@ -102,16 +102,16 @@ export default function ConversationsSidebar({
             onClick={onNewThread}
             style={{
               width: '100%', padding: '8px 10px',
-              background: 'rgba(47,158,110,0.08)',
-              border: '1px solid rgba(47,158,110,0.22)',
+              background: 'var(--subtle-bg)',
+              border: '1px solid var(--subtle-border)',
               color: GOLD, cursor: 'pointer',
               fontFamily: "'Inter', sans-serif", fontSize: '0.7rem',
               letterSpacing: '0.08em', textTransform: 'uppercase',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(47,158,110,0.14)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'rgba(47,158,110,0.08)'}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--hover-bg)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'var(--subtle-bg)'}
           >
             <Plus size={12} /> New Chat
           </button>
@@ -124,14 +124,14 @@ export default function ConversationsSidebar({
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               padding: 24,
             }}>
-              <Loader2 size={16} color="rgba(47,158,110,0.4)"
+              <Loader2 size={16} color="var(--gold)"
                 style={{ animation: 'spin 1s linear infinite' }} />
             </div>
           ) : conversations.length === 0 ? (
             <div style={{
               padding: '20px 14px',
               fontFamily: "'Inter', sans-serif", fontSize: '0.68rem',
-              color: 'rgba(242,237,228,0.2)', textAlign: 'center', lineHeight: 1.6,
+              color: 'var(--text-muted)', opacity: 0.6, textAlign: 'center', lineHeight: 1.6,
             }}>
               No conversations yet.<br />Start a new chat.
             </div>
@@ -158,10 +158,10 @@ export default function ConversationsSidebar({
             left: collapsed ? 0 : 240,
             top: '50%', transform: 'translateY(-50%)',
             zIndex: 10,
-            background: '#16211C',
-            border: '1px solid rgba(47,158,110,0.2)',
-            borderLeft: collapsed ? '1px solid rgba(47,158,110,0.2)' : 'none',
-            color: 'rgba(242,237,228,0.4)',
+            background: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+            borderLeft: collapsed ? '1px solid var(--card-border)' : 'none',
+            color: 'var(--text-muted)',
             cursor: 'pointer', padding: '6px 4px',
             transition: 'left 0.25s ease',
           }}

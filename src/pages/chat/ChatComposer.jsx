@@ -10,14 +10,14 @@ const ChatComposer = forwardRef(function ChatComposer(
   return (
     <div style={{
       padding: isMobileView ? '10px 12px 14px' : '12px 24px 18px',
-      borderTop: '1px solid rgba(47,158,110,0.1)',
+      borderTop: '1px solid var(--card-border)',
       position: 'relative', zIndex: 1, flexShrink: 0,
-      background: 'rgba(13,13,13,0.96)',
+      background: 'var(--card-bg)',
     }}>
       <div style={{
         display: 'flex', gap: 10, alignItems: 'flex-end',
-        background: '#111',
-        border: `1px solid rgba(47,158,110,${isStreaming ? '0.32' : '0.18'})`,
+        background: 'var(--input-bg)',
+        border: `1px solid var(--input-border)`,
         padding: '9px 11px', transition: 'border-color 0.2s',
       }}>
         <textarea
@@ -31,7 +31,7 @@ const ChatComposer = forwardRef(function ChatComposer(
           style={{
             flex: 1, background: 'transparent', border: 'none', outline: 'none',
             resize: 'none', fontFamily: "'Inter', sans-serif", fontSize: '0.82rem',
-            color: '#F2EDE4', lineHeight: 1.5,
+            color: 'var(--text-primary)', lineHeight: 1.5,
             minHeight: 22, maxHeight: 120, overflowY: 'auto',
             padding: 0, opacity: isStreaming ? 0.5 : 1,
           }}
@@ -45,7 +45,7 @@ const ChatComposer = forwardRef(function ChatComposer(
           disabled={!input.trim() || isStreaming}
           style={{
             width: 33, height: 33, flexShrink: 0,
-            background: (!input.trim() || isStreaming) ? 'rgba(47,158,110,0.12)' : GOLD,
+            background: (!input.trim() || isStreaming) ? 'var(--subtle-bg)' : GOLD,
             border: 'none', cursor: (!input.trim() || isStreaming) ? 'not-allowed' : 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'background 0.2s',
@@ -53,12 +53,12 @@ const ChatComposer = forwardRef(function ChatComposer(
         >
           {isStreaming
             ? <Loader2 size={13} color={GOLD} style={{ animation: 'spin 1s linear infinite' }} />
-            : <Send    size={13} color={!input.trim() ? 'rgba(47,158,110,0.35)' : '#0D1512'} />}
+            : <Send    size={13} color={!input.trim() ? 'var(--text-muted)' : 'var(--bg)'} />}
         </button>
       </div>
       <p style={{
         fontFamily: "'Inter', sans-serif", fontSize: '0.57rem',
-        color: 'rgba(242,237,228,0.18)', letterSpacing: '0.07em',
+        color: 'var(--text-muted)', opacity: 0.8, letterSpacing: '0.07em',
         marginTop: 6, marginBottom: 0, textAlign: 'center',
       }}>
         Enter to send · Shift+Enter for new line · Agents run live

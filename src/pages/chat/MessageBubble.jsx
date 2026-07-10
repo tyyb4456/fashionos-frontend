@@ -20,18 +20,18 @@ export default function MessageBubble({ msg }) {
       }}>
         <div style={{
           width: 22, height: 22,
-          background: isUser ? GOLD_DIM : 'rgba(242,237,228,0.06)',
-          border: `1px solid ${isUser ? 'rgba(47,158,110,0.35)' : 'rgba(242,237,228,0.1)'}`,
+          background: isUser ? GOLD_DIM : 'var(--subtle-bg)',
+          border: `1px solid ${isUser ? 'var(--card-border)' : 'var(--subtle-border)'}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           {isUser
             ? <User size={11} color={GOLD} />
-            : <Bot  size={11} color="rgba(242,237,228,0.45)" />}
+            : <Bot  size={11} color="var(--text-muted)" />}
         </div>
         <span style={{
           fontFamily: "'Inter', sans-serif", fontSize: '0.58rem',
           letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: isUser ? GOLD : 'rgba(242,237,228,0.28)',
+          color: isUser ? GOLD : 'var(--text-muted)',
         }}>
           {isUser ? 'You' : 'FashionOS'}
         </span>
@@ -53,20 +53,20 @@ export default function MessageBubble({ msg }) {
       {(isUser || msg.content) && (
         <div style={{
           maxWidth: window.innerWidth <= 768 ? '92%' : '80%',
-          background: isUser ? GOLD_DIM : '#14201B',
-          border: `1px solid ${isUser ? 'rgba(47,158,110,0.22)' : 'rgba(242,237,228,0.07)'}`,
+          background: isUser ? GOLD_DIM : 'var(--card-bg)',
+          border: `1px solid ${isUser ? 'var(--card-border)' : 'var(--card-border)'}`,
           padding: '11px 15px',
         }}>
           {msg.content ? (
             <MarkdownContent
               text={msg.content}
-              color={isUser ? '#F2EDE4' : 'rgba(242,237,228,0.8)'}
+              color={isUser ? 'var(--text-primary)' : 'var(--text-body)'}
               fontSize="0.82rem"
             />
           ) : (
             <p style={{
               fontFamily: "'Inter', sans-serif", fontSize: '0.82rem',
-              lineHeight: 1.7, color: 'rgba(242,237,228,0.8)', margin: 0,
+              lineHeight: 1.7, color: 'var(--text-body)', margin: 0,
             }}>
               {msg.streaming ? '' : '…'}
             </p>
@@ -87,8 +87,8 @@ export default function MessageBubble({ msg }) {
         <div style={{
           display: 'flex', alignItems: 'center', gap: 5,
           padding: '12px 18px',
-          background: '#14201B',
-          border: '1px solid rgba(242,237,228,0.07)',
+          background: 'var(--card-bg)',
+          border: '1px solid var(--card-border)',
           height: 36,
         }}>
           <div style={{
