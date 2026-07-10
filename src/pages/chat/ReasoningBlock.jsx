@@ -65,7 +65,7 @@ export default function ReasoningBlock({ text, streaming }) {
             flex: 1,
           }}
         >
-          {streaming ? 'Thinking…' : 'Thinking Process'}
+          {streaming ? 'thinking…' : 'thinking'}
         </span>
         {expanded ? (
           <ChevronUp size={12} style={{ color: 'var(--text-muted)', opacity: hovered ? 1 : 0.6, transition: 'opacity 0.2s' }} />
@@ -91,4 +91,4 @@ export default function ReasoningBlock({ text, streaming }) {
       )}
     </div>
   )
-}
+}
