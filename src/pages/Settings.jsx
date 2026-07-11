@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Check, ExternalLink, Trash2 } from 'lucide-react'
 
 const gradBtn = {
-  background: 'linear-gradient(135deg, #191919, #e05e38)',
+  background: 'linear-gradient(135deg, #191919, #d4d4d8)',
   color: 'white', border: 'none',
 }
 
@@ -45,7 +45,7 @@ function Field({ label, name, value, onChange, placeholder }) {
     <div>
       <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>{label}</label>
       <input name={name} value={value} onChange={onChange} placeholder={placeholder} style={inputBase}
-        onFocus={e => e.target.style.borderColor = '#e05e38'}
+        onFocus={e => e.target.style.borderColor = '#d4d4d8'}
         onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
     </div>
   )
@@ -86,7 +86,7 @@ export default function Settings() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(224,94,56,0.22)', borderTopColor: '#e05e38' }} />
+        style={{ borderColor: 'rgba(212,212,216,0.22)', borderTopColor: '#d4d4d8' }} />
     </div>
   )
 
@@ -140,7 +140,7 @@ export default function Settings() {
             <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Shop name</label>
             <input value={shopInput} onChange={e => setShopInput(e.target.value)}
               placeholder="mybrand (without .myshopify.com)" style={inputBase}
-              onFocus={e => e.target.style.borderColor = '#e05e38'}
+              onFocus={e => e.target.style.borderColor = '#d4d4d8'}
               onBlur={e => e.target.style.borderColor = 'var(--input-border)'} />
           </div>
         )}

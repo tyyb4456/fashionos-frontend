@@ -16,7 +16,7 @@ export default function Runs() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(224,94,56,0.22)', borderTopColor: '#e05e38' }} />
+        style={{ borderColor: 'rgba(212,212,216,0.22)', borderTopColor: '#d4d4d8' }} />
     </div>
   )
 
@@ -31,7 +31,7 @@ export default function Runs() {
         {runs.map(run => (
           <div key={run.run_id} onClick={() => nav(`/runs/${run.run_id}`)}
             className="page-inner-card p-4 cursor-pointer"
-            onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(224,94,56,0.45)'}
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(212,212,216,0.45)'}
             onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--item-border)'}
           >
             <div className="flex items-start justify-between">

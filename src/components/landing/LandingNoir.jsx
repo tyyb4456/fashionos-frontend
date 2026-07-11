@@ -4,7 +4,7 @@ import { useAuth, SignInButton } from '@clerk/clerk-react'
 import { Sparkles, ArrowRight, ArrowDown, ChevronRight, ChevronLeft, CheckCircle2, Zap } from 'lucide-react'
 import { agents, howItWorksSteps, integrations, marqueeItems } from './LandingData.jsx'
 
-const GOLD = '#e05e38'
+const GOLD = '#d4d4d8'
 const BG = '#1e1e1e'
 const CREAM = '#f0eeeb'
 
@@ -88,13 +88,13 @@ export default function LandingNoir() {
         innerClass += " !opacity-100"
       } else {
         slideClass += " hover:z-5 hover:scale-[1.02]"
-        innerClass += " hover:border-[#e05e38]/55 hover:shadow-[0_24px_48px_rgba(140,120,100,0.12),0_0_24px_rgba(224,94,56,0.06)]"
+        innerClass += " hover:border-[#d4d4d8]/55 hover:shadow-[0_24px_48px_rgba(140,120,100,0.12),0_0_24px_rgba(212,212,216,0.06)]"
       }
     } else {
       const centerIndex = agentIndex + 1
       if (index === centerIndex) {
         slideClass += " z-[4] scale-[1.06] -translate-y-2.5 origin-bottom"
-        innerClass += " border-[#e05e38]/45 shadow-[0_30px_60px_rgba(140,120,100,0.15),0_0_30px_rgba(224,94,56,0.1)]"
+        innerClass += " border-[#d4d4d8]/45 shadow-[0_30px_60px_rgba(140,120,100,0.15),0_0_30px_rgba(212,212,216,0.1)]"
       } else if (index === centerIndex - 1) {
         slideClass += " z-[2] scale-90 translate-y-2.5 -rotate-3 origin-bottom-right hover:z-[3] hover:scale-[0.94] hover:translate-y-1 hover:rotate-0"
         innerClass += " opacity-55 hover:opacity-90"
@@ -136,51 +136,51 @@ export default function LandingNoir() {
     <div className="bg-[#1e1e1e] text-[#f0eeeb] font-montserrat min-h-screen overflow-x-hidden relative">
 
       {/* Background Ambience */}
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(224,94,56,0.06)_0%,rgba(224,94,56,0)_70%)] blur-[100px] pointer-events-none z-0 -top-[100px] -left-[100px] animate-[float-slow_25s_infinite_alternate_ease-in-out]" />
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(224,94,56,0.06)_0%,rgba(224,94,56,0)_70%)] blur-[100px] pointer-events-none z-0 top-[35%] -right-[200px] animate-[float-slow_30s_infinite_alternate-reverse_ease-in-out]" />
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(224,94,56,0.06)_0%,rgba(224,94,56,0)_70%)] blur-[100px] pointer-events-none z-0 bottom-[10%] -left-[200px] animate-[float-slow_28s_infinite_alternate_ease-in-out]" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 -top-[100px] -left-[100px] animate-[float-slow_25s_infinite_alternate_ease-in-out]" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 top-[35%] -right-[200px] animate-[float-slow_30s_infinite_alternate-reverse_ease-in-out]" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 bottom-[10%] -left-[200px] animate-[float-slow_28s_infinite_alternate_ease-in-out]" />
 
       {/* ── Navbar ────────────────────────────────────── */}
       <nav className={`fixed top-0 left-0 right-0 z-[100] flex items-center justify-between border-b transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
         ${isScrolled
-          ? 'py-4 px-10 lg:px-16 bg-[#1e1e1e]/88 border-[#e05e38]/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
-          : 'py-6 px-10 lg:px-16 bg-[#1e1e1e]/72 border-[#e05e38]/10'
+          ? 'py-4 px-10 lg:px-16 bg-[#1e1e1e]/88 border-[#d4d4d8]/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
+          : 'py-6 px-10 lg:px-16 bg-[#1e1e1e]/72 border-[#d4d4d8]/10'
         }`}
       >
-        <div className="font-cormorant text-[1.6rem] font-bold tracking-[0.16em] uppercase text-[#e05e38] flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <div className="font-cormorant text-[1.6rem] font-bold tracking-[0.16em] uppercase text-[#d4d4d8] flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           FASHION<span className="text-[#f0eeeb]">OS</span>{' '}
           <Zap size={14} fill={GOLD} stroke="none" style={{ marginLeft: -2 }} />
         </div>
 
         <div className="hidden min-[901px]:flex gap-12 text-[0.72rem] uppercase tracking-[0.2em] text-[#f0eeeb]/55">
-          <a href="#agents" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#e05e38]">Atelier</a>
-          <a href="#integrations" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#e05e38]">Connectivity</a>
-          <a href="#process" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#e05e38]">Method</a>
+          <a href="#agents" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#d4d4d8]">Atelier</a>
+          <a href="#integrations" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#d4d4d8]">Connectivity</a>
+          <a href="#process" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#d4d4d8]">Method</a>
         </div>
 
         {isSignedIn ? (
-          <button className="py-2.5 px-7 border-none rounded-[6px] text-[#1e1e1e] bg-[#e05e38] text-[0.7rem] font-bold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#e87c5d] hover:-translate-y-[1px] hover:shadow-[0_0_20px_rgba(224,94,56,0.4)]" onClick={() => navigate('/dashboard')}>
+          <button className="py-2.5 px-7 border-none rounded-[6px] text-[#1e1e1e] bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[0.7rem] font-bold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:from-white hover:to-zinc-300 hover:-translate-y-[1px] hover:shadow-[0_0_20px_rgba(212,212,216,0.4)]" onClick={() => navigate('/dashboard')}>
             Dashboard
           </button>
         ) : (
           <SignInButton mode="modal">
-            <button className="py-2.5 px-7 border border-[#e05e38] rounded-[6px] text-[#e05e38] bg-transparent text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#e05e38] hover:text-[#1e1e1e] hover:shadow-[0_0_15px_rgba(224,94,56,0.3)]">Sign In</button>
+            <button className="py-2.5 px-7 border border-[#d4d4d8] rounded-[6px] text-[#d4d4d8] bg-transparent text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-gradient-to-r hover:from-zinc-300 hover:via-zinc-100 hover:to-zinc-400 hover:text-[#1e1e1e] hover:shadow-[0_0_15px_rgba(212,212,216,0.3)]">Sign In</button>
           </SignInButton>
         )}
       </nav>
 
       {/* ── Hero ──────────────────────────────────────── */}
-      <section className="flex flex-col-reverse min-[901px]:flex-row min-h-screen pt-[88px] border-b border-[#e05e38]/10 relative overflow-hidden" ref={heroRef}>
+      <section className="flex flex-col-reverse min-[901px]:flex-row min-h-screen pt-[88px] border-b border-[#d4d4d8]/10 relative overflow-hidden" ref={heroRef}>
         {/* Left: Text */}
         <div className="flex-1 flex flex-col justify-center z-[2] p-[56px_32px] min-[901px]:p-[48px_40px_64px_48px] lg:p-[64px_64px_80px_80px] reveal-on-scroll">
-          <div className="text-[0.68rem] uppercase tracking-[0.3em] text-[#e05e38] mb-6 flex items-center gap-2 font-semibold">
+          <div className="text-[0.68rem] uppercase tracking-[0.3em] text-[#d4d4d8] mb-6 flex items-center gap-2 font-semibold">
             <Sparkles size={13} fill={GOLD} stroke="none" />
             LangGraph · 8 Agents · Gemini Autopilot
           </div>
 
           <h1 className="font-cormorant text-[clamp(3.4rem,5.5vw,5.8rem)] leading-[0.95] font-light text-[#f0eeeb] m-[0_0_28px]">
             Run Your<br />
-            <em className="italic font-normal bg-[linear-gradient(90deg,#F2EDE4_0%,#e05e38_50%,#F2EDE4_100%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-[text-shimmer_6s_linear_infinite] drop-shadow-[0_0_20px_rgba(224,94,56,0.25)]">Fashion Brand</em><br />
+            <em className="italic font-normal bg-[linear-gradient(90deg,#F2EDE4_0%,#d4d4d8_50%,#F2EDE4_100%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-[text-shimmer_6s_linear_infinite] drop-shadow-[0_0_20px_rgba(212,212,216,0.25)]">Fashion Brand</em><br />
             on Autopilot
           </h1>
 
@@ -190,20 +190,20 @@ export default function LandingNoir() {
 
           <div className="flex items-center gap-4 sm:gap-7 flex-wrap">
             {isSignedIn ? (
-              <button className="py-[18px] px-11 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(224,94,56,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]" onClick={() => navigate('/dashboard')}>
+              <button className="py-[18px] px-11 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:from-white hover:to-zinc-300 hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(212,212,216,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]" onClick={() => navigate('/dashboard')}>
                 Go to Dashboard
                 <ArrowRight size={15} />
               </button>
             ) : (
               <SignInButton mode="modal">
-                <button className="py-[18px] px-11 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(224,94,56,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]">
+                <button className="py-[18px] px-11 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:from-white hover:to-zinc-300 hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(212,212,216,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]">
                   Get Started
                   <ArrowRight size={15} />
                 </button>
               </SignInButton>
             )}
             <button
-              className="font-cormorant text-[1.3rem] italic text-[#e05e38] cursor-pointer border-none border-b border-[#e05e38]/40 pb-0.5 transition-all duration-250 bg-none flex items-center gap-1.5 hover:text-[#e87c5d] hover:border-b-[#e87c5d] hover:pl-1"
+              className="font-cormorant text-[1.3rem] italic text-[#d4d4d8] cursor-pointer border-none border-b border-[#d4d4d8]/40 pb-0.5 transition-all duration-250 bg-none flex items-center gap-1.5 hover:text-[#ffffff] hover:border-b-[#ffffff] hover:pl-1"
               onClick={() => document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' })}
             >
               View the pipeline
@@ -227,7 +227,7 @@ export default function LandingNoir() {
               alt="Fashion editorial background"
               className="absolute inset-0 w-full h-full object-cover object-[center_30%] animate-[hero-ken-burns_24s_ease-in-out_infinite_alternate] saturate-[1.05] contrast-[1.05]"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(150deg,rgba(224,94,56,0.26)_0%,rgba(30,30,30,0.06)_45%,rgba(30,30,30,0.48)_100%)] mix-blend-overlay pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(150deg,rgba(212,212,216,0.26)_0%,rgba(30,30,30,0.06)_45%,rgba(30,30,30,0.48)_100%)] mix-blend-overlay pointer-events-none" />
             <div className="absolute inset-0 opacity-6 pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22180%22%20height=%22180%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23n)%22/%3E%3C/svg%3E')]" />
           </div>
 
@@ -237,7 +237,7 @@ export default function LandingNoir() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #161616 0%, transparent 12%)' }} />
 
           {/* Stat bar */}
-          <div className="absolute bottom-12 left-12 z-[5] flex items-stretch bg-[#1e1e1e]/52 backdrop-blur-[20px] backdrop-saturate-[140%] border border-[#e05e38]/20 rounded-[14px] overflow-hidden divide-x divide-[#e05e38]/15 reveal-on-scroll reveal-delay-2">
+          <div className="absolute bottom-12 left-12 z-[5] flex items-stretch bg-[#1e1e1e]/52 backdrop-blur-[20px] backdrop-saturate-[140%] border border-[#d4d4d8]/20 rounded-[14px] overflow-hidden divide-x divide-[#d4d4d8]/15 reveal-on-scroll reveal-delay-2">
             {[
               { label: 'Agents', val: '8' },
               { label: 'Uptime', val: '24/7' },
@@ -245,7 +245,7 @@ export default function LandingNoir() {
             ].map(s => (
               <div key={s.label} className="py-4 px-[26px] flex flex-col gap-1.25">
                 <span className="text-[0.58rem] uppercase tracking-[0.18em] text-[#f0eeeb]/45">{s.label}</span>
-                <span className="font-cormorant text-[1.2rem] text-[#e05e38] font-medium">{s.val}</span>
+                <span className="font-cormorant text-[1.2rem] text-[#d4d4d8] font-medium">{s.val}</span>
               </div>
             ))}
           </div>
@@ -253,14 +253,14 @@ export default function LandingNoir() {
       </section>
 
       {/* ── Marquee ───────────────────────────────────── */}
-      <div className="overflow-hidden relative py-7 bg-[#171717]/55 backdrop-blur-[5px] border-b border-[#e05e38]/10">
+      <div className="overflow-hidden relative py-7 bg-[#171717]/55 backdrop-blur-[5px] border-b border-[#d4d4d8]/10">
         <div className="absolute left-0 top-0 bottom-0 w-[120px] bg-gradient-to-r from-[#1e1e1e] to-transparent z-[2]" />
         <div className="absolute right-0 top-0 bottom-0 w-[120px] bg-gradient-to-l from-[#1e1e1e] to-transparent z-[2]" />
         <div className="flex w-max animate-marquee-noir hover:[animation-play-state:paused]">
           {allMarquee.map((item, i) => {
             const IconComponent = item.Icon
             return (
-              <div key={i} className="shrink-0 px-12 flex items-center gap-3 font-cormorant text-[1.45rem] uppercase tracking-[0.15em] text-[#f0eeeb]/40 whitespace-nowrap transition-colors duration-300 hover:text-[#e05e38]">
+              <div key={i} className="shrink-0 px-12 flex items-center gap-3 font-cormorant text-[1.45rem] uppercase tracking-[0.15em] text-[#f0eeeb]/40 whitespace-nowrap transition-colors duration-300 hover:text-[#d4d4d8]">
                 {IconComponent && <IconComponent size={20} color={item.color || GOLD} />}
                 <span>{item.label}</span>
               </div>
@@ -270,10 +270,10 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Agents ("The Atelier") ────────────────────── */}
-      <div id="agents" className="border-b border-[#e05e38]/8 bg-[#F7F4EE] border-t border-[#8c7864]/12">
+      <div id="agents" className="border-b border-[#d4d4d8]/8 bg-[#F7F4EE] border-t border-[#8c7864]/12">
         <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
           <div className="mb-16 reveal-on-scroll">
-            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#1C1917]">The <em className="text-[#e05e38] italic font-normal">Atelier</em></div>
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#1C1917]">The <em className="text-[#d4d4d8] italic font-normal">Atelier</em></div>
             <p className="text-[1.02rem] font-light leading-[1.8] text-[#1c1917]/65 max-w-[580px] m-0">
               Eight specialized agents operating in a sequenced pipeline managed by LangGraph. High-risk actions route to approvals, safe operations run autonomously.
             </p>
@@ -282,7 +282,7 @@ export default function LandingNoir() {
           <div className="relative reveal-on-scroll sm:mx-[-8px] max-[640px]:mx-0">
             {/* Arrows — hidden on mobile via CSS */}
             <button
-              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 left-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#e05e38] hover:text-[#e05e38] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
+              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 left-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#d4d4d8] hover:text-[#d4d4d8] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
               onClick={prevAgent}
               disabled={agentIndex === 0}
               aria-label="Previous agents"
@@ -311,16 +311,16 @@ export default function LandingNoir() {
                     >
                       <div className={`group/card ${innerClass}`}>
                         <div className="flex justify-between items-center mb-6 max-[640px]:mb-5 max-[640px]:items-start">
-                          <div className="w-12 h-12 rounded-lg bg-[#e05e38]/8 border border-[#e05e38]/20 flex items-center justify-center text-[#e05e38] transition-all duration-300 group-hover/card:bg-[#e05e38] group-hover/card:text-white max-[640px]:w-[52px] max-[640px]:h-[52px] max-[640px]:rounded-[14px] max-[640px]:bg-[#e05e38]/14 max-[640px]:border-[#e05e38]/35">
+                          <div className="w-12 h-12 rounded-lg bg-[#d4d4d8]/8 border border-[#d4d4d8]/20 flex items-center justify-center text-[#d4d4d8] transition-all duration-300 group-hover/card:bg-[#d4d4d8] group-hover/card:text-white max-[640px]:w-[52px] max-[640px]:h-[52px] max-[640px]:rounded-[14px] max-[640px]:bg-[#d4d4d8]/14 max-[640px]:border-[#d4d4d8]/35">
                             {Icon && <Icon size={22} />}
                           </div>
-                          <span className="font-cormorant text-[2.4rem] italic text-[#e05e38]/30 leading-none font-light max-[640px]:text-[4rem] max-[640px]:text-[#e05e38]/18 max-[640px]:absolute max-[640px]:top-6 max-[640px]:right-6">{agent.step}</span>
+                          <span className="font-cormorant text-[2.4rem] italic text-[#d4d4d8]/30 leading-none font-light max-[640px]:text-[4rem] max-[640px]:text-[#d4d4d8]/18 max-[640px]:absolute max-[640px]:top-6 max-[640px]:right-6">{agent.step}</span>
                         </div>
-                        <div className="font-cormorant text-[1.8rem] text-[#1C1917] mb-3 font-medium transition-colors duration-300 group-hover/card:text-[#e05e38] max-[640px]:text-2xl max-[640px]:text-[#F2EDE4] max-[640px]:mt-5 max-[640px]:mb-3 max-[640px]:leading-[1.1]">{agent.title}</div>
+                        <div className="font-cormorant text-[1.8rem] text-[#1C1917] mb-3 font-medium transition-colors duration-300 group-hover/card:text-[#d4d4d8] max-[640px]:text-2xl max-[640px]:text-[#F2EDE4] max-[640px]:mt-5 max-[640px]:mb-3 max-[640px]:leading-[1.1]">{agent.title}</div>
                         <p className="flex-1 text-[0.88rem] font-light leading-[1.75] text-[#1c1917]/62 max-[640px]:text-[0.9rem] max-[640px]:leading-[1.7] max-[640px]:text-[#f2ede4]/55 max-[640px]:mb-0">{agent.desc}</p>
 
                         <div className="mt-6 flex justify-start">
-                          <span className={`text-[0.58rem] uppercase tracking-[0.16em] py-1.25 px-3 rounded-full font-semibold border max-[640px]:text-[0.6rem] max-[640px]:py-1.5 max-[640px]:px-3.5 max-[640px]:tracking-[0.14em] max-[640px]:whitespace-nowrap ${agent.autoExec ? 'border-[#e05e38]/50 text-[#e05e38] bg-[#e05e38]/4 max-[640px]:border-[#e05e38]/35 max-[640px]:bg-[#e05e38]/5' : 'border-black/12 text-black/45 bg-black/2 max-[640px]:border-white/15 max-[640px]:text-white/45 max-[640px]:bg-white/2'}`}>
+                          <span className={`text-[0.58rem] uppercase tracking-[0.16em] py-1.25 px-3 rounded-full font-semibold border max-[640px]:text-[0.6rem] max-[640px]:py-1.5 max-[640px]:px-3.5 max-[640px]:tracking-[0.14em] max-[640px]:whitespace-nowrap ${agent.autoExec ? 'border-[#d4d4d8]/50 text-[#d4d4d8] bg-[#d4d4d8]/4 max-[640px]:border-[#d4d4d8]/35 max-[640px]:bg-[#d4d4d8]/5' : 'border-black/12 text-black/45 bg-black/2 max-[640px]:border-white/15 max-[640px]:text-white/45 max-[640px]:bg-white/2'}`}>
                             {agent.autoExec ? 'Autonomous Mode' : 'Requires Approval'}
                           </span>
                         </div>
@@ -332,7 +332,7 @@ export default function LandingNoir() {
             </div>
 
             <button
-              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 right-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#e05e38] hover:text-[#e05e38] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
+              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 right-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#d4d4d8] hover:text-[#d4d4d8] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
               onClick={nextAgent}
               disabled={agentIndex === maxAgentIndex}
               aria-label="Next agents"
@@ -346,8 +346,8 @@ export default function LandingNoir() {
             {Array.from({ length: maxAgentIndex + 1 }).map((_, i) => (
               <button
                 key={i}
-                className="relative h-2 rounded-full p-0 border-none cursor-pointer transition-all duration-300 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:w-[34px] before:h-[34px] before:-translate-x-1/2 before:-translate-y-1/2 max-[640px]:w-[7px] max-[640px]:h-[7px] bg-black/10 active:bg-[#e05e38]"
-                style={{ width: i === agentIndex ? '24px' : '8px', backgroundColor: i === agentIndex ? '#e05e38' : undefined, borderRadius: i === agentIndex ? '4px' : '50%' }}
+                className="relative h-2 rounded-full p-0 border-none cursor-pointer transition-all duration-300 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:w-[34px] before:h-[34px] before:-translate-x-1/2 before:-translate-y-1/2 max-[640px]:w-[7px] max-[640px]:h-[7px] bg-black/10 active:bg-[#d4d4d8]"
+                style={{ width: i === agentIndex ? '24px' : '8px', backgroundColor: i === agentIndex ? '#d4d4d8' : undefined, borderRadius: i === agentIndex ? '4px' : '50%' }}
                 onClick={() => goToAgent(i)}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -362,10 +362,10 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Integrations ("Seamless Connectivity") ──────── */}
-      <div id="integrations" className="border-b border-[#e05e38]/8 bg-[#141414]/88">
+      <div id="integrations" className="border-b border-[#d4d4d8]/8 bg-[#141414]/88">
         <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
           <div className="mb-16 reveal-on-scroll">
-            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">Seamless <em className="text-[#e05e38] italic font-normal">Connectivity</em></div>
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">Seamless <em className="text-[#d4d4d8] italic font-normal">Connectivity</em></div>
             <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/55 max-w-[580px] m-0">
               Your existing operations linked with read & write capabilities. Integrated directly via secure platform MCP clients.
             </p>
@@ -404,24 +404,24 @@ export default function LandingNoir() {
       </div>
 
       {/* ── How it Works ("The Method") ────────────────── */}
-      <div id="process" className="bg-[#141414]/50 border-b border-[#e05e38]/8">
+      <div id="process" className="bg-[#141414]/50 border-b border-[#d4d4d8]/8">
         <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
           <div className="mb-16 reveal-on-scroll" style={{ textAlign: 'center' }}>
-            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">The <em className="text-[#e05e38] italic font-normal">Method</em></div>
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">The <em className="text-[#d4d4d8] italic font-normal">Method</em></div>
             <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/52 max-w-[580px] mx-auto">
               How FashionOS integrates, schedules, coordinates, and runs your business 24/7.
             </p>
           </div>
 
           <div className="max-w-[800px] mx-auto reveal-on-scroll">
-            <div className="relative pl-16 border-l border-[#e05e38]/12 after:content-[''] after:absolute after:-left-[1px] after:bottom-0 after:h-[120px] after:w-[1px] after:bg-gradient-to-b after:from-[#e05e38]/12 after:to-transparent">
+            <div className="relative pl-16 border-l border-[#d4d4d8]/12 after:content-[''] after:absolute after:-left-[1px] after:bottom-0 after:h-[120px] after:w-[1px] after:bg-gradient-to-b after:from-[#d4d4d8]/12 after:to-transparent">
               {howItWorksSteps.map((step, i) => (
                 <div key={step.step} className="group/item relative pb-14 last:pb-0">
-                  <div className="absolute -left-[86px] top-0 w-11 h-11 rounded-full bg-[#1e1e1e] border border-[#e05e38]/30 flex items-center justify-center font-cormorant text-[1.25rem] italic text-[#e05e38] font-medium shadow-[0_0_15px_rgba(0,0,0,0.6)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:bg-[#e05e38] group-hover/item:text-[#1e1e1e] group-hover/item:border-[#e05e38] group-hover/item:shadow-[0_0_20px_rgba(224,94,56,0.5)] group-hover/item:scale-110">
+                  <div className="absolute -left-[86px] top-0 w-11 h-11 rounded-full bg-[#1e1e1e] border border-[#d4d4d8]/30 flex items-center justify-center font-cormorant text-[1.25rem] italic text-[#d4d4d8] font-medium shadow-[0_0_15px_rgba(0,0,0,0.6)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:bg-[#d4d4d8] group-hover/item:text-[#1e1e1e] group-hover/item:border-[#d4d4d8] group-hover/item:shadow-[0_0_20px_rgba(212,212,216,0.5)] group-hover/item:scale-110">
                     {step.step}
                   </div>
                   <div className="timeline-content">
-                    <div className="font-cormorant text-[1.6rem] text-[#f0eeeb] mb-2.5 font-medium transition-colors duration-300 group-hover/item:text-[#e05e38]">{step.title}</div>
+                    <div className="font-cormorant text-[1.6rem] text-[#f0eeeb] mb-2.5 font-medium transition-colors duration-300 group-hover/item:text-[#d4d4d8]">{step.title}</div>
                     <p className="text-[0.92rem] font-light leading-[1.8] text-[#f2ede4]/55">{step.desc}</p>
                   </div>
                 </div>
@@ -432,11 +432,11 @@ export default function LandingNoir() {
       </div>
 
       {/* ── CTA Section ───────────────────────────────── */}
-      <div className="py-[140px] px-16 text-center relative overflow-hidden border-t border-[#e05e38]/12 bg-[#F7F4EE] border-b border-[#8c7864]/12">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full blur-[100px] pointer-events-none bg-[radial-gradient(circle,rgba(224,94,56,0.1)_0%,rgba(224,94,56,0)_70%)]" />
+      <div className="py-[140px] px-16 text-center relative overflow-hidden border-t border-[#d4d4d8]/12 bg-[#F7F4EE] border-b border-[#8c7864]/12">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full blur-[100px] pointer-events-none bg-[radial-gradient(circle,rgba(212,212,216,0.1)_0%,rgba(212,212,216,0)_70%)]" />
         <div className="font-cormorant text-[clamp(2.8rem,5vw,4.8rem)] font-light text-[#1C1917] mb-6 leading-[1.1] relative z-[1] reveal-on-scroll">
           Automate Your Brand<br />
-          <em className="text-[#e05e38] italic font-normal">Without Losing Control</em>
+          <em className="text-[#d4d4d8] italic font-normal">Without Losing Control</em>
         </div>
         <p className="text-[1.05rem] font-light text-[#1c1917]/62 mb-14 relative z-[1] reveal-on-scroll reveal-delay-1">
           Zero coding required. Safe threshold validation safeguards your profit margins while automating day-to-day operations.
@@ -450,7 +450,7 @@ export default function LandingNoir() {
             'Symmetrical Safety Approval Queue',
           ].map(item => (
             <div key={item} className="flex items-center gap-2.5 text-[0.85rem] text-[#1c1917]/65">
-              <CheckCircle2 size={16} className="text-[#e05e38] shrink-0" />
+              <CheckCircle2 size={16} className="text-[#d4d4d8] shrink-0" />
               {item}
             </div>
           ))}
@@ -458,13 +458,13 @@ export default function LandingNoir() {
 
         <div className="reveal-on-scroll reveal-delay-3">
           {isSignedIn ? (
-            <button className="py-5 px-16 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.24em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-[1] shadow-[0_0_35px_rgba(224,94,56,0.15)] inline-flex items-center gap-3 hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(224,94,56,0.22)] max-[640px]:w-full max-[640px]:justify-center" onClick={() => navigate('/dashboard')}>
+            <button className="py-5 px-16 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.24em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-[1] shadow-[0_0_35px_rgba(212,212,216,0.15)] inline-flex items-center gap-3 hover:from-white hover:to-zinc-300 hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(212,212,216,0.22)] max-[640px]:w-full max-[640px]:justify-center" onClick={() => navigate('/dashboard')}>
               Go to Dashboard
               <ArrowRight size={16} />
             </button>
           ) : (
             <SignInButton mode="modal">
-              <button className="py-5 px-16 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.24em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-[1] shadow-[0_0_35px_rgba(224,94,56,0.15)] inline-flex items-center gap-3 hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(224,94,56,0.22)] max-[640px]:w-full max-[640px]:justify-center">
+              <button className="py-5 px-16 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.24em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-[1] shadow-[0_0_35px_rgba(212,212,216,0.15)] inline-flex items-center gap-3 hover:from-white hover:to-zinc-300 hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(212,212,216,0.22)] max-[640px]:w-full max-[640px]:justify-center">
                 Begin Setup
                 <ArrowRight size={16} />
               </button>
@@ -474,8 +474,8 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Footer ────────────────────────────────────── */}
-      <footer className="py-11 px-20 max-w-full flex items-center justify-between border-t border-[#e05e38]/12 flex-wrap gap-6 bg-[#171717] relative z-[2] max-[1024px]:py-9 max-[1024px]:px-10 max-[640px]:flex-col max-[640px]:text-center max-[640px]:gap-4">
-        <div className="font-cormorant text-[1.4rem] uppercase tracking-[0.16em] text-[#e05e38]">
+      <footer className="py-11 px-20 max-w-full flex items-center justify-between border-t border-[#d4d4d8]/12 flex-wrap gap-6 bg-[#171717] relative z-[2] max-[1024px]:py-9 max-[1024px]:px-10 max-[640px]:flex-col max-[640px]:text-center max-[640px]:gap-4">
+        <div className="font-cormorant text-[1.4rem] uppercase tracking-[0.16em] text-[#d4d4d8]">
           FASHION<span className="text-[#f0eeeb]">OS</span>{' '}
           <Zap size={12} fill={GOLD} stroke="none" style={{ verticalAlign: 'middle', marginTop: -2 }} />
         </div>

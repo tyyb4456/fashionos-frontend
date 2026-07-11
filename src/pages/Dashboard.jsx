@@ -32,8 +32,8 @@ const STYLES = `
     to   { opacity: 1; transform: translateY(0); }
   }
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(224,94,56,0); }
-    50%       { box-shadow: 0 0 0 6px rgba(224,94,56,0.1); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212,212,216,0); }
+    50%       { box-shadow: 0 0 0 6px rgba(212,212,216,0.1); }
   }
   @keyframes shimmer-text {
     to { background-position: 200% center; }
@@ -94,8 +94,8 @@ const STYLES = `
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
   .dash-inner-card:hover {
-    border-color: rgba(224,94,56,0.35);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 0 0 1px rgba(224,94,56,0.08);
+    border-color: rgba(212,212,216,0.35);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 0 0 1px rgba(212,212,216,0.08);
   }
 
   /* ── Tablet (≤ 1024px): 2 main cols ── */
@@ -119,7 +119,7 @@ const STYLES = `
 const Spinner = () => (
   <div className="flex items-center justify-center h-64">
     <div className="w-8 h-8 rounded-full border-2 animate-spin"
-      style={{ borderColor: 'rgba(224,94,56,0.18)', borderTopColor: '#e05e38' }} />
+      style={{ borderColor: 'rgba(212,212,216,0.18)', borderTopColor: '#d4d4d8' }} />
   </div>
 )
 
@@ -153,7 +153,7 @@ const LivePill = () => (
   </div>
 )
 
-const SectionLabel = ({ title, accent = '#e05e38', icon: Icon }) => (
+const SectionLabel = ({ title, accent = '#d4d4d8', icon: Icon }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
     <div style={{
       width: 3, height: 16, borderRadius: 2, flexShrink: 0,
@@ -173,8 +173,8 @@ const AgentChip = ({ name }) => (
   <span style={{
     fontSize: '0.58rem', fontWeight: 600, textTransform: 'capitalize',
     padding: '2px 7px', borderRadius: 99,
-    background: 'rgba(224,94,56,0.1)',
-    border: '1px solid rgba(224,94,56,0.18)',
+    background: 'rgba(212,212,216,0.1)',
+    border: '1px solid rgba(212,212,216,0.18)',
     color: 'var(--gold)',
     whiteSpace: 'nowrap',
   }}>
@@ -224,8 +224,8 @@ export default function Dashboard() {
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               padding: '4px 11px', borderRadius: 99, marginBottom: 10,
-              background: 'rgba(224,94,56,0.08)',
-              border: '1px solid rgba(224,94,56,0.2)',
+              background: 'rgba(212,212,216,0.08)',
+              border: '1px solid rgba(212,212,216,0.2)',
             }}>
               <Zap size={10} style={{ color: 'var(--gold)' }} />
               <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.12em', color: 'var(--gold)', textTransform: 'uppercase' }}>
@@ -273,8 +273,8 @@ export default function Dashboard() {
               padding: '10px 20px', borderRadius: 12, flexShrink: 0,
               background: 'linear-gradient(135deg, var(--navy, #191919), var(--gold))',
               boxShadow: btnHov && !running
-                ? '0 8px 28px rgba(224,94,56,0.35)'
-                : '0 4px 16px rgba(224,94,56,0.2)',
+                ? '0 8px 28px rgba(212,212,216,0.35)'
+                : '0 4px 16px rgba(212,212,216,0.2)',
               color: '#F2EDE4', border: 'none',
               fontSize: '0.8rem', fontWeight: 600, letterSpacing: '0.03em',
               cursor: running ? 'not-allowed' : 'pointer',
@@ -294,7 +294,7 @@ export default function Dashboard() {
             borderRadius: 12, padding: '12px 16px', marginBottom: 20,
             background: 'var(--subtle-bg)',
             border: '1px solid var(--subtle-border)',
-            borderLeft: '3px solid rgba(224,94,56,0.5)',
+            borderLeft: '3px solid rgba(212,212,216,0.5)',
             display: 'flex', alignItems: 'flex-start', gap: 10,
             animation: 'slide-right 0.4s cubic-bezier(0.16,1,0.3,1) 0.05s both',
           }}>
@@ -324,8 +324,8 @@ export default function Dashboard() {
             <div style={{
               marginTop: 12, display: 'flex', alignItems: 'center', gap: 8,
               padding: '9px 14px', borderRadius: 10,
-              background: 'rgba(224,94,56,0.06)',
-              border: '1px solid rgba(224,94,56,0.15)',
+              background: 'rgba(212,212,216,0.06)',
+              border: '1px solid rgba(212,212,216,0.15)',
             }}>
               <Play size={12} style={{ color: 'var(--gold)' }} />
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Runs today</span>
@@ -346,9 +346,9 @@ export default function Dashboard() {
                 {/* Demand multiplier big display */}
                 <div style={{
                   borderRadius: 12, padding: '16px 18px', marginBottom: 14,
-                  background: isSeasonActive ? 'rgba(224,94,56,0.08)' : 'var(--inner-bg)',
-                  border: `1px solid ${isSeasonActive ? 'rgba(224,94,56,0.25)' : 'var(--item-border)'}`,
-                  borderLeft: `3px solid ${isSeasonActive ? 'var(--gold)' : 'rgba(224,94,56,0.3)'}`,
+                  background: isSeasonActive ? 'rgba(212,212,216,0.08)' : 'var(--inner-bg)',
+                  border: `1px solid ${isSeasonActive ? 'rgba(212,212,216,0.25)' : 'var(--item-border)'}`,
+                  borderLeft: `3px solid ${isSeasonActive ? 'var(--gold)' : 'rgba(212,212,216,0.3)'}`,
                 }}>
                   <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 6 }}>
                     Active Season
@@ -361,7 +361,7 @@ export default function Dashboard() {
                       <span style={{
                         display: 'inline-flex', alignItems: 'center', gap: 3,
                         padding: '2px 8px', borderRadius: 99,
-                        background: 'rgba(224,94,56,0.15)',
+                        background: 'rgba(212,212,216,0.15)',
                         color: 'var(--gold)',
                         fontSize: '0.68rem', fontWeight: 700,
                       }}>
@@ -585,7 +585,7 @@ function StatsPieCharts({ data }) {
   const alerts = Object.entries(alertsByAgentMap).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value,
-    color: agentColorMap[name.toLowerCase()] || '#e05e38',
+    color: agentColorMap[name.toLowerCase()] || '#d4d4d8',
   }))
   const totalAlerts = alerts.reduce((s, d) => s + d.value, 0)
 
@@ -598,7 +598,7 @@ function StatsPieCharts({ data }) {
     ? Math.round((autoCount / (autoCount + pendingCount)) * 100)
     : null
   const automation = [
-    { name: 'Auto-executed', value: autoCount,    color: '#e05e38' },
+    { name: 'Auto-executed', value: autoCount,    color: '#d4d4d8' },
     { name: 'Needs review',  value: pendingCount, color: '#f87171' },
   ].filter(d => d.value > 0)
   const totalAutomation = autoCount + pendingCount
@@ -644,8 +644,8 @@ function StatsPieCharts({ data }) {
           {autoRate !== null && (
             <div style={{
               marginTop: 10, padding: '8px 12px', borderRadius: 8,
-              background: 'rgba(224,94,56,0.07)',
-              border: '1px solid rgba(224,94,56,0.15)',
+              background: 'rgba(212,212,216,0.07)',
+              border: '1px solid rgba(212,212,216,0.15)',
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
               <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Auto Rate</span>
@@ -679,9 +679,9 @@ function RunRow({ run, crit, onClick }) {
         borderRadius: 11,
         background: hov ? 'var(--hover-bg)' : 'var(--inner-bg)',
         border: `1px solid ${hov
-          ? (crit ? 'rgba(239,68,68,0.28)' : 'rgba(224,94,56,0.28)')
+          ? (crit ? 'rgba(239,68,68,0.28)' : 'rgba(212,212,216,0.28)')
           : 'var(--item-border)'}`,
-        borderLeft: `3px solid ${crit ? 'rgba(239,68,68,0.5)' : 'rgba(224,94,56,0.4)'}`,
+        borderLeft: `3px solid ${crit ? 'rgba(239,68,68,0.5)' : 'rgba(212,212,216,0.4)'}`,
         cursor: 'pointer',
         transform: hov ? 'translateX(4px)' : 'translateX(0)',
         transition: 'transform 0.2s cubic-bezier(0.16,1,0.3,1), border-color 0.2s ease, background 0.2s ease',

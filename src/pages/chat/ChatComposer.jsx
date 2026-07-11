@@ -26,8 +26,8 @@ const ChatComposer = forwardRef(function ChatComposer(
         boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
       }}
         onFocusCapture={e => {
-          e.currentTarget.style.borderColor = 'rgba(224,94,56,0.45)'
-          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(224,94,56,0.08)'
+          e.currentTarget.style.borderColor = 'rgba(212,212,216,0.45)'
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(212,212,216,0.08)'
         }}
         onBlurCapture={e => {
           e.currentTarget.style.borderColor = 'var(--card-border)'
@@ -115,7 +115,7 @@ const ChatComposer = forwardRef(function ChatComposer(
             onMouseEnter={e => {
               if (input.trim() && !isStreaming) {
                 e.currentTarget.style.transform = 'scale(1.05)'
-                e.currentTarget.style.background = '#e87c5d'
+                e.currentTarget.style.background = '#ffffff'
               }
             }}
             onMouseLeave={e => {

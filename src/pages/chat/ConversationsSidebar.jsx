@@ -111,7 +111,7 @@ export default function ConversationsSidebar({
             }}
             onMouseEnter={e => {
               e.currentTarget.style.color = GOLD
-              e.currentTarget.style.borderColor = 'rgba(224,94,56,0.35)'
+              e.currentTarget.style.borderColor = 'rgba(212,212,216,0.35)'
             }}
             onMouseLeave={e => {
               e.currentTarget.style.color = 'var(--text-muted)'

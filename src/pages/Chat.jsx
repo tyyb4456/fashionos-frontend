@@ -17,7 +17,7 @@ function getGreeting() {
 }
 
 // Copper asterisk / starburst icon (Claude-inspired)
-function AsteriskLogo({ size = 40, color = '#e05e38' }) {
+function AsteriskLogo({ size = 40, color = '#d4d4d8' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M20 4 L20 36" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>

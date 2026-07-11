@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 const palette = {
-  gold:   { bar: '#e05e38', text: '#e05e38', rgb: '224,94,56'  },
-  teal:   { bar: '#e05e38', text: '#e05e38', rgb: '224,94,56'  },
+  gold:   { bar: '#d4d4d8', text: '#d4d4d8', rgb: '212,212,216'  },
+  teal:   { bar: '#d4d4d8', text: '#d4d4d8', rgb: '212,212,216'  },
   purple: { bar: '#a78bfa', text: '#a78bfa', rgb: '167,139,250' },
   red:    { bar: '#f87171', text: '#f87171', rgb: '239,68,68'   },
   yellow: { bar: '#facc15', text: '#facc15', rgb: '250,204,21'  },

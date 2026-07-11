@@ -27,7 +27,7 @@ export default function Returns() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(224,94,56,0.22)', borderTopColor: '#e05e38' }} />
+        style={{ borderColor: 'rgba(212,212,216,0.22)', borderTopColor: '#d4d4d8' }} />
     </div>
   )
 
@@ -43,8 +43,8 @@ export default function Returns() {
           <button key={f} onClick={() => setFilter(f)}
             className="px-3 py-1.5 text-xs capitalize transition-all"
             style={filter === f ? {
-              background: 'rgba(224,94,56,0.12)',
-              color: '#e05e38', border: '1px solid rgba(224,94,56,0.35)',
+              background: 'rgba(212,212,216,0.12)',
+              color: '#d4d4d8', border: '1px solid rgba(212,212,216,0.35)',
               fontFamily: "'Knewave', cursive", letterSpacing: '0.08em',
             } : { color: 'var(--text-secondary)', background: 'none', border: '1px solid transparent', cursor: 'pointer', fontFamily: "'Knewave', cursive" }}>
             {f}
