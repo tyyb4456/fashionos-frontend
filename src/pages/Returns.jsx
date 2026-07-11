@@ -35,7 +35,7 @@ export default function Returns() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">↩ Quality Intelligence</div>
-        <h1 className="page-title-shimmer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>Returns Fix Queue</h1>
+        <h1 className="page-title-shimmer" style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '2rem', fontWeight: 300 }}>Returns Fix Queue</h1>
         <div className="gradient-accent-line" />
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">
@@ -45,8 +45,8 @@ export default function Returns() {
             style={filter === f ? {
               background: 'rgba(224,94,56,0.12)',
               color: '#e05e38', border: '1px solid rgba(224,94,56,0.35)',
-              fontFamily: "'Inter', sans-serif", letterSpacing: '0.08em',
-            } : { color: 'var(--text-secondary)', background: 'none', border: '1px solid transparent', cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+              fontFamily: "'Knewave', cursive", letterSpacing: '0.08em',
+            } : { color: 'var(--text-secondary)', background: 'none', border: '1px solid transparent', cursor: 'pointer', fontFamily: "'Knewave', cursive" }}>
             {f}
           </button>
         ))}

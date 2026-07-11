@@ -30,7 +30,7 @@ export default function Content() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">✦ Content Pipeline</div>
-        <h1 className="page-title-shimmer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>Content Queue</h1>
+        <h1 className="page-title-shimmer" style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '2rem', fontWeight: 300 }}>Content Queue</h1>
         <div className="gradient-accent-line" />
       </div>
       <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>

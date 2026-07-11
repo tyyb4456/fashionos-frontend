@@ -16,7 +16,7 @@ export default function Badge({ level }) {
       letterSpacing: '0.1em', textTransform: 'uppercase',
       padding: '2px 8px',
       background: s.bg, border: `1px solid ${s.border}`, color: s.text,
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'Knewave', cursive",
     }}>
       {level}
     </span>

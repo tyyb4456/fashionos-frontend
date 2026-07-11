@@ -11,7 +11,7 @@ export default function HowItWorks() {
           Workflow
         </div>
         <h2 style={{
-          fontFamily: "'Fascinate Inline', cursive",
+          fontFamily: "'Alfa Slab One', serif",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)', margin: 0,
         }}>
@@ -36,13 +36,13 @@ export default function HowItWorks() {
               minWidth: 48, height: 48, borderRadius: 12,
               background: 'linear-gradient(135deg, #003152, #ADDFF1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Fascinate Inline', cursive", fontSize: '1.1rem', color: '#fff', flexShrink: 0,
+              fontFamily: "'Alfa Slab One', serif", fontSize: '1.1rem', color: '#fff', flexShrink: 0,
             }}>
               {item.step}
             </div>
 
             <div>
-              <h4 style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '1.1rem', color: 'var(--text-primary)', margin: '0 0 6px' }}>
+              <h4 style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '1.1rem', color: 'var(--text-primary)', margin: '0 0 6px' }}>
                 {item.title}
               </h4>
               <p style={{ fontSize: '0.87rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.65 }}>

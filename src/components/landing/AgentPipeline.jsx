@@ -14,7 +14,7 @@ export default function AgentPipeline() {
           Agent Pipeline
         </div>
         <h2 style={{
-          fontFamily: "'Fascinate Inline', cursive",
+          fontFamily: "'Alfa Slab One', serif",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)',
           margin: 0, lineHeight: 1.2,
@@ -79,7 +79,7 @@ export default function AgentPipeline() {
                   <Icon size={17} color={isHovered ? '#fff' : '#ADDFF1'} />
                 </div>
                 <span style={{
-                  fontFamily: "'Fascinate Inline', cursive",
+                  fontFamily: "'Alfa Slab One', serif",
                   fontSize: '1.4rem', color: isHovered ? '#ADDFF1' : 'var(--text-muted)',
                   opacity: isHovered ? 1 : 0.3, transition: 'all 0.25s',
                   lineHeight: 1,
@@ -90,7 +90,7 @@ export default function AgentPipeline() {
 
               {/* Title */}
               <h3 style={{
-                fontFamily: "'Fascinate Inline', cursive",
+                fontFamily: "'Alfa Slab One', serif",
                 fontSize: '1rem', color: 'var(--text-primary)', margin: '0 0 8px',
               }}>{a.title}</h3>
 

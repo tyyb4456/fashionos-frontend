@@ -35,7 +35,7 @@ export default function MessageBubble({ msg }) {
           </div>
         )}
         <span style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Knewave', cursive",
           fontSize: '0.65rem',
           letterSpacing: '0.06em',
           textTransform: 'uppercase',
@@ -77,7 +77,7 @@ export default function MessageBubble({ msg }) {
             />
           ) : (
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontSize: '0.875rem',
+              fontFamily: "'Knewave', cursive", fontSize: '0.875rem',
               lineHeight: 1.7, color: 'var(--text-body)', margin: 0,
             }}>
               {msg.streaming ? '' : '…'}

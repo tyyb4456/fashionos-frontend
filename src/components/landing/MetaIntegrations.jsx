@@ -14,7 +14,7 @@ export default function Integrations() {
           Platform Integrations
         </div>
         <h2 style={{
-          fontFamily: "'Fascinate Inline', cursive",
+          fontFamily: "'Alfa Slab One', serif",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)',
           margin: 0, lineHeight: 1.2,
@@ -69,7 +69,7 @@ export default function Integrations() {
               {/* Name + description */}
               <div>
                 <h3 style={{
-                  fontFamily: "'Fascinate Inline', cursive",
+                  fontFamily: "'Alfa Slab One', serif",
                   fontSize: '1rem', color: 'var(--text-primary)', margin: '0 0 6px',
                 }}>{m.name}</h3>
                 <p style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>

@@ -39,7 +39,7 @@ export default function CTABanner() {
         </div>
 
         <h2 style={{
-          fontFamily: "'Fascinate Inline', cursive",
+          fontFamily: "'Alfa Slab One', serif",
           fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
           color: 'var(--text-primary)', margin: '0 0 14px', lineHeight: 1.2,
         }}>

@@ -14,12 +14,12 @@ function Tab({ label, active, count, onClick }) {
       style={active ? {
         background: 'rgba(224,94,56,0.12)',
         color: '#e05e38', border: '1px solid rgba(224,94,56,0.35)',
-        fontFamily: "'Inter', sans-serif", fontSize: '0.72rem',
+        fontFamily: "'Knewave', cursive", fontSize: '0.72rem',
         letterSpacing: '0.1em', textTransform: 'uppercase',
       } : {
         color: 'var(--text-secondary)', background: 'none',
         border: '1px solid transparent', cursor: 'pointer',
-        fontFamily: "'Inter', sans-serif", fontSize: '0.72rem',
+        fontFamily: "'Knewave', cursive", fontSize: '0.72rem',
         letterSpacing: '0.1em', textTransform: 'uppercase',
       }}
     >
@@ -202,7 +202,7 @@ export default function Approvals() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">✓ Pending Decisions</div>
-        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Approvals</h1>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Alfa Slab One', serif" }}>Approvals</h1>
         <div className="gradient-accent-line" />
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none whitespace-nowrap">

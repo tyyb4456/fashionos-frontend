@@ -1,5 +1,57 @@
 @import "tailwindcss";
 
+@theme {
+  --font-montserrat: 'Knewave', cursive;
+  --font-cormorant: 'Alfa Slab One', serif;
+
+  --animate-marquee-noir: marquee-noir 32s linear infinite;
+  --animate-pulse-green: pulse-green 2s infinite;
+
+  @keyframes marquee-noir {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes float-slow {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.05); }
+    100% { transform: translate(-20px, 20px) scale(0.95); }
+  }
+  @keyframes text-shimmer {
+    to { background-position: 200% center; }
+  }
+  @keyframes hero-ken-burns {
+    0%   { transform: scale(1.06) translate(0, 0); }
+    100% { transform: scale(1.14) translate(-1.5%, -1%); }
+  }
+  @keyframes pulse-green {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+  }
+}
+
+.font-cormorant {
+  font-family: 'Alfa Slab One', serif !important;
+}
+
+.font-montserrat {
+  font-family: 'Knewave', cursive !important;
+}
+
+/* Scroll Reveal animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
 :root, [data-theme="dark"] {
   --gold: #e05e38;
   --gold-light: #e87c5d;
@@ -63,7 +115,7 @@
 
 * { box-sizing: border-box; }
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Knewave', cursive;
   background-color: var(--bg);
   color: var(--text-primary);
   margin: 0;
@@ -164,7 +216,7 @@ body {
   letter-spacing: 0.28em;
   color: #e05e38;
   margin-bottom: 10px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Knewave', cursive;
 }
 
 /* section-pill now matches landing page eyebrow style */
@@ -175,7 +227,7 @@ body {
   letter-spacing: 0.28em;
   color: #e05e38;
   margin-bottom: 12px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Knewave', cursive;
 }
 
 .gradient-accent-line {

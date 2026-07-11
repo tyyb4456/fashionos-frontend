@@ -1,1002 +1,12 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, SignInButton } from '@clerk/clerk-react'
-import { Sparkles, ArrowRight, ArrowDown, ChevronRight, ChevronLeft, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
+import { Sparkles, ArrowRight, ArrowDown, ChevronRight, ChevronLeft, CheckCircle2, Zap } from 'lucide-react'
 import { agents, howItWorksSteps, integrations, marqueeItems } from './LandingData.jsx'
 
 const GOLD = '#e05e38'
-const GOLD_LIGHT = '#e87c5d'
 const BG = '#1e1e1e'
-const BG_DARKER = '#171717'
 const CREAM = '#f0eeeb'
-
-const styles = `
-  /* Keyframes */
-  @keyframes marquee-noir {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  @keyframes float-slow {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, -30px) scale(1.05); }
-    100% { transform: translate(-20px, 20px) scale(0.95); }
-  }
-  @keyframes text-shimmer {
-    to { background-position: 200% center; }
-  }
-  @keyframes hero-ken-burns {
-    0%   { transform: scale(1.06) translate(0, 0); }
-    100% { transform: scale(1.14) translate(-1.5%, -1%); }
-  }
-
-  /* Global page adjustments */
-  .noir-page {
-    background: ${BG};
-    color: ${CREAM};
-    font-family: 'Montserrat', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-  }
-  .noir-page * {
-    font-family: 'Montserrat', sans-serif;
-    box-sizing: border-box;
-  }
-  .noir-display {
-    font-family: 'Cormorant Garamond', serif !important;
-  }
-
-  /* Ambient Blur Orbs */
-  .ambient-orb {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(224,94,56,0.06) 0%, rgba(224,94,56,0) 70%);
-    filter: blur(100px);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb-1 { top: -100px; left: -100px; animation: float-slow 25s infinite alternate ease-in-out; }
-  .orb-2 { top: 35%; right: -200px; animation: float-slow 30s infinite alternate-reverse ease-in-out; }
-  .orb-3 { bottom: 10%; left: -200px; animation: float-slow 28s infinite alternate ease-in-out; }
-
-  /* Scroll Reveal animation triggers */
-  .reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal-on-scroll.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-delay-1 { transition-delay: 80ms; }
-  .reveal-delay-2 { transition-delay: 160ms; }
-  .reveal-delay-3 { transition-delay: 240ms; }
-  .reveal-delay-4 { transition-delay: 320ms; }
-
-  /* Navbar */
-  .noir-nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 24px 64px;
-    background: rgba(30, 30, 30, 0.72);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(224, 94, 56, 0.1);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .noir-nav.scrolled {
-    padding: 16px 64px;
-    background: rgba(30, 30, 30, 0.88);
-    border-bottom: 1px solid rgba(224, 94, 56, 0.2);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  }
-
-  .noir-logo {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.6rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: ${GOLD};
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-
-  .noir-nav-links {
-    display: flex; gap: 48px;
-    font-size: 0.72rem; text-transform: uppercase;
-    letter-spacing: 0.2em; color: rgba(240,238,235,0.55);
-  }
-  .noir-nav-links a { text-decoration: none; color: inherit; transition: color 0.3s; cursor: pointer; font-weight: 500; }
-  .noir-nav-links a:hover { color: ${GOLD}; }
-
-  .noir-sign-btn {
-    padding: 10px 28px;
-    border: 1px solid ${GOLD};
-    border-radius: 6px;
-    color: ${GOLD};
-    background: transparent;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .noir-sign-btn:hover { background: ${GOLD}; color: ${BG}; box-shadow: 0 0 15px rgba(224,94,56,0.3); }
-
-  .noir-dashboard-btn {
-    padding: 10px 28px;
-    border: none;
-    border-radius: 6px;
-    color: ${BG};
-    background: ${GOLD};
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .noir-dashboard-btn:hover { background: ${GOLD_LIGHT}; transform: translateY(-1px); box-shadow: 0 0 20px rgba(224,94,56,0.4); }
-
-  /* Hero */
-  .noir-hero {
-    display: flex;
-    min-height: 100vh;
-    padding-top: 88px;
-    border-bottom: 1px solid rgba(224,94,56,0.1);
-    position: relative;
-    overflow: hidden;
-  }
-  .noir-hero-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 64px 64px 80px 80px;
-    z-index: 2;
-  }
-  .noir-hero-right {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-  }
-
-  .noir-eyebrow {
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: ${GOLD};
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-  }
-
-  .noir-h1 {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: clamp(3.4rem, 5.5vw, 5.8rem);
-    line-height: 0.95; font-weight: 300;
-    color: ${CREAM}; margin: 0 0 28px;
-  }
-  .noir-h1 em {
-    font-style: italic;
-    font-weight: 400;
-    background: linear-gradient(90deg, #F2EDE4 0%, ${GOLD} 50%, #F2EDE4 100%);
-    background-size: 200% auto;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: text-shimmer 6s linear infinite;
-    filter: drop-shadow(0 0 20px rgba(224,94,56,0.25));
-  }
-
-  .noir-hero-sub {
-    font-size: 1.05rem; font-weight: 300; line-height: 1.8;
-    color: rgba(242,237,228,0.65); max-width: 480px; margin-bottom: 48px;
-  }
-
-  .noir-cta-row { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
-
-  .noir-cta-primary {
-    padding: 18px 44px; background: ${GOLD}; color: ${BG};
-    border: none; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
-    letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-  .noir-cta-primary:hover {
-    background: ${GOLD_LIGHT};
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(224,94,56,0.35);
-  }
-  .noir-cta-primary::after {
-    content: '';
-    position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-    transform: skewX(-20deg);
-    transition: left 0.6s ease;
-  }
-  .noir-cta-primary:hover::after { left: 125%; }
-
-  .noir-cta-secondary {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.3rem; font-style: italic; color: ${GOLD};
-    cursor: pointer; border: none; border-bottom: 1px solid rgba(224,94,56,0.4);
-    padding-bottom: 2px; transition: all 0.25s; background: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .noir-cta-secondary:hover { color: ${GOLD_LIGHT}; border-bottom-color: ${GOLD_LIGHT}; padding-left: 4px; }
-
-  /* Hero image treatment */
-  .noir-hero-img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; object-position: center 30%;
-    animation: hero-ken-burns 24s ease-in-out infinite alternate;
-    filter: saturate(1.05) contrast(1.05);
-  }
-  .noir-hero-duotone {
-    position: absolute; inset: 0;
-    background: linear-gradient(150deg, rgba(224,94,56,0.26) 0%, rgba(30,30,30,0.06) 45%, rgba(30,30,30,0.48) 100%);
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-  .noir-hero-grain {
-    position: absolute; inset: 0;
-    opacity: 0.06;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* Hero stat bar */
-  .noir-stat-bar {
-    position: absolute; bottom: 48px; left: 48px; z-index: 5;
-    display: flex; align-items: stretch;
-    background: rgba(30, 30, 30, 0.52);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid rgba(224, 94, 56, 0.2);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .noir-stat-item {
-    padding: 16px 26px;
-    display: flex; flex-direction: column; gap: 5px;
-  }
-  .noir-stat-item + .noir-stat-item { border-left: 1px solid rgba(224, 94, 56, 0.15); }
-  .noir-stat-label {
-    font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.18em;
-    color: rgba(240,238,235,0.45);
-  }
-  .noir-stat-val {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.2rem; color: ${GOLD}; font-weight: 500;
-  }
-
-  /* Marquee */
-  .noir-marquee-wrap {
-    overflow: hidden; position: relative; padding: 28px 0;
-    background: rgba(23, 23, 23, 0.55);
-    backdrop-filter: blur(5px);
-    border-bottom: 1px solid rgba(224,94,56,0.1);
-  }
-  .noir-marquee-fade-l { position: absolute; left: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(to right, ${BG}, transparent); z-index: 2; }
-  .noir-marquee-fade-r { position: absolute; right: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(to left, ${BG}, transparent); z-index: 2; }
-  .noir-marquee-track { display: flex; width: max-content; animation: marquee-noir 32s linear infinite; }
-  .noir-marquee-track:hover { animation-play-state: paused; }
-  .noir-marquee-item {
-    flex-shrink: 0; padding: 0 48px; display: flex; align-items: center; gap: 12px;
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.45rem; text-transform: uppercase; letter-spacing: 0.15em;
-    color: rgba(240,238,235,0.4); white-space: nowrap;
-    transition: color 0.3s;
-  }
-  .noir-marquee-item:hover { color: ${GOLD}; }
-
-  /* Sections */
-  .noir-section { padding: 120px 80px; max-width: 1360px; margin: 0 auto; position: relative; z-index: 2; }
-  .noir-section-border { border-bottom: 1px solid rgba(224,94,56,0.08); }
-
-  .noir-section-title-wrap {
-    margin-bottom: 64px;
-  }
-
-  .noir-section-title {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: clamp(2.8rem, 4.8vw, 4.8rem); font-weight: 300;
-    line-height: 1.05; margin: 0 0 20px; color: ${CREAM};
-  }
-  .noir-section-title em { color: ${GOLD}; font-style: italic; font-weight: 400; }
-
-  .noir-section-sub {
-    font-size: 1.02rem; font-weight: 300; line-height: 1.8;
-    color: rgba(240,238,235,0.52); max-width: 580px; margin: 0;
-  }
-
-  /* Light theme override — scoped to .noir-section-light only */
-  .noir-section-light {
-    background: #F7F4EE;
-    border-top: 1px solid rgba(140, 120, 100, 0.12);
-    border-bottom: 1px solid rgba(140, 120, 100, 0.12);
-  }
-  .noir-section-light .noir-section-title { color: #1C1917; }
-  .noir-section-light .noir-section-sub { color: rgba(28,25,23,0.65); }
-
-  /* ── Desktop/tablet glass cards (light section) */
-  .noir-section-light .glass-card {
-    background: #FFFFFF;
-    border-color: rgba(140, 120, 100, 0.16);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .noir-section-light .glass-card:hover {
-    background: #FFFFFF;
-    border-color: rgba(224,94,56,0.55);
-    box-shadow: 0 24px 48px rgba(140,120,100,0.12), 0 0 24px rgba(224,94,56,0.06);
-  }
-  .noir-section-light .noir-agent-slide-center .noir-agent-card-inner {
-    border-color: rgba(224,94,56,0.45);
-    box-shadow: 0 30px 60px rgba(140,120,100,0.15), 0 0 30px rgba(224,94,56,0.1);
-  }
-  .noir-section-light .noir-agent-icon-box {
-    background: rgba(224,94,56,0.08);
-    border-color: rgba(224,94,56,0.22);
-    color: ${GOLD};
-  }
-  .noir-section-light .glass-card:hover .noir-agent-icon-box {
-    background: ${GOLD};
-    color: #FFFFFF;
-  }
-  .noir-section-light .noir-agent-step { color: rgba(224,94,56,0.18); }
-  .noir-section-light .noir-agent-name { color: #1C1917; }
-  .noir-section-light .glass-card:hover .noir-agent-name { color: ${GOLD}; }
-  .noir-section-light .noir-agent-desc { color: rgba(28,25,23,0.62); }
-  .noir-section-light .noir-badge-auto {
-    border-color: rgba(224,94,56,0.35); color: ${GOLD}; background: rgba(224,94,56,0.05);
-  }
-  .noir-section-light .noir-badge-approval {
-    border-color: rgba(0,0,0,0.12); color: rgba(0,0,0,0.45); background: rgba(0,0,0,0.02);
-  }
-  .noir-section-light .noir-carousel-arrow {
-    background: #FFFFFF;
-    border-color: rgba(0,0,0,0.1);
-    color: #1C1917;
-  }
-  .noir-section-light .noir-carousel-arrow:hover:not(:disabled) {
-    border-color: ${GOLD}; color: ${GOLD}; background: #FAF8F5;
-  }
-  .noir-section-light .noir-carousel-dot { background: rgba(0,0,0,0.1); }
-  .noir-section-light .noir-carousel-dot.active { background: ${GOLD}; }
-
-  /* CTA-specific light overrides */
-  .noir-section-light.noir-cta-section {
-    border-top-color: rgba(224,94,56,0.12);
-  }
-  .noir-section-light .noir-cta-glow {
-    background: radial-gradient(circle, rgba(224,94,56,0.1) 0%, rgba(224,94,56,0) 70%);
-  }
-  .noir-section-light .noir-cta-title { color: #1C1917; }
-  .noir-section-light .noir-cta-sub { color: rgba(28,25,23,0.62); }
-  .noir-section-light .noir-check-item { color: rgba(28,25,23,0.65); }
-  .noir-section-light .noir-cta-btn { box-shadow: 0 0 35px rgba(224,94,56,0.15); }
-  .noir-section-light .noir-cta-btn:hover { box-shadow: 0 12px 35px rgba(224,94,56,0.22); }
-  @media (hover: none) {
-    .noir-section-light .glass-card:hover {
-      background: #FFFFFF;
-      border-color: rgba(140, 120, 100, 0.16);
-      box-shadow: none;
-      transform: none;
-    }
-    .noir-section-light .glass-card:hover::before { opacity: 0; }
-    .noir-section-light .glass-card:hover .noir-agent-icon-box {
-      background: rgba(224,94,56,0.08);
-      color: ${GOLD};
-      box-shadow: none;
-      transform: none;
-    }
-    .noir-section-light .glass-card:hover .noir-agent-name { color: #1C1917; }
-    .noir-section-light .noir-carousel-arrow:hover:not(:disabled) {
-      border-color: rgba(0,0,0,0.1); color: #1C1917; background: #FFFFFF;
-    }
-  }
-
-  /* Glass Cards Grid */
-  .glass-card {
-    background: rgba(28, 28, 28, 0.5);
-    backdrop-filter: blur(24px) saturate(120%);
-    -webkit-backdrop-filter: blur(24px) saturate(120%);
-    border: 1px solid rgba(224, 94, 56, 0.12);
-    border-radius: 16px;
-    padding: 36px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .glass-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(224,94,56,0.35), transparent);
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-  .glass-card:hover {
-    border-color: rgba(224, 94, 56, 0.45);
-    background: rgba(34, 34, 34, 0.62);
-    transform: translateY(-8px);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(224, 94, 56, 0.04);
-  }
-  .glass-card:hover::before {
-    opacity: 1;
-  }
-
-  /* ── Agent carousel: NO translateY on the inner card — the fan transform is on
-     the outer .noir-agent-slide. Lifting the inner card too creates a hover
-     feedback loop (card moves away → hover lost → falls back → re-enters = jitter). */
-  .noir-agent-carousel-wrap .glass-card:hover {
-    transform: none;
-    border-color: rgba(224, 94, 56, 0.5);
-    box-shadow: 0 0 0 1px rgba(224,94,56,0.2), 0 20px 40px rgba(0,0,0,0.4), 0 0 24px rgba(224,94,56,0.08);
-  }
-
-  /* Agent cards — carousel */
-  .noir-agent-carousel-wrap { position: relative; }
-  .noir-agent-viewport {
-    overflow: hidden;
-    padding: 20px 0 28px;
-    margin: -20px 0 -28px;
-  }
-  .noir-agent-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: grab;
-    user-select: none;
-  }
-  .noir-agent-track:active { cursor: grabbing; }
-
-  .noir-agent-slide {
-    box-sizing: border-box;
-    padding: 0 6px;
-    position: relative;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .noir-agent-card-inner {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 16px;
-    transition: opacity 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
-  }
-
-  /* Fanned coverflow effect — center card raised, sides tilted back.
-     Transform lives on .noir-agent-slide (not .noir-agent-card-inner) because that
-     card-inner element also has overflow:hidden + border-radius (via .glass-card),
-     and combining a transform with overflow:hidden+border-radius on the SAME element
-     is a known mobile Chrome/Safari bug that lets content paint outside the rounded
-     card instead of clipping to it. Keeping the transform one level up avoids it. */
-  .noir-agent-slide-center {
-    z-index: 4;
-    transform: scale(1.06) translateY(-10px);
-    transform-origin: center bottom;
-  }
-  .noir-agent-slide-center .noir-agent-card-inner {
-    border-color: rgba(224, 94, 56, 0.4);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.55), 0 0 30px rgba(224,94,56,0.1);
-  }
-
-  .noir-agent-slide-left {
-    z-index: 2;
-    transform: scale(0.9) translateY(10px) rotate(-3deg);
-    transform-origin: right bottom;
-  }
-  .noir-agent-slide-right {
-    z-index: 2;
-    transform: scale(0.9) translateY(10px) rotate(3deg);
-    transform-origin: left bottom;
-  }
-  .noir-agent-slide-left .noir-agent-card-inner,
-  .noir-agent-slide-right .noir-agent-card-inner {
-    opacity: 0.55;
-  }
-  .noir-agent-slide-left:hover,
-  .noir-agent-slide-right:hover {
-    z-index: 3;
-    transform: scale(0.94) translateY(4px) rotate(0deg);
-  }
-  .noir-agent-slide-left:hover .noir-agent-card-inner,
-  .noir-agent-slide-right:hover .noir-agent-card-inner {
-    opacity: 0.9;
-  }
-
-  /* Fallback flat hover for mobile/tablet (1 or 2-up view, no fan classes) */
-  .noir-agent-slide:hover { z-index: 5; }
-  .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover {
-    transform: scale(1.02);
-  }
-  .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
-    border-color: rgba(224, 94, 56, 0.45);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 20px rgba(224,94,56,0.08);
-  }
-
-  .noir-carousel-arrow {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    width: 46px; height: 46px; border-radius: 50%;
-    background: rgba(30,30,30,0.82);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(224,94,56,0.25);
-    color: ${CREAM};
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; z-index: 10;
-    transition: all 0.25s;
-  }
-  .noir-carousel-arrow:hover:not(:disabled) { border-color: ${GOLD}; color: ${GOLD}; background: rgba(30,30,30,0.95); }
-  .noir-carousel-arrow:disabled { opacity: 0.2; cursor: not-allowed; }
-  .noir-carousel-arrow-left { left: -23px; }
-  .noir-carousel-arrow-right { right: -23px; }
-
-  .noir-carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 40px; }
-  .noir-carousel-dot {
-    width: 8px; height: 8px; border-radius: 50%; padding: 0; border: none;
-    background: rgba(242,237,228,0.15); cursor: pointer; transition: all 0.3s;
-  }
-  .noir-carousel-dot.active { background: ${GOLD}; width: 24px; border-radius: 4px; }
-
-  .noir-agent-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-
-  .noir-agent-icon-box {
-    width: 48px; height: 48px;
-    border-radius: 10px;
-    background: rgba(224, 94, 56, 0.08);
-    border: 1px solid rgba(224, 94, 56, 0.2);
-    display: flex; align-items: center; justify-content: center;
-    color: ${GOLD};
-    transition: all 0.3s;
-  }
-  .glass-card:hover .noir-agent-icon-box {
-    background: ${GOLD};
-    color: ${BG};
-    box-shadow: 0 0 15px rgba(224,94,56,0.4);
-    transform: scale(1.05);
-  }
-
-  .noir-agent-step {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 2.4rem; font-style: italic; color: rgba(224,94,56,0.3); line-height: 1;
-    font-weight: 300;
-  }
-  .noir-agent-badge {
-    font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.16em;
-    padding: 5px 12px; border-radius: 999px; border: 1px solid;
-    font-weight: 600;
-  }
-  .noir-badge-auto { border-color: rgba(224,94,56,0.5); color: ${GOLD}; background: rgba(224,94,56,0.04); }
-  .noir-badge-approval { border-color: rgba(242,237,228,0.15); color: rgba(242,237,228,0.45); background: rgba(255,255,255,0.02); }
-
-  .noir-agent-name {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.8rem; color: ${CREAM}; margin-bottom: 12px; font-weight: 500;
-    transition: color 0.3s;
-  }
-  .glass-card:hover .noir-agent-name { color: ${GOLD}; }
-  .noir-agent-desc { flex: 1; font-size: 0.88rem; font-weight: 300; line-height: 1.75; color: rgba(242,237,228,0.55); }
-
-  /* Platform integration cards */
-  .noir-platform-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .noir-platform-icon-glow {
-    font-size: 2.2rem; margin-bottom: 24px;
-    display: inline-flex;
-    padding: 12px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .noir-platform-name { font-family: 'Cormorant Garamond', serif !important; font-size: 1.55rem; color: ${CREAM}; margin-bottom: 8px; font-weight: 500; }
-  .glass-card:hover .noir-platform-name { color: var(--platform-accent, ${GOLD}); }
-  .noir-platform-desc { font-size: 0.84rem; font-weight: 300; line-height: 1.7; color: rgba(242,237,228,0.52); margin-bottom: 20px; }
-
-  .noir-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .noir-pill {
-    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
-    padding: 4px 10px; border-radius: 4px;
-    border: 1px solid rgba(224,94,56,0.15); color: rgba(242,237,228,0.5);
-    background: rgba(255, 255, 255, 0.01);
-    transition: all 0.3s;
-  }
-  .glass-card:hover .noir-pill {
-    border-color: var(--platform-accent-alpha, rgba(224,94,56,0.3));
-    color: ${CREAM};
-  }
-
-  /* ── Seamless Connectivity: contrast cards on medium gray background ─────────── */
-  .noir-connectivity {
-    background: rgba(20, 20, 20, 0.88);
-  }
-  /* Slightly lighter card base on the medium-gray connectivity section */
-  .noir-connectivity .glass-card {
-    background: rgba(36, 36, 36, 0.85);
-    border: 1px solid rgba(255,255,255,0.07);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.1);
-    transition: box-shadow 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  }
-  .noir-connectivity .glass-card:hover {
-    transform: translateY(-6px);
-    background: rgba(40, 40, 40, 0.9);
-    border-color: var(--platform-accent, ${GOLD});
-    box-shadow:
-      0 0 0 1px var(--platform-accent, ${GOLD}),
-      0 16px 40px rgba(0,0,0,0.3),
-      0 4px 12px rgba(0,0,0,0.12);
-  }
-  .noir-connectivity .glass-card:hover::before { opacity: 0; }
-
-  /* Icon box: dark tinted bg + brand color */
-  .noir-connectivity .noir-platform-icon-glow {
-    background: rgba(224, 94, 56, 0.1);
-    border: 1px solid rgba(224, 94, 56, 0.2);
-  }
-  .noir-connectivity .glass-card:hover .noir-platform-icon-glow {
-    background: rgba(224, 94, 56, 0.18);
-    transform: scale(1.05);
-  }
-
-  /* Text colors */
-  .noir-connectivity .noir-platform-name { color: ${CREAM}; }
-  .noir-connectivity .glass-card:hover .noir-platform-name { color: var(--platform-accent, ${GOLD}); }
-  .noir-connectivity .noir-platform-desc { color: rgba(240,238,235,0.55); }
-
-  /* Pills */
-  .noir-connectivity .noir-pill {
-    border-color: rgba(255,255,255,0.1);
-    color: rgba(240,238,235,0.45);
-    background: rgba(255,255,255,0.03);
-  }
-  .noir-connectivity .glass-card:hover .noir-pill {
-    border-color: color-mix(in srgb, var(--platform-accent, ${GOLD}) 40%, transparent);
-    color: var(--platform-accent, ${GOLD});
-    background: color-mix(in srgb, var(--platform-accent, ${GOLD}) 8%, transparent);
-  }
-
-  /* Section title & sub on dark bg */
-  .noir-connectivity .noir-section-title { color: ${CREAM}; }
-  .noir-connectivity .noir-section-sub { color: rgba(242,237,228,0.55); }
-
-  /* Mobile: 1 col, keep cream cards */
-  @media (max-width: 640px) {
-    .noir-connectivity .noir-platform-grid { gap: 16px; }
-    .noir-connectivity .glass-card {
-      box-shadow: 0 2px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
-    }
-    .noir-connectivity .noir-platform-name { font-size: 1.3rem; }
-    .noir-connectivity .noir-platform-desc { font-size: 0.82rem; }
-  }
-
-  /* touch devices — lock hover state so card stays cream */
-  @media (hover: none) {
-    .noir-connectivity .glass-card:hover {
-      transform: none;
-      border-color: rgba(0,0,0,0.06);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .noir-connectivity .glass-card:hover .noir-platform-icon-glow { transform: none; }
-    .noir-connectivity .glass-card:hover .noir-platform-name { color: #1A1208; }
-    .noir-connectivity .glass-card:hover .noir-pill {
-      border-color: rgba(0,0,0,0.12); color: rgba(26,18,8,0.5); background: rgba(0,0,0,0.04);
-    }
-  }
-
-  /* How it works */
-  .noir-hiw-section {
-    background: rgba(20, 20, 20, 0.5);
-    border-bottom: 1px solid rgba(224,94,56,0.08);
-  }
-  .noir-hiw-inner { max-width: 800px; margin: 0 auto; }
-
-  .timeline-container {
-    position: relative;
-    padding-left: 64px;
-    border-left: 1px solid rgba(224, 94, 56, 0.12);
-  }
-  .timeline-container::after {
-    content: '';
-    position: absolute;
-    left: -1px; bottom: 0;
-    height: 120px;
-    width: 1px;
-    background: linear-gradient(to bottom, rgba(224, 94, 56, 0.12), transparent);
-  }
-  .timeline-item {
-    position: relative;
-    padding-bottom: 56px;
-  }
-  .timeline-item:last-child { padding-bottom: 0; }
-
-  .timeline-node {
-    position: absolute;
-    left: -86px;
-    top: 0;
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: ${BG};
-    border: 1px solid rgba(224, 94, 56, 0.3);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.25rem; font-style: italic; color: ${GOLD};
-    font-weight: 500;
-    box-shadow: 0 0 15px rgba(0,0,0,0.6);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .timeline-item:hover .timeline-node {
-    background: ${GOLD};
-    color: ${BG};
-    border-color: ${GOLD};
-    box-shadow: 0 0 20px rgba(224,94,56,0.5);
-    transform: scale(1.1);
-  }
-
-  .timeline-title {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.6rem; color: ${CREAM}; margin-bottom: 10px; font-weight: 500;
-    transition: color 0.3s;
-  }
-  .timeline-item:hover .timeline-title { color: ${GOLD}; }
-  .timeline-desc { font-size: 0.92rem; font-weight: 300; line-height: 1.8; color: rgba(242,237,228,0.55); }
-
-  /* CTA Section */
-  .noir-cta-section {
-    padding: 140px 64px; text-align: center; position: relative; overflow: hidden;
-    border-top: 1px solid rgba(224,94,56,0.08);
-  }
-  .noir-cta-glow {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 650px; height: 650px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(224,94,56,0.06) 0%, rgba(224,94,56,0) 70%);
-    filter: blur(100px); pointer-events: none;
-  }
-  .noir-cta-title {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: clamp(2.8rem, 5vw, 4.8rem); font-weight: 300;
-    color: ${CREAM}; margin-bottom: 24px; line-height: 1.1;
-    position: relative; z-index: 1;
-  }
-  .noir-cta-title em { color: ${GOLD}; font-style: italic; font-weight: 400; }
-  .noir-cta-sub { font-size: 1.05rem; font-weight: 300; color: rgba(242,237,228,0.5); margin-bottom: 56px; position: relative; z-index: 1; }
-
-  .noir-cta-checklist { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; margin-bottom: 56px; position: relative; z-index: 1; }
-  .noir-check-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: rgba(242,237,228,0.65); }
-  .noir-check-icon { color: ${GOLD}; flex-shrink: 0; }
-
-  .noir-cta-btn {
-    padding: 20px 64px; background: ${GOLD}; color: ${BG};
-    border: none; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
-    letter-spacing: 0.24em; text-transform: uppercase; cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; z-index: 1;
-    box-shadow: 0 0 35px rgba(224,94,56,0.22);
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .noir-cta-btn:hover { background: ${GOLD_LIGHT}; transform: translateY(-2px); box-shadow: 0 12px 35px rgba(224,94,56,0.35); }
-
-  /* Footer */
-  .noir-footer {
-    padding: 44px 80px; display: flex; align-items: center; justify-content: space-between;
-    border-top: 1px solid rgba(224,94,56,0.12); flex-wrap: wrap; gap: 24px;
-    background: ${BG_DARKER};
-    position: relative; z-index: 2;
-  }
-  .noir-footer-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.16em; color: ${GOLD}; }
-  .noir-live { display: flex; align-items: center; gap: 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(240,238,235,0.45); font-weight: 500; }
-  .noir-live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 10px rgba(16,185,129,0.7);
-    animation: pulse-green 2s infinite;
-  }
-  @keyframes pulse-green {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.7; }
-  }
-  .noir-copy { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(242,237,228,0.3); }
-
-  /* Responsive breakpoints */
-  @media (max-width: 1024px) {
-    .noir-nav { padding: 20px 40px; }
-    .noir-hero-left { padding: 48px 40px 64px 48px; }
-    .noir-section { padding: 88px 40px; }
-    .noir-platform-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .noir-footer { padding: 36px 40px; }
-  }
-  @media (max-width: 900px) {
-    .noir-nav-links { display: none; }
-    .noir-hero { flex-direction: column-reverse; min-height: auto; }
-    .noir-hero-left { padding: 56px 32px; }
-    .noir-hero-right { min-height: 480px; height: 60vh; }
-  }
-
-  /* ── Tablet: 2 cards wide ──────────────────────────── */
-  @media (max-width: 900px) and (min-width: 641px) {
-    .noir-agent-carousel-wrap { margin: 0 -8px; }
-    .noir-carousel-arrow-left { left: -2px; }
-    .noir-carousel-arrow-right { right: -2px; }
-    .noir-agent-slide .glass-card { padding: 28px 24px; }
-    .noir-agent-name { font-size: 1.55rem; }
-    .noir-agent-desc { font-size: 0.84rem; }
-  }
-
-  /* ── Mobile: 1 card — premium full-width black card ── */
-  @media (max-width: 640px) {
-    .noir-platform-grid { grid-template-columns: 1fr; }
-    .noir-cta-row { gap: 16px; }
-    .noir-cta-primary, .noir-cta-btn { width: 100%; justify-content: center; }
-    .noir-cta-checklist { flex-direction: column; align-items: center; gap: 12px; }
-    .noir-footer { flex-direction: column; text-align: center; gap: 16px; }
-    .noir-section { padding: 64px 20px; }
-
-    /* Single-card carousel — tight horizontal padding, no overflow bleed needed */
-    .noir-agent-carousel-wrap { margin: 0; }
-    .noir-carousel-arrow { display: none; }  /* hide arrows on mobile — swipe only */
-    .noir-agent-viewport { padding: 12px 0 20px; margin: -12px 0 -20px; overflow: hidden; }
-    .noir-agent-slide { padding: 0 0; }
-
-    /* ── Mobile card: warm gray, spacious, large type ── */
-    .noir-agent-slide .glass-card {
-      padding: 32px 28px 28px;
-      border-radius: 20px;
-      background: #252525;
-      border: 1px solid rgba(255,255,255,0.08);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.04) inset;
-    }
-    /* Remove fan transforms on mobile — 1 card fills full width */
-    .noir-agent-slide-center,
-    .noir-agent-slide-left,
-    .noir-agent-slide-right {
-      transform: none !important;
-      z-index: 1;
-    }
-    .noir-agent-slide-left .noir-agent-card-inner,
-    .noir-agent-slide-right .noir-agent-card-inner {
-      opacity: 1;
-    }
-
-    /* Mobile typography scale */
-    .noir-agent-header { margin-bottom: 20px; align-items: flex-start; }
-    .noir-agent-step {
-      font-size: 4rem; color: rgba(224,94,56,0.18); line-height: 1;
-      position: absolute; top: 24px; right: 24px;
-    }
-    .noir-agent-icon-box {
-      width: 52px; height: 52px; border-radius: 14px;
-      background: rgba(224,94,56,0.14);
-      border-color: rgba(224,94,56,0.35);
-    }
-    .noir-agent-icon-box svg { width: 24px; height: 24px; }
-    .noir-agent-name {
-      font-size: 2rem; color: #F2EDE4;
-      margin-top: 20px; margin-bottom: 12px; line-height: 1.1;
-    }
-    .noir-agent-desc {
-      font-size: 0.9rem; line-height: 1.7;
-      color: rgba(242,237,228,0.55);
-      margin-bottom: 0;
-    }
-    .noir-agent-badge {
-      font-size: 0.6rem; padding: 6px 14px;
-      letter-spacing: 0.14em; white-space: nowrap;
-    }
-    .noir-carousel-dots { margin-top: 28px; gap: 8px; }
-    .noir-carousel-dot { width: 7px; height: 7px; }
-
-    /* Mobile light-section overrides — force white card on light background */
-    .noir-section-light .glass-card {
-      background: #FFFFFF !important;
-      border-color: rgba(140, 120, 100, 0.16) !important;
-      box-shadow: 0 8px 24px rgba(140,120,100,0.08) !important;
-    }
-    .noir-section-light .noir-agent-name { color: #1C1917 !important; }
-    .noir-section-light .noir-agent-desc { color: rgba(28,25,23,0.62) !important; }
-    .noir-section-light .noir-carousel-dot { background: rgba(0,0,0,0.12); }
-
-    /* Swipe hint — subtle gradient edges on the viewport */
-    .noir-agent-viewport::after {
-      content: '';
-      position: absolute; top: 0; right: 0; bottom: 0; width: 28px;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.06));
-      pointer-events: none; border-radius: 0 20px 20px 0;
-    }
-    .noir-section-light .noir-agent-viewport::after {
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.12));
-    }
-  }
-
-  @media (max-width: 400px) {
-    .noir-agent-slide .glass-card { padding: 28px 22px 24px; }
-    .noir-agent-name { font-size: 1.7rem; }
-    .noir-agent-desc { font-size: 0.84rem; }
-    .noir-agent-icon-box { width: 44px; height: 44px; }
-    .noir-agent-step { font-size: 3.2rem; }
-  }
-
-  /* Bigger invisible tap target for carousel dots without changing visual size */
-  .noir-carousel-dot { position: relative; }
-  .noir-carousel-dot::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 34px; height: 34px;
-    transform: translate(-50%, -50%);
-  }
-
-  /* Mobile swipe hint */
-  .noir-swipe-hint {
-    display: none;
-    text-align: center;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: rgba(10,10,10,0.35);
-    margin-top: 12px;
-    font-weight: 500;
-  }
-  @media (max-width: 640px) {
-    .noir-swipe-hint { display: block; }
-  }
-
-  /* Prevent hover effects from getting visually "stuck" after a tap on touch devices */
-  @media (hover: none) {
-    .glass-card:hover {
-      transform: none;
-      background: rgba(28, 28, 28, 0.5);
-      border-color: rgba(224, 94, 56, 0.12);
-      box-shadow: none;
-    }
-    .glass-card:hover::before { opacity: 0; }
-    .glass-card:hover .noir-agent-icon-box {
-      background: rgba(224, 94, 56, 0.08);
-      color: ${GOLD};
-      box-shadow: none;
-      transform: none;
-    }
-    .glass-card:hover .noir-agent-name { color: ${CREAM}; }
-    .noir-agent-slide-left:hover { transform: scale(0.9) translateY(10px) rotate(-3deg); }
-    .noir-agent-slide-right:hover { transform: scale(0.9) translateY(10px) rotate(3deg); }
-    .noir-agent-slide-left:hover .noir-agent-card-inner,
-    .noir-agent-slide-right:hover .noir-agent-card-inner {
-      opacity: 0.55;
-    }
-    .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover {
-      transform: none;
-    }
-    .noir-agent-slide:not(.noir-agent-slide-center):not(.noir-agent-slide-left):not(.noir-agent-slide-right):hover .noir-agent-card-inner {
-      border-color: rgba(224, 94, 56, 0.12);
-      box-shadow: none;
-    }
-    .noir-carousel-arrow:hover:not(:disabled) {
-      border-color: rgba(224,94,56,0.25);
-      color: ${CREAM};
-      background: rgba(30,30,30,0.82);
-    }
-  }
-`
 
 export default function LandingNoir() {
   const { isSignedIn } = useAuth()
@@ -1067,14 +77,35 @@ export default function LandingNoir() {
   const nextAgent = () => goToAgent(agentIndex + 1)
   const prevAgent = () => goToAgent(agentIndex - 1)
 
-  // Determine fan position (center/left/right) for the coverflow effect — only meaningful at 3-up
-  const getSlidePosition = (index) => {
-    if (cardsPerView !== 3) return ''
-    const centerIndex = agentIndex + 1
-    if (index === centerIndex) return 'noir-agent-slide-center'
-    if (index === centerIndex - 1) return 'noir-agent-slide-left'
-    if (index === centerIndex + 1) return 'noir-agent-slide-right'
-    return ''
+  // Dynamic slides styling for coverflow fanned look using Tailwind
+  const getSlideStyles = (index) => {
+    let slideClass = "box-sizing-border-box px-1.5 relative transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    let innerClass = "h-full flex flex-col rounded-2xl transition-all duration-500 ease border border-[#8c7864]/16 bg-white shadow-[0_8px_32px_rgba(140,120,100,0.08)] p-[28px_24px] md:p-9 max-[640px]:p-[32px_28px_28px] max-[640px]:bg-[#252525] max-[640px]:border-white/8 max-[640px]:shadow-[0_8px_32px_rgba(0,0,0,0.28)]"
+
+    if (cardsPerView !== 3) {
+      if (cardsPerView === 1) {
+        slideClass += " !transform-none z-1"
+        innerClass += " !opacity-100"
+      } else {
+        slideClass += " hover:z-5 hover:scale-[1.02]"
+        innerClass += " hover:border-[#e05e38]/55 hover:shadow-[0_24px_48px_rgba(140,120,100,0.12),0_0_24px_rgba(224,94,56,0.06)]"
+      }
+    } else {
+      const centerIndex = agentIndex + 1
+      if (index === centerIndex) {
+        slideClass += " z-[4] scale-[1.06] -translate-y-2.5 origin-bottom"
+        innerClass += " border-[#e05e38]/45 shadow-[0_30px_60px_rgba(140,120,100,0.15),0_0_30px_rgba(224,94,56,0.1)]"
+      } else if (index === centerIndex - 1) {
+        slideClass += " z-[2] scale-90 translate-y-2.5 -rotate-3 origin-bottom-right hover:z-[3] hover:scale-[0.94] hover:translate-y-1 hover:rotate-0"
+        innerClass += " opacity-55 hover:opacity-90"
+      } else if (index === centerIndex + 1) {
+        slideClass += " z-[2] scale-90 translate-y-2.5 rotate-3 origin-bottom-left hover:z-[3] hover:scale-[0.94] hover:translate-y-1 hover:rotate-0"
+        innerClass += " opacity-55 hover:opacity-90"
+      } else {
+        slideClass += " opacity-0 pointer-events-none"
+      }
+    }
+    return { slideClass, innerClass }
   }
 
   const handleDragStart = (clientX) => { dragState.current = { startX: clientX, isDragging: true } }
@@ -1102,73 +133,77 @@ export default function LandingNoir() {
   const allMarquee = [...marqueeItems, ...marqueeItems, ...marqueeItems]
 
   return (
-    <div className="noir-page">
-      <style dangerouslySetInnerHTML={{ __html: styles }} />
+    <div className="bg-[#1e1e1e] text-[#f0eeeb] font-montserrat min-h-screen overflow-x-hidden relative">
 
       {/* Background Ambience */}
-      <div className="ambient-orb orb-1" />
-      <div className="ambient-orb orb-2" />
-      <div className="ambient-orb orb-3" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(224,94,56,0.06)_0%,rgba(224,94,56,0)_70%)] blur-[100px] pointer-events-none z-0 -top-[100px] -left-[100px] animate-[float-slow_25s_infinite_alternate_ease-in-out]" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(224,94,56,0.06)_0%,rgba(224,94,56,0)_70%)] blur-[100px] pointer-events-none z-0 top-[35%] -right-[200px] animate-[float-slow_30s_infinite_alternate-reverse_ease-in-out]" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(224,94,56,0.06)_0%,rgba(224,94,56,0)_70%)] blur-[100px] pointer-events-none z-0 bottom-[10%] -left-[200px] animate-[float-slow_28s_infinite_alternate_ease-in-out]" />
 
       {/* ── Navbar ────────────────────────────────────── */}
-      <nav className={`noir-nav ${isScrolled ? 'scrolled' : ''}`}>
-        <div className="noir-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          FASHION<span style={{ color: CREAM }}>OS</span>{' '}
+      <nav className={`fixed top-0 left-0 right-0 z-[100] flex items-center justify-between border-b transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
+        ${isScrolled
+          ? 'py-4 px-10 lg:px-16 bg-[#1e1e1e]/88 border-[#e05e38]/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
+          : 'py-6 px-10 lg:px-16 bg-[#1e1e1e]/72 border-[#e05e38]/10'
+        }`}
+      >
+        <div className="font-cormorant text-[1.6rem] font-bold tracking-[0.16em] uppercase text-[#e05e38] flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          FASHION<span className="text-[#f0eeeb]">OS</span>{' '}
           <Zap size={14} fill={GOLD} stroke="none" style={{ marginLeft: -2 }} />
         </div>
 
-        <div className="noir-nav-links">
-          <a href="#agents">Atelier</a>
-          <a href="#integrations">Connectivity</a>
-          <a href="#process">Method</a>
+        <div className="hidden min-[901px]:flex gap-12 text-[0.72rem] uppercase tracking-[0.2em] text-[#f0eeeb]/55">
+          <a href="#agents" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#e05e38]">Atelier</a>
+          <a href="#integrations" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#e05e38]">Connectivity</a>
+          <a href="#process" className="no-underline text-inherit transition-colors duration-300 cursor-pointer font-medium hover:text-[#e05e38]">Method</a>
         </div>
 
         {isSignedIn ? (
-          <button className="noir-dashboard-btn" onClick={() => navigate('/dashboard')}>
+          <button className="py-2.5 px-7 border-none rounded-[6px] text-[#1e1e1e] bg-[#e05e38] text-[0.7rem] font-bold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#e87c5d] hover:-translate-y-[1px] hover:shadow-[0_0_20px_rgba(224,94,56,0.4)]" onClick={() => navigate('/dashboard')}>
             Dashboard
           </button>
         ) : (
           <SignInButton mode="modal">
-            <button className="noir-sign-btn">Sign In</button>
+            <button className="py-2.5 px-7 border border-[#e05e38] rounded-[6px] text-[#e05e38] bg-transparent text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#e05e38] hover:text-[#1e1e1e] hover:shadow-[0_0_15px_rgba(224,94,56,0.3)]">Sign In</button>
           </SignInButton>
         )}
       </nav>
 
       {/* ── Hero ──────────────────────────────────────── */}
-      <section className="noir-hero" ref={heroRef}>
+      <section className="flex flex-col-reverse min-[901px]:flex-row min-h-screen pt-[88px] border-b border-[#e05e38]/10 relative overflow-hidden" ref={heroRef}>
         {/* Left: Text */}
-        <div className="noir-hero-left reveal-on-scroll">
-          <div className="noir-eyebrow">
+        <div className="flex-1 flex flex-col justify-center z-[2] p-[56px_32px] min-[901px]:p-[48px_40px_64px_48px] lg:p-[64px_64px_80px_80px] reveal-on-scroll">
+          <div className="text-[0.68rem] uppercase tracking-[0.3em] text-[#e05e38] mb-6 flex items-center gap-2 font-semibold">
             <Sparkles size={13} fill={GOLD} stroke="none" />
             LangGraph · 8 Agents · Gemini Autopilot
           </div>
 
-          <h1 className="noir-h1">
+          <h1 className="font-cormorant text-[clamp(3.4rem,5.5vw,5.8rem)] leading-[0.95] font-light text-[#f0eeeb] m-[0_0_28px]">
             Run Your<br />
-            <em>Fashion Brand</em><br />
+            <em className="italic font-normal bg-[linear-gradient(90deg,#F2EDE4_0%,#e05e38_50%,#F2EDE4_100%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-[text-shimmer_6s_linear_infinite] drop-shadow-[0_0_20px_rgba(224,94,56,0.25)]">Fashion Brand</em><br />
             on Autopilot
           </h1>
 
-          <p className="noir-hero-sub">
+          <p className="text-[1.05rem] font-light leading-[1.8] text-[#f2ede4]/65 max-w-[480px] mb-12">
             Eight elite AI agents work in symphony to automate inventory, markdown pricing, content generation, meta campaigns, and customer DMs. Supervised by LangGraph, approved by you.
           </p>
 
-          <div className="noir-cta-row">
+          <div className="flex items-center gap-4 sm:gap-7 flex-wrap">
             {isSignedIn ? (
-              <button className="noir-cta-primary" onClick={() => navigate('/dashboard')}>
+              <button className="py-[18px] px-11 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(224,94,56,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]" onClick={() => navigate('/dashboard')}>
                 Go to Dashboard
                 <ArrowRight size={15} />
               </button>
             ) : (
               <SignInButton mode="modal">
-                <button className="noir-cta-primary">
+                <button className="py-[18px] px-11 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(224,94,56,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]">
                   Get Started
                   <ArrowRight size={15} />
                 </button>
               </SignInButton>
             )}
             <button
-              className="noir-cta-secondary"
+              className="font-cormorant text-[1.3rem] italic text-[#e05e38] cursor-pointer border-none border-b border-[#e05e38]/40 pb-0.5 transition-all duration-250 bg-none flex items-center gap-1.5 hover:text-[#e87c5d] hover:border-b-[#e87c5d] hover:pl-1"
               onClick={() => document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' })}
             >
               View the pipeline
@@ -1179,7 +214,7 @@ export default function LandingNoir() {
 
         {/* Right: Editorial Image */}
         <div
-          className="noir-hero-right"
+          className="flex-1 relative overflow-hidden min-h-[480px] h-[60vh] min-[901px]:min-h-screen"
           onMouseMove={handleHeroMouseMove}
           onMouseLeave={handleHeroMouseLeave}
         >
@@ -1190,10 +225,10 @@ export default function LandingNoir() {
             <img
               src="pexels-ba-tik-3754246.jpg"
               alt="Fashion editorial background"
-              className="noir-hero-img"
+              className="absolute inset-0 w-full h-full object-cover object-[center_30%] animate-[hero-ken-burns_24s_ease-in-out_infinite_alternate] saturate-[1.05] contrast-[1.05]"
             />
-            <div className="noir-hero-duotone" />
-            <div className="noir-hero-grain" />
+            <div className="absolute inset-0 bg-[linear-gradient(150deg,rgba(224,94,56,0.26)_0%,rgba(30,30,30,0.06)_45%,rgba(30,30,30,0.48)_100%)] mix-blend-overlay pointer-events-none" />
+            <div className="absolute inset-0 opacity-6 pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22180%22%20height=%22180%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23n)%22/%3E%3C/svg%3E')]" />
           </div>
 
           {/* Gradients to blend image cleanly with dark noir borders */}
@@ -1202,15 +237,15 @@ export default function LandingNoir() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #161616 0%, transparent 12%)' }} />
 
           {/* Stat bar */}
-          <div className="noir-stat-bar reveal-on-scroll reveal-delay-2">
+          <div className="absolute bottom-12 left-12 z-[5] flex items-stretch bg-[#1e1e1e]/52 backdrop-blur-[20px] backdrop-saturate-[140%] border border-[#e05e38]/20 rounded-[14px] overflow-hidden divide-x divide-[#e05e38]/15 reveal-on-scroll reveal-delay-2">
             {[
               { label: 'Agents', val: '8' },
               { label: 'Uptime', val: '24/7' },
               { label: 'Auto', val: '<15%' },
             ].map(s => (
-              <div key={s.label} className="noir-stat-item">
-                <span className="noir-stat-label">{s.label}</span>
-                <span className="noir-stat-val">{s.val}</span>
+              <div key={s.label} className="py-4 px-[26px] flex flex-col gap-1.25">
+                <span className="text-[0.58rem] uppercase tracking-[0.18em] text-[#f0eeeb]/45">{s.label}</span>
+                <span className="font-cormorant text-[1.2rem] text-[#e05e38] font-medium">{s.val}</span>
               </div>
             ))}
           </div>
@@ -1218,14 +253,14 @@ export default function LandingNoir() {
       </section>
 
       {/* ── Marquee ───────────────────────────────────── */}
-      <div className="noir-marquee-wrap">
-        <div className="noir-marquee-fade-l" />
-        <div className="noir-marquee-fade-r" />
-        <div className="noir-marquee-track">
+      <div className="overflow-hidden relative py-7 bg-[#171717]/55 backdrop-blur-[5px] border-b border-[#e05e38]/10">
+        <div className="absolute left-0 top-0 bottom-0 w-[120px] bg-gradient-to-r from-[#1e1e1e] to-transparent z-[2]" />
+        <div className="absolute right-0 top-0 bottom-0 w-[120px] bg-gradient-to-l from-[#1e1e1e] to-transparent z-[2]" />
+        <div className="flex w-max animate-marquee-noir hover:[animation-play-state:paused]">
           {allMarquee.map((item, i) => {
             const IconComponent = item.Icon
             return (
-              <div key={i} className="noir-marquee-item">
+              <div key={i} className="shrink-0 px-12 flex items-center gap-3 font-cormorant text-[1.45rem] uppercase tracking-[0.15em] text-[#f0eeeb]/40 whitespace-nowrap transition-colors duration-300 hover:text-[#e05e38]">
                 {IconComponent && <IconComponent size={20} color={item.color || GOLD} />}
                 <span>{item.label}</span>
               </div>
@@ -1235,19 +270,19 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Agents ("The Atelier") ────────────────────── */}
-      <div id="agents" className="noir-section-border noir-section-light">
-        <div className="noir-section">
-          <div className="noir-section-title-wrap reveal-on-scroll">
-            <div className="noir-section-title">The <em>Atelier</em></div>
-            <p className="noir-section-sub">
+      <div id="agents" className="border-b border-[#e05e38]/8 bg-[#F7F4EE] border-t border-[#8c7864]/12">
+        <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
+          <div className="mb-16 reveal-on-scroll">
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#1C1917]">The <em className="text-[#e05e38] italic font-normal">Atelier</em></div>
+            <p className="text-[1.02rem] font-light leading-[1.8] text-[#1c1917]/65 max-w-[580px] m-0">
               Eight specialized agents operating in a sequenced pipeline managed by LangGraph. High-risk actions route to approvals, safe operations run autonomously.
             </p>
           </div>
 
-          <div className="noir-agent-carousel-wrap reveal-on-scroll" style={{ position: 'relative' }}>
+          <div className="relative reveal-on-scroll sm:mx-[-8px] max-[640px]:mx-0">
             {/* Arrows — hidden on mobile via CSS */}
             <button
-              className="noir-carousel-arrow noir-carousel-arrow-left"
+              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 left-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#e05e38] hover:text-[#e05e38] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
               onClick={prevAgent}
               disabled={agentIndex === 0}
               aria-label="Previous agents"
@@ -1255,9 +290,9 @@ export default function LandingNoir() {
               <ChevronLeft size={20} />
             </button>
 
-            <div className="noir-agent-viewport" style={{ position: 'relative' }}>
+            <div className="relative overflow-hidden py-5 my-[-20px] max-[640px]:py-3 max-[640px]:my-[-12px]">
               <div
-                className="noir-agent-track"
+                className="flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-grab active:cursor-grabbing select-none"
                 style={{ transform: `translateX(-${agentIndex * (100 / cardsPerView)}%)`, touchAction: 'pan-y' }}
                 onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
                 onTouchEnd={(e) => handleDragEnd(e.changedTouches[0].clientX)}
@@ -1267,24 +302,25 @@ export default function LandingNoir() {
               >
                 {agents.map((agent, index) => {
                   const Icon = agent.icon
+                  const { slideClass, innerClass } = getSlideStyles(index)
                   return (
                     <div
                       key={agent.step}
-                      className={`noir-agent-slide ${getSlidePosition(index)}`}
+                      className={slideClass}
                       style={{ flex: `0 0 ${100 / cardsPerView}%`, position: 'relative' }}
                     >
-                      <div className="glass-card noir-agent-card-inner">
-                        <div className="noir-agent-header">
-                          <div className="noir-agent-icon-box">
+                      <div className={`group/card ${innerClass}`}>
+                        <div className="flex justify-between items-center mb-6 max-[640px]:mb-5 max-[640px]:items-start">
+                          <div className="w-12 h-12 rounded-lg bg-[#e05e38]/8 border border-[#e05e38]/20 flex items-center justify-center text-[#e05e38] transition-all duration-300 group-hover/card:bg-[#e05e38] group-hover/card:text-white max-[640px]:w-[52px] max-[640px]:h-[52px] max-[640px]:rounded-[14px] max-[640px]:bg-[#e05e38]/14 max-[640px]:border-[#e05e38]/35">
                             {Icon && <Icon size={22} />}
                           </div>
-                          <span className="noir-agent-step">{agent.step}</span>
+                          <span className="font-cormorant text-[2.4rem] italic text-[#e05e38]/30 leading-none font-light max-[640px]:text-[4rem] max-[640px]:text-[#e05e38]/18 max-[640px]:absolute max-[640px]:top-6 max-[640px]:right-6">{agent.step}</span>
                         </div>
-                        <div className="noir-agent-name">{agent.title}</div>
-                        <p className="noir-agent-desc">{agent.desc}</p>
+                        <div className="font-cormorant text-[1.8rem] text-[#1C1917] mb-3 font-medium transition-colors duration-300 group-hover/card:text-[#e05e38] max-[640px]:text-2xl max-[640px]:text-[#F2EDE4] max-[640px]:mt-5 max-[640px]:mb-3 max-[640px]:leading-[1.1]">{agent.title}</div>
+                        <p className="flex-1 text-[0.88rem] font-light leading-[1.75] text-[#1c1917]/62 max-[640px]:text-[0.9rem] max-[640px]:leading-[1.7] max-[640px]:text-[#f2ede4]/55 max-[640px]:mb-0">{agent.desc}</p>
 
-                        <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-start' }}>
-                          <span className={`noir-agent-badge ${agent.autoExec ? 'noir-badge-auto' : 'noir-badge-approval'}`}>
+                        <div className="mt-6 flex justify-start">
+                          <span className={`text-[0.58rem] uppercase tracking-[0.16em] py-1.25 px-3 rounded-full font-semibold border max-[640px]:text-[0.6rem] max-[640px]:py-1.5 max-[640px]:px-3.5 max-[640px]:tracking-[0.14em] max-[640px]:whitespace-nowrap ${agent.autoExec ? 'border-[#e05e38]/50 text-[#e05e38] bg-[#e05e38]/4 max-[640px]:border-[#e05e38]/35 max-[640px]:bg-[#e05e38]/5' : 'border-black/12 text-black/45 bg-black/2 max-[640px]:border-white/15 max-[640px]:text-white/45 max-[640px]:bg-white/2'}`}>
                             {agent.autoExec ? 'Autonomous Mode' : 'Requires Approval'}
                           </span>
                         </div>
@@ -1296,7 +332,7 @@ export default function LandingNoir() {
             </div>
 
             <button
-              className="noir-carousel-arrow noir-carousel-arrow-right"
+              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 right-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#e05e38] hover:text-[#e05e38] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
               onClick={nextAgent}
               disabled={agentIndex === maxAgentIndex}
               aria-label="Next agents"
@@ -1305,12 +341,13 @@ export default function LandingNoir() {
             </button>
           </div>
 
-          {/* Dots — show card index / total on mobile as text hint */}
-          <div className="noir-carousel-dots">
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-10">
             {Array.from({ length: maxAgentIndex + 1 }).map((_, i) => (
               <button
                 key={i}
-                className={`noir-carousel-dot ${i === agentIndex ? 'active' : ''}`}
+                className="relative h-2 rounded-full p-0 border-none cursor-pointer transition-all duration-300 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:w-[34px] before:h-[34px] before:-translate-x-1/2 before:-translate-y-1/2 max-[640px]:w-[7px] max-[640px]:h-[7px] bg-black/10 active:bg-[#e05e38]"
+                style={{ width: i === agentIndex ? '24px' : '8px', backgroundColor: i === agentIndex ? '#e05e38' : undefined, borderRadius: i === agentIndex ? '4px' : '50%' }}
                 onClick={() => goToAgent(i)}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -1318,45 +355,45 @@ export default function LandingNoir() {
           </div>
 
           {/* Mobile only: swipe hint text */}
-          <p className="noir-swipe-hint">
+          <p className="hidden max-[640px]:block text-center text-[0.7rem] uppercase tracking-[0.18em] text-[#1c1917]/35 mt-3 font-medium">
             Swipe to explore all 8 agents &rarr;
           </p>
         </div>
       </div>
 
       {/* ── Integrations ("Seamless Connectivity") ──────── */}
-      <div id="integrations" className="noir-section-border noir-connectivity">
-        <div className="noir-section">
-          <div className="noir-section-title-wrap reveal-on-scroll">
-            <div className="noir-section-title">Seamless <em>Connectivity</em></div>
-            <p className="noir-section-sub">
+      <div id="integrations" className="border-b border-[#e05e38]/8 bg-[#141414]/88">
+        <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
+          <div className="mb-16 reveal-on-scroll">
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">Seamless <em className="text-[#e05e38] italic font-normal">Connectivity</em></div>
+            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/55 max-w-[580px] m-0">
               Your existing operations linked with read & write capabilities. Integrated directly via secure platform MCP clients.
             </p>
           </div>
 
-          <div className="noir-platform-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
             {integrations.map((p, index) => {
               const IconComponent = p.Icon
               return (
                 <div
                   key={p.name}
-                  className={`glass-card reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
+                  className={`group/card relative overflow-hidden rounded-2xl p-9 bg-[#242424]/85 border border-white/7 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.1)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:bg-[#282828]/90 hover:border-[var(--platform-accent)] hover:shadow-[0_0_0_1px_var(--platform-accent),0_16px_40px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.12)] max-[640px]:shadow-[0_2px_16px_rgba(0,0,0,0.12),0_1px_4px_rgba(0,0,0,0.06)] reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
                   style={{
                     '--platform-accent': p.color || GOLD,
                     '--platform-accent-alpha': `${p.color || GOLD}4D`
                   }}
                 >
                   <div
-                    className="noir-platform-icon-glow"
-                    style={{ color: p.color || GOLD }}
+                    className="text-[2.2rem] mb-6 inline-flex p-3 rounded-xl transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/card:scale-105 group-hover/card:bg-[var(--platform-accent-alpha)]"
+                    style={{ color: p.color || GOLD, backgroundColor: `${p.color || GOLD}1A`, borderColor: `${p.color || GOLD}33`, borderWidth: '1px' }}
                   >
                     {IconComponent && <IconComponent size={24} />}
                   </div>
-                  <div className="noir-platform-name">{p.name}</div>
-                  <p className="noir-platform-desc">{p.desc}</p>
-                  <div className="noir-pills">
+                  <div className="font-cormorant text-[1.55rem] text-[#f0eeeb] mb-2 font-medium group-hover/card:text-[var(--platform-accent)] max-[640px]:text-[1.3rem]">{p.name}</div>
+                  <p className="text-[0.84rem] font-light leading-[1.7] text-[#f0eeeb]/52 mb-5 max-[640px]:text-[0.82rem]">{p.desc}</p>
+                  <div className="flex flex-wrap gap-2">
                     {p.pills.map(pill => (
-                      <span key={pill} className="noir-pill">{pill}</span>
+                      <span key={pill} className="text-[0.62rem] uppercase tracking-[0.12em] py-1 px-2.5 rounded border border-white/10 text-[#f0eeeb]/45 bg-white/3 transition-colors duration-300 group-hover/card:border-[var(--platform-accent)]/40 group-hover/card:text-[var(--platform-accent)] group-hover/card:bg-[var(--platform-accent)]/8">{pill}</span>
                     ))}
                   </div>
                 </div>
@@ -1367,25 +404,25 @@ export default function LandingNoir() {
       </div>
 
       {/* ── How it Works ("The Method") ────────────────── */}
-      <div id="process" className="noir-hiw-section">
-        <div className="noir-section">
-          <div className="noir-section-title-wrap reveal-on-scroll" style={{ textAlign: 'center' }}>
-            <div className="noir-section-title">The <em>Method</em></div>
-            <p className="noir-section-sub" style={{ margin: '0 auto' }}>
+      <div id="process" className="bg-[#141414]/50 border-b border-[#e05e38]/8">
+        <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
+          <div className="mb-16 reveal-on-scroll" style={{ textAlign: 'center' }}>
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">The <em className="text-[#e05e38] italic font-normal">Method</em></div>
+            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/52 max-w-[580px] mx-auto">
               How FashionOS integrates, schedules, coordinates, and runs your business 24/7.
             </p>
           </div>
 
-          <div className="noir-hiw-inner reveal-on-scroll">
-            <div className="timeline-container">
+          <div className="max-w-[800px] mx-auto reveal-on-scroll">
+            <div className="relative pl-16 border-l border-[#e05e38]/12 after:content-[''] after:absolute after:-left-[1px] after:bottom-0 after:h-[120px] after:w-[1px] after:bg-gradient-to-b after:from-[#e05e38]/12 after:to-transparent">
               {howItWorksSteps.map((step, i) => (
-                <div key={step.step} className="timeline-item">
-                  <div className="timeline-node">
+                <div key={step.step} className="group/item relative pb-14 last:pb-0">
+                  <div className="absolute -left-[86px] top-0 w-11 h-11 rounded-full bg-[#1e1e1e] border border-[#e05e38]/30 flex items-center justify-center font-cormorant text-[1.25rem] italic text-[#e05e38] font-medium shadow-[0_0_15px_rgba(0,0,0,0.6)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:bg-[#e05e38] group-hover/item:text-[#1e1e1e] group-hover/item:border-[#e05e38] group-hover/item:shadow-[0_0_20px_rgba(224,94,56,0.5)] group-hover/item:scale-110">
                     {step.step}
                   </div>
                   <div className="timeline-content">
-                    <div className="timeline-title">{step.title}</div>
-                    <p className="timeline-desc">{step.desc}</p>
+                    <div className="font-cormorant text-[1.6rem] text-[#f0eeeb] mb-2.5 font-medium transition-colors duration-300 group-hover/item:text-[#e05e38]">{step.title}</div>
+                    <p className="text-[0.92rem] font-light leading-[1.8] text-[#f2ede4]/55">{step.desc}</p>
                   </div>
                 </div>
               ))}
@@ -1395,25 +432,25 @@ export default function LandingNoir() {
       </div>
 
       {/* ── CTA Section ───────────────────────────────── */}
-      <div className="noir-cta-section noir-section-light">
-        <div className="noir-cta-glow" />
-        <div className="noir-cta-title reveal-on-scroll">
+      <div className="py-[140px] px-16 text-center relative overflow-hidden border-t border-[#e05e38]/12 bg-[#F7F4EE] border-b border-[#8c7864]/12">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full blur-[100px] pointer-events-none bg-[radial-gradient(circle,rgba(224,94,56,0.1)_0%,rgba(224,94,56,0)_70%)]" />
+        <div className="font-cormorant text-[clamp(2.8rem,5vw,4.8rem)] font-light text-[#1C1917] mb-6 leading-[1.1] relative z-[1] reveal-on-scroll">
           Automate Your Brand<br />
-          <em>Without Losing Control</em>
+          <em className="text-[#e05e38] italic font-normal">Without Losing Control</em>
         </div>
-        <p className="noir-cta-sub reveal-on-scroll reveal-delay-1">
+        <p className="text-[1.05rem] font-light text-[#1c1917]/62 mb-14 relative z-[1] reveal-on-scroll reveal-delay-1">
           Zero coding required. Safe threshold validation safeguards your profit margins while automating day-to-day operations.
         </p>
 
-        <div className="noir-cta-checklist reveal-on-scroll reveal-delay-2">
+        <div className="flex gap-8 flex-wrap justify-center mb-14 relative z-[1] max-[640px]:flex-col max-[640px]:items-center max-[640px]:gap-3 reveal-on-scroll reveal-delay-2">
           {[
             'Shopify & Meta Ads Native Integration',
             'WhatsApp Real-time Notifications',
             'Multi-agent Coordination Layer',
             'Symmetrical Safety Approval Queue',
           ].map(item => (
-            <div key={item} className="noir-check-item">
-              <CheckCircle2 size={16} className="noir-check-icon" />
+            <div key={item} className="flex items-center gap-2.5 text-[0.85rem] text-[#1c1917]/65">
+              <CheckCircle2 size={16} className="text-[#e05e38] shrink-0" />
               {item}
             </div>
           ))}
@@ -1421,13 +458,13 @@ export default function LandingNoir() {
 
         <div className="reveal-on-scroll reveal-delay-3">
           {isSignedIn ? (
-            <button className="noir-cta-btn" onClick={() => navigate('/dashboard')}>
+            <button className="py-5 px-16 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.24em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-[1] shadow-[0_0_35px_rgba(224,94,56,0.15)] inline-flex items-center gap-3 hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(224,94,56,0.22)] max-[640px]:w-full max-[640px]:justify-center" onClick={() => navigate('/dashboard')}>
               Go to Dashboard
               <ArrowRight size={16} />
             </button>
           ) : (
             <SignInButton mode="modal">
-              <button className="noir-cta-btn">
+              <button className="py-5 px-16 bg-[#e05e38] text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.24em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-[1] shadow-[0_0_35px_rgba(224,94,56,0.15)] inline-flex items-center gap-3 hover:bg-[#e87c5d] hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(224,94,56,0.22)] max-[640px]:w-full max-[640px]:justify-center">
                 Begin Setup
                 <ArrowRight size={16} />
               </button>
@@ -1437,16 +474,16 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Footer ────────────────────────────────────── */}
-      <footer className="noir-footer">
-        <div className="noir-footer-logo">
-          FASHION<span style={{ color: CREAM }}>OS</span>{' '}
+      <footer className="py-11 px-20 max-w-full flex items-center justify-between border-t border-[#e05e38]/12 flex-wrap gap-6 bg-[#171717] relative z-[2] max-[1024px]:py-9 max-[1024px]:px-10 max-[640px]:flex-col max-[640px]:text-center max-[640px]:gap-4">
+        <div className="font-cormorant text-[1.4rem] uppercase tracking-[0.16em] text-[#e05e38]">
+          FASHION<span className="text-[#f0eeeb]">OS</span>{' '}
           <Zap size={12} fill={GOLD} stroke="none" style={{ verticalAlign: 'middle', marginTop: -2 }} />
         </div>
-        <div className="noir-live">
-          <span className="noir-live-dot" />
+        <div className="flex items-center gap-2.5 text-[0.7rem] uppercase tracking-[0.18em] text-[#f0eeeb]/45 font-medium">
+          <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_10px_rgba(16,185,129,0.7)] animate-pulse-green" />
           Fleet Operational
         </div>
-        <div className="noir-copy">
+        <div className="text-[0.7rem] uppercase tracking-[0.12em] text-[#f2ede4]/30">
           &copy; {new Date().getFullYear()} FashionOS. Crafted with precision.
         </div>
       </footer>

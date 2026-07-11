@@ -321,7 +321,7 @@ export default function Chat() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 36 }}>
               <AsteriskLogo size={isMobile ? 34 : 42} />
               <h1 style={{
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: "'Alfa Slab One', serif",
                 fontSize: isMobile ? '2rem' : '2.6rem',
                 fontWeight: 500,
                 color: 'var(--text-primary)',
@@ -362,7 +362,7 @@ export default function Chat() {
                     borderRadius: 20,
                     color: 'var(--text-secondary)',
                     cursor: 'pointer',
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Knewave', cursive",
                     fontSize: '0.75rem',
                     transition: 'all 0.18s',
                     letterSpacing: '0.01em',
@@ -407,7 +407,7 @@ export default function Chat() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <AsteriskLogo size={18} />
                 <span style={{
-                  fontFamily: "'Cormorant Garamond', serif",
+                  fontFamily: "'Alfa Slab One', serif",
                   fontSize: '1rem',
                   fontWeight: 500,
                   color: 'var(--text-primary)',

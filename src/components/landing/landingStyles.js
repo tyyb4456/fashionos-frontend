@@ -66,7 +66,7 @@ const STYLES = `
   }
 
   .hero-title {
-    font-family: 'Fascinate Inline', cursive;
+    font-family: 'Alfa Slab One', serif;
     font-size: clamp(3rem, 7vw, 5.5rem);
     line-height: 1.08;
     color: var(--text-primary);

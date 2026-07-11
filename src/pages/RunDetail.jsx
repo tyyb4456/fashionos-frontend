@@ -44,7 +44,7 @@ export default function RunDetail() {
 
       <div>
         <div className="section-pill">↺ Run Detail</div>
-        <h1 className="page-title-shimmer capitalize" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 300 }}>
+        <h1 className="page-title-shimmer capitalize" style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '2rem', fontWeight: 300 }}>
           {run.trigger} Run
         </h1>
         <div className="gradient-accent-line" />

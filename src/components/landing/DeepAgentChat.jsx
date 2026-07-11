@@ -65,7 +65,7 @@ export default function DeepAgentChat() {
           Deep Agent Chat
         </div>
         <h2 style={{
-          fontFamily: "'Fascinate Inline', cursive",
+          fontFamily: "'Alfa Slab One', serif",
           fontSize: 'clamp(2rem, 4vw, 3rem)',
           color: 'var(--text-primary)',
           margin: 0, lineHeight: 1.2,
@@ -198,7 +198,7 @@ export default function DeepAgentChat() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <Brain size={14} color="#ADDFF1" />
-              <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+              <span style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '0.9rem', color: 'var(--text-primary)' }}>
                 Long-term Memory
               </span>
             </div>
@@ -220,7 +220,7 @@ export default function DeepAgentChat() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <RefreshCw size={14} color="#ADDFF1" />
-              <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+              <span style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '0.9rem', color: 'var(--text-primary)' }}>
                 Live Subagents
               </span>
             </div>

@@ -24,7 +24,7 @@ export default function Runs() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">↺ Pipeline History</div>
-        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Run History</h1>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Alfa Slab One', serif" }}>Run History</h1>
         <div className="gradient-accent-line" />
       </div>
       <div className="space-y-2">

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import { UserButton } from '@clerk/clerk-react'
-import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Settings, MessageSquare, Menu, X, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Inbox, Settings, MessageSquare, Menu, X, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
   { to: '/approvals', icon: CheckSquare,      label: 'Approvals' },
   { to: '/content',   icon: FileText,         label: 'Content'   },
   { to: '/returns',   icon: RotateCcw,        label: 'Returns'   },
+  { to: '/dm',        icon: Inbox,            label: 'DMs'       },
   { to: '/settings',  icon: Settings,         label: 'Settings'  },
 ]
 
@@ -36,7 +37,7 @@ export default function Layout() {
             <Menu size={20} />
           </button>
           <span style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Alfa Slab One', serif",
             fontSize: '1.15rem', fontWeight: 600,
             letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-primary)',
           }}>
@@ -81,7 +82,7 @@ export default function Layout() {
         {/* Brand */}
         <div className="p-5 flex items-center justify-between" style={{ borderBottom: '1px solid var(--card-border)' }}>
           <span style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Alfa Slab One', serif",
             fontSize: '1.25rem', fontWeight: 600,
             letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-primary)',
           }}>
@@ -122,7 +123,7 @@ export default function Layout() {
                   onMouseLeave={e => { if (!isActive) { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = '' } }}
                 >
                   <Icon size={15} style={{ color: isActive ? 'var(--gold)' : 'inherit', flexShrink: 0 }} />
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', letterSpacing: '0.02em' }}>
+                  <span style={{ fontFamily: "'Knewave', cursive", fontSize: '0.78rem', letterSpacing: '0.02em' }}>
                     {label}
                   </span>
                 </div>
@@ -135,7 +136,7 @@ export default function Layout() {
         <div className="p-4 flex items-center justify-between gap-2.5" style={{ borderTop: '1px solid var(--card-border)' }}>
           <div className="flex items-center gap-2.5">
             <UserButton afterSignOutUrl="/" />
-            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: "'Inter', sans-serif", textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: "'Knewave', cursive", textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               Account
             </span>
           </div>

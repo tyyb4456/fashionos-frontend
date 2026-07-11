@@ -20,7 +20,7 @@ export default function Navbar() {
         }}>
           <Zap size={16} color="white" />
         </div>
-        <span style={{ fontFamily: "'Fascinate Inline', cursive", fontSize: '1.35rem', color: 'var(--text-primary)' }}>
+        <span style={{ fontFamily: "'Alfa Slab One', serif", fontSize: '1.35rem', color: 'var(--text-primary)' }}>
           FashionOS
         </span>
       </div>

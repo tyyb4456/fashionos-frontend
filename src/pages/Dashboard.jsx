@@ -235,7 +235,7 @@ export default function Dashboard() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
               <h1 style={{
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: "'Alfa Slab One', serif",
                 fontSize: 'clamp(1.55rem, 3vw, 2.1rem)',
                 margin: 0, lineHeight: 1,
                 background: 'linear-gradient(135deg, var(--text-primary) 0%, var(--gold) 80%)',
@@ -331,7 +331,7 @@ export default function Dashboard() {
               <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Runs today</span>
               <span style={{
                 marginLeft: 'auto',
-                fontSize: '1.15rem', fontWeight: 700, fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '1.15rem', fontWeight: 700, fontFamily: "'Alfa Slab One', serif",
                 color: 'var(--gold)',
               }}>{data.total_runs_today ?? 0}</span>
             </div>
@@ -354,7 +354,7 @@ export default function Dashboard() {
                     Active Season
                   </div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: "'Cormorant Garamond', serif", color: 'var(--text-primary)', lineHeight: 1 }}>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: "'Alfa Slab One', serif", color: 'var(--text-primary)', lineHeight: 1 }}>
                       {seasonal.season_label.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                     </span>
                     {isSeasonActive && (
@@ -390,7 +390,7 @@ export default function Dashboard() {
                     <div style={{ textAlign: 'right' }}>
                       <div style={{
                         fontSize: '1.4rem', fontWeight: 700,
-                        fontFamily: "'Cormorant Garamond', serif",
+                        fontFamily: "'Alfa Slab One', serif",
                         color: 'var(--gold)', lineHeight: 1,
                       }}>{seasonal.days_until_next_peak}<span style={{ fontSize: '0.7rem', fontFamily: 'inherit' }}>d</span></div>
                       {!seasonal.next_peak_confirmed && (
@@ -520,7 +520,7 @@ function BarGroup({ title, items, total, emptyLabel = 'None', emptyColor = '#4ad
         {displayTotal !== null && (
           <span style={{
             fontSize: '1.15rem', fontWeight: 800, lineHeight: 1,
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Alfa Slab One', serif",
             color: displayItems[0]?.color ?? 'var(--gold)',
             filter: `drop-shadow(0 0 6px ${displayItems[0]?.color ?? 'transparent'}55)`,
           }}>{displayTotal}</span>
@@ -651,7 +651,7 @@ function StatsPieCharts({ data }) {
               <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Auto Rate</span>
               <span style={{
                 fontSize: '1.1rem', fontWeight: 800,
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: "'Alfa Slab One', serif",
                 color: autoRate >= 70 ? '#4ade80' : autoRate >= 40 ? '#facc15' : '#f87171',
                 filter: `drop-shadow(0 0 5px currentColor)`,
               }}>{autoRate}%</span>

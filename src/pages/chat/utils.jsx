@@ -21,7 +21,7 @@ export function relativeTime(iso) {
 export function badge(text, color) {
   return (
     <span style={{
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'Knewave', cursive",
       fontSize: '0.52rem', letterSpacing: '0.12em',
       textTransform: 'uppercase', padding: '2px 6px',
       border: `1px solid ${color}55`, color,

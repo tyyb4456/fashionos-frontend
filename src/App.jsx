@@ -8,6 +8,7 @@ import RunDetail from './pages/RunDetail'
 import Approvals from './pages/Approvals'
 import Content from './pages/Content'
 import Returns from './pages/Returns'
+import Dm from './pages/Dm'
 import Settings from './pages/Settings'
 import Chat from './pages/Chat'
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="approvals" element={<Approvals />} />
           <Route path="content" element={<Content />} />
           <Route path="returns" element={<Returns />} />
+          <Route path="dm" element={<Dm />} />
           <Route path="settings" element={<Settings />} />
           <Route path="chat" element={<Chat />} />
         </Route>
