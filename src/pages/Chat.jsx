@@ -317,9 +317,8 @@ export default function Chat() {
               </button>
             )}
 
-            {/* Starburst + Greeting */}
+            {/* Greeting */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 36 }}>
-              <AsteriskLogo size={isMobile ? 34 : 42} />
               <h1 style={{
                 fontFamily: "'Alfa Slab One', serif",
                 fontSize: isMobile ? '2rem' : '2.6rem',
@@ -405,7 +404,6 @@ export default function Chat() {
                 </button>
               )}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <AsteriskLogo size={18} />
                 <span style={{
                   fontFamily: "'Alfa Slab One', serif",
                   fontSize: '1rem',
