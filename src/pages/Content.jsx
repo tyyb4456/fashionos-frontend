@@ -51,6 +51,12 @@ export default function Content() {
                     <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{post.product_title}</span>
                     {post.is_urgent && <Badge level="warning" />}
                     <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{post.sku}</span>
+                    {post.trigger === 'trending' && post.trend_score != null && (
+                      <span className="text-xs px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(47,158,110,0.1)', color: '#2F9E6E', border: '1px solid rgba(47,158,110,0.25)' }}>
+                        🔥 trend {post.trend_score.toFixed(2)}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-3 mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
                     <span className="flex items-center gap-1"><SiInstagram size={10} /> {post.instagram_post_time}</span>
@@ -107,8 +113,8 @@ export default function Content() {
 
                 <div className="flex gap-2 pt-2">
                   <button onClick={() => updateStatus(post.id, 'posted')}
-                    className="flex-1 text-white text-xs py-1.5 rounded-xl transition-all hover:opacity-85"
-                    style={{ background: 'linear-gradient(135deg, #166534, #22c55e)' }}>
+                    className="flex-1 text-xs py-1.5 rounded-xl transition-all hover:opacity-85"
+                    style={{ background: 'transparent', color: '#d4d4d8', border: '1px solid rgba(212,212,216,0.45)' }}>
                     Mark as Posted
                   </button>
                   <button onClick={() => updateStatus(post.id, 'skipped')}

@@ -4,8 +4,9 @@ import { useSearchParams } from 'react-router-dom'
 import { Check, ExternalLink, Trash2 } from 'lucide-react'
 
 const gradBtn = {
-  background: 'linear-gradient(135deg, #191919, #d4d4d8)',
-  color: 'white', border: 'none',
+  background: 'transparent',
+  color: '#d4d4d8',
+  border: '1px solid rgba(212,212,216,0.45)',
 }
 
 function ConnectCard({ title, connected, onConnect, onDisconnect, children }) {

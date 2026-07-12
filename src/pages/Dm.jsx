@@ -89,7 +89,7 @@ export default function Dm() {
             {tab === 'flagged_open' && (
               <button onClick={() => resolve(dm.id)}
                 className="flex items-center gap-2 text-xs px-4 py-2 rounded-xl transition-all hover:opacity-85"
-                style={{ background: 'linear-gradient(135deg, #166534, #22c55e)', color: 'white', border: 'none' }}>
+                style={{ background: 'transparent', color: '#d4d4d8', border: '1px solid rgba(212,212,216,0.45)' }}>
                 <CheckCircle2 size={12} /> Mark Resolved
               </button>
             )}

@@ -3,8 +3,9 @@ import { useApi } from '../api/client'
 import Badge from '../components/Badge'
 
 const approveStyle = {
-  background: 'linear-gradient(135deg, #166534, #22c55e)',
-  color: 'white', border: 'none',
+  background: 'transparent',
+  color: '#d4d4d8',
+  border: '1px solid rgba(212,212,216,0.45)',
 }
 
 function Tab({ label, active, count, onClick }) {

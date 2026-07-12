@@ -159,12 +159,15 @@ export default function LandingNoir() {
         </div>
 
         {isSignedIn ? (
-          <button className="py-2.5 px-7 border-none rounded-[6px] text-[#1e1e1e] bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[0.7rem] font-bold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:from-white hover:to-zinc-300 hover:-translate-y-[1px] hover:shadow-[0_0_20px_rgba(212,212,216,0.4)]" onClick={() => navigate('/dashboard')}>
+          <button
+            className="py-2.5 px-7 rounded-[6px] text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-200 border border-[#d4d4d8]/60 text-[#d4d4d8] bg-transparent hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8]"
+            onClick={() => navigate('/dashboard')}
+          >
             Dashboard
           </button>
         ) : (
           <SignInButton mode="modal">
-            <button className="py-2.5 px-7 border border-[#d4d4d8] rounded-[6px] text-[#d4d4d8] bg-transparent text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-gradient-to-r hover:from-zinc-300 hover:via-zinc-100 hover:to-zinc-400 hover:text-[#1e1e1e] hover:shadow-[0_0_15px_rgba(212,212,216,0.3)]">Sign In</button>
+            <button className="py-2.5 px-7 rounded-[6px] text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-200 border border-[#d4d4d8]/60 text-[#d4d4d8] bg-transparent hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8]">Sign In</button>
           </SignInButton>
         )}
       </nav>
@@ -174,7 +177,7 @@ export default function LandingNoir() {
         {/* Left: Text */}
         <div className="flex-1 flex flex-col justify-center z-[2] p-[56px_32px] min-[901px]:p-[48px_40px_64px_48px] lg:p-[64px_64px_80px_80px] reveal-on-scroll">
           <div className="text-[0.68rem] uppercase tracking-[0.3em] text-[#d4d4d8] mb-6 flex items-center gap-2 font-semibold">
-            <Sparkles size={13} fill={GOLD} stroke="none" />
+            {/* <Sparkles size={13} fill={GOLD} stroke="none" /> */}
             LangGraph · 8 Agents · Gemini Autopilot
           </div>
 
@@ -190,25 +193,28 @@ export default function LandingNoir() {
 
           <div className="flex items-center gap-4 sm:gap-7 flex-wrap">
             {isSignedIn ? (
-              <button className="py-[18px] px-11 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:from-white hover:to-zinc-300 hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(212,212,216,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]" onClick={() => navigate('/dashboard')}>
+              <button
+                className="py-[15px] px-10 border border-[#d4d4d8]/55 rounded-[6px] text-[#d4d4d8] bg-transparent text-[0.72rem] font-semibold tracking-[0.22em] uppercase cursor-pointer transition-all duration-200 flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-start hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8] hover:text-white"
+                onClick={() => navigate('/dashboard')}
+              >
                 Go to Dashboard
                 <ArrowRight size={15} />
               </button>
             ) : (
               <SignInButton mode="modal">
-                <button className="py-[18px] px-11 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 text-[#1e1e1e] border-none rounded-[8px] text-[0.75rem] font-bold tracking-[0.22em] uppercase cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2.5 relative overflow-hidden w-full sm:w-auto justify-center sm:justify-start hover:from-white hover:to-zinc-300 hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(212,212,216,0.35)] after:absolute after:top-0 after:-left-[75%] after:w-1/2 after:h-full after:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] after:-skew-x-20 after:transition-[left] after:duration-600 hover:after:left-[125%]">
+                <button className="py-[15px] px-10 border border-[#d4d4d8]/55 rounded-[6px] text-[#d4d4d8] bg-transparent text-[0.72rem] font-semibold tracking-[0.22em] uppercase cursor-pointer transition-all duration-200 flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-start hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8] hover:text-white">
                   Get Started
                   <ArrowRight size={15} />
                 </button>
               </SignInButton>
             )}
-            <button
+            {/* <button
               className="font-cormorant text-[1.3rem] italic text-[#d4d4d8] cursor-pointer border-none border-b border-[#d4d4d8]/40 pb-0.5 transition-all duration-250 bg-none flex items-center gap-1.5 hover:text-[#ffffff] hover:border-b-[#ffffff] hover:pl-1"
               onClick={() => document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' })}
             >
               View the pipeline
               <ArrowDown size={14} />
-            </button>
+            </button> */}
           </div>
         </div>
 

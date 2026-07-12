@@ -17,10 +17,10 @@ export default function HeroSection() {
       position: 'relative', zIndex: 1,
     }}>
       {/* Top badge */}
-      <div className="hero-badge">
+      {/* <div className="hero-badge">
         <Cpu size={13} />
         LangGraph · 8 Agents · Gemini 2.5 Flash
-      </div>
+      </div> */}
 
       <h1 className="hero-title">
         Your Pakistani<br />
