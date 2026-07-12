@@ -30,7 +30,7 @@ export default function Dm() {
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="w-8 h-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: 'rgba(47,158,110,0.22)', borderTopColor: '#2F9E6E' }} />
+        style={{ borderColor: 'rgba(212,212,216,0.18)', borderTopColor: '#d4d4d8' }} />
     </div>
   )
 
@@ -38,7 +38,7 @@ export default function Dm() {
     <div className="p-6 space-y-4" style={{ position: 'relative', zIndex: 1 }}>
       <div>
         <div className="section-pill">✉ Customer Conversations</div>
-        <h1 className="page-title-shimmer" style={{ fontFamily: "'Permanent Marker', cursive", fontSize: '2rem', fontWeight: 300 }}>Flagged DMs</h1>
+        <h1 className="page-title-shimmer text-2xl" style={{ fontFamily: "'Alfa Slab One', serif" }}>Flagged DMs</h1>
         <div className="gradient-accent-line" />
       </div>
       <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
@@ -49,8 +49,8 @@ export default function Dm() {
           <button key={val} onClick={() => setTab(val)}
             className="px-3 py-1.5 text-xs transition-all"
             style={tab === val ? {
-              background: 'rgba(47,158,110,0.12)',
-              color: '#2F9E6E', border: '1px solid rgba(47,158,110,0.35)',
+              background: 'rgba(212,212,216,0.1)',
+              color: '#d4d4d8', border: '1px solid rgba(212,212,216,0.35)',
               fontFamily: "'Knewave', cursive", letterSpacing: '0.08em',
             } : { color: 'var(--text-secondary)', background: 'none', border: '1px solid transparent', cursor: 'pointer', fontFamily: "'Knewave', cursive" }}>
             {label}

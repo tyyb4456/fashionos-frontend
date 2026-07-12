@@ -245,7 +245,7 @@ export default function Dashboard() {
               }}>
                 Dashboard
               </h1>
-              <LivePill />
+              {/* <LivePill /> */}
             </div>
 
             {data.last_run_at && (

@@ -95,21 +95,26 @@ const STYLES = `
     align-items: center;
     gap: 10px;
     padding: 14px 32px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #003152, #ADDFF1);
-    color: #fff;
-    font-size: 1rem;
+    border-radius: 6px;
+    background: transparent;
+    color: #d4d4d8;
+    font-size: 0.8rem;
     font-weight: 600;
-    border: none;
+    border: 1px solid rgba(212,212,216,0.5);
     cursor: pointer;
-    transition: all 0.25s ease;
-    animation: pulse-glow 3s ease-in-out infinite, slide-up 0.7s ease 0.3s both;
-    font-family: 'Story Script', cursive;
+    transition: all 0.2s ease;
+    animation: slide-up 0.7s ease 0.3s both;
+    font-family: 'Knewave', cursive;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     text-decoration: none;
   }
   .cta-btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(173,223,241,0.4);
+    background: rgba(212,212,216,0.08);
+    border-color: #d4d4d8;
+    color: #ffffff;
+    transform: none;
+    box-shadow: none;
   }
 
   .cta-secondary {
