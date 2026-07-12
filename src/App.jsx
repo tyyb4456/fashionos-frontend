@@ -11,6 +11,7 @@ import Returns from './pages/Returns'
 import Dm from './pages/Dm'
 import Settings from './pages/Settings'
 import Chat from './pages/Chat'
+import Trends from './pages/Trends'
 
 function ProtectedRoute({ children }) {
   return (
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="dm" element={<Dm />} />
           <Route path="settings" element={<Settings />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="trends" element={<Trends />} />
         </Route>
       </Routes>
     </BrowserRouter>
