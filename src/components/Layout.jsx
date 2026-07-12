@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import { UserButton } from '@clerk/clerk-react'
-import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Inbox, Settings, MessageSquare, Menu, X, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, History, CheckSquare, FileText, RotateCcw, Inbox, TrendingUp, Settings, MessageSquare, Menu, X, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
   { to: '/content',   icon: FileText,         label: 'Content'   },
   { to: '/returns',   icon: RotateCcw,        label: 'Returns'   },
   { to: '/dm',        icon: Inbox,            label: 'DMs'       },
+  { to: '/trends',    icon: TrendingUp,       label: 'Trends'    },
   { to: '/settings',  icon: Settings,         label: 'Settings'  },
 ]
 
