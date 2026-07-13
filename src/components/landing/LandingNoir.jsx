@@ -79,28 +79,24 @@ export default function LandingNoir() {
 
   // Dynamic slides styling for coverflow fanned look using Tailwind
   const getSlideStyles = (index) => {
-    let slideClass = "box-sizing-border-box px-1.5 relative transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-    let innerClass = "h-full flex flex-col rounded-2xl transition-all duration-500 ease border border-[#8c7864]/16 bg-white shadow-[0_8px_32px_rgba(140,120,100,0.08)] p-[28px_24px] md:p-9 max-[640px]:p-[32px_28px_28px] max-[640px]:bg-[#252525] max-[640px]:border-white/8 max-[640px]:shadow-[0_8px_32px_rgba(0,0,0,0.28)]"
+    let slideClass = "box-sizing-border-box px-3 relative transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    let innerClass = "h-full flex flex-col rounded-xl transition-all duration-500 ease border border-[#1c1917]/8 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.02)] p-8 md:p-9 max-[640px]:p-7 max-[640px]:bg-[#222] max-[640px]:border-white/6 max-[640px]:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
 
     if (cardsPerView !== 3) {
       if (cardsPerView === 1) {
-        slideClass += " !transform-none z-1"
-        innerClass += " !opacity-100"
+        slideClass += " !transform-none z-1 opacity-100"
       } else {
         slideClass += " hover:z-5 hover:scale-[1.02]"
-        innerClass += " hover:border-[#d4d4d8]/55 hover:shadow-[0_24px_48px_rgba(140,120,100,0.12),0_0_24px_rgba(212,212,216,0.06)]"
+        innerClass += " hover:border-[#1c1917]/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]"
       }
     } else {
       const centerIndex = agentIndex + 1
       if (index === centerIndex) {
-        slideClass += " z-[4] scale-[1.06] -translate-y-2.5 origin-bottom"
-        innerClass += " border-[#d4d4d8]/45 shadow-[0_30px_60px_rgba(140,120,100,0.15),0_0_30px_rgba(212,212,216,0.1)]"
-      } else if (index === centerIndex - 1) {
-        slideClass += " z-[2] scale-90 translate-y-2.5 -rotate-3 origin-bottom-right hover:z-[3] hover:scale-[0.94] hover:translate-y-1 hover:rotate-0"
-        innerClass += " opacity-55 hover:opacity-90"
-      } else if (index === centerIndex + 1) {
-        slideClass += " z-[2] scale-90 translate-y-2.5 rotate-3 origin-bottom-left hover:z-[3] hover:scale-[0.94] hover:translate-y-1 hover:rotate-0"
-        innerClass += " opacity-55 hover:opacity-90"
+        slideClass += " z-[4] scale-[1.03]"
+        innerClass += " border-[#1c1917]/15 shadow-[0_24px_48px_rgba(0,0,0,0.05)]"
+      } else if (index === centerIndex - 1 || index === centerIndex + 1) {
+        slideClass += " z-[2] scale-[0.97]"
+        innerClass += " opacity-45 hover:opacity-90"
       } else {
         slideClass += " opacity-0 pointer-events-none"
       }
@@ -288,12 +284,12 @@ export default function LandingNoir() {
           <div className="relative reveal-on-scroll sm:mx-[-8px] max-[640px]:mx-0">
             {/* Arrows — hidden on mobile via CSS */}
             <button
-              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 left-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#d4d4d8] hover:text-[#d4d4d8] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
+              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-200 absolute top-1/2 -translate-y-1/2 left-[-20px] max-[640px]:hidden bg-white border border-[#1c1917]/10 text-[#1C1917] hover:border-[#1c1917] hover:bg-[#1c1917] hover:text-white disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
               onClick={prevAgent}
               disabled={agentIndex === 0}
               aria-label="Previous agents"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={16} />
             </button>
 
             <div className="relative overflow-hidden py-5 my-[-20px] max-[640px]:py-3 max-[640px]:my-[-12px]">
@@ -316,18 +312,19 @@ export default function LandingNoir() {
                       style={{ flex: `0 0 ${100 / cardsPerView}%`, position: 'relative' }}
                     >
                       <div className={`group/card ${innerClass}`}>
-                        <div className="flex justify-between items-center mb-6 max-[640px]:mb-5 max-[640px]:items-start">
-                          <div className="w-12 h-12 rounded-lg bg-[#d4d4d8]/8 border border-[#d4d4d8]/20 flex items-center justify-center text-[#d4d4d8] transition-all duration-300 group-hover/card:bg-[#d4d4d8] group-hover/card:text-white max-[640px]:w-[52px] max-[640px]:h-[52px] max-[640px]:rounded-[14px] max-[640px]:bg-[#d4d4d8]/14 max-[640px]:border-[#d4d4d8]/35">
-                            {Icon && <Icon size={22} />}
+                        <div className="flex justify-between items-center mb-5">
+                          <div className="w-10 h-10 rounded-lg bg-[#1c1917]/4 border border-[#1c1917]/8 flex items-center justify-center text-[#1C1917] transition-all duration-300 group-hover/card:bg-[#1c1917] group-hover/card:text-white max-[640px]:bg-white/8 max-[640px]:border-white/10 max-[640px]:text-white">
+                            {Icon && <Icon size={18} />}
                           </div>
-                          <span className="font-cormorant text-[2.4rem] italic text-[#d4d4d8]/30 leading-none font-light max-[640px]:text-[4rem] max-[640px]:text-[#d4d4d8]/18 max-[640px]:absolute max-[640px]:top-6 max-[640px]:right-6">{agent.step}</span>
+                          <span className="font-mono text-xs tracking-widest text-[#1c1917]/30 font-semibold max-[640px]:text-white/20">AGENT {agent.step}</span>
                         </div>
-                        <div className="font-cormorant text-[1.8rem] text-[#1C1917] mb-3 font-medium transition-colors duration-300 group-hover/card:text-[#d4d4d8] max-[640px]:text-2xl max-[640px]:text-[#F2EDE4] max-[640px]:mt-5 max-[640px]:mb-3 max-[640px]:leading-[1.1]">{agent.title}</div>
-                        <p className="flex-1 text-[0.88rem] font-light leading-[1.75] text-[#1c1917]/62 max-[640px]:text-[0.9rem] max-[640px]:leading-[1.7] max-[640px]:text-[#f2ede4]/55 max-[640px]:mb-0">{agent.desc}</p>
+                        <div className="font-cormorant text-[1.45rem] text-[#1C1917] mb-2.5 font-bold transition-colors duration-300 group-hover/card:text-[#d4d4d8] max-[640px]:text-xl max-[640px]:text-[#F2EDE4] max-[640px]:leading-[1.1]">{agent.title}</div>
+                        <p className="flex-1 text-[0.82rem] font-light leading-[1.65] text-[#1c1917]/55 max-[640px]:text-[0.84rem] max-[640px]:leading-[1.6] max-[640px]:text-[#f2ede4]/50 max-[640px]:mb-0">{agent.desc}</p>
 
                         <div className="mt-6 flex justify-start">
-                          <span className={`text-[0.58rem] uppercase tracking-[0.16em] py-1.25 px-3 rounded-full font-semibold border max-[640px]:text-[0.6rem] max-[640px]:py-1.5 max-[640px]:px-3.5 max-[640px]:tracking-[0.14em] max-[640px]:whitespace-nowrap ${agent.autoExec ? 'border-[#d4d4d8]/50 text-[#d4d4d8] bg-[#d4d4d8]/4 max-[640px]:border-[#d4d4d8]/35 max-[640px]:bg-[#d4d4d8]/5' : 'border-black/12 text-black/45 bg-black/2 max-[640px]:border-white/15 max-[640px]:text-white/45 max-[640px]:bg-white/2'}`}>
-                            {agent.autoExec ? 'Autonomous Mode' : 'Requires Approval'}
+                          <span className={`text-[0.55rem] uppercase tracking-[0.14em] py-1 px-2.5 rounded font-semibold border flex items-center gap-1.5 ${agent.autoExec ? 'border-[#d4d4d8]/70 text-[#b5b5ba] bg-[#d4d4d8]/5' : 'border-[#1c1917]/10 text-[#1c1917]/50 bg-black/2 max-[640px]:border-white/10 max-[640px]:text-white/45 max-[640px]:bg-white/2'}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${agent.autoExec ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                            {agent.autoExec ? 'Autonomous' : 'Requires Approval'}
                           </span>
                         </div>
                       </div>
@@ -338,22 +335,22 @@ export default function LandingNoir() {
             </div>
 
             <button
-              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-250 absolute top-1/2 -translate-y-1/2 right-[-23px] max-[640px]:hidden bg-white border border-black/10 text-[#1C1917] hover:border-[#d4d4d8] hover:text-[#d4d4d8] hover:bg-[#FAF8F5] disabled:opacity-20 disabled:cursor-not-allowed"
+              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-200 absolute top-1/2 -translate-y-1/2 right-[-20px] max-[640px]:hidden bg-white border border-[#1c1917]/10 text-[#1C1917] hover:border-[#1c1917] hover:bg-[#1c1917] hover:text-white disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
               onClick={nextAgent}
               disabled={agentIndex === maxAgentIndex}
               aria-label="Next agents"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={16} />
             </button>
           </div>
 
           {/* Dots */}
-          <div className="flex justify-center gap-2 mt-10">
+          <div className="flex justify-center gap-1.5 mt-10">
             {Array.from({ length: maxAgentIndex + 1 }).map((_, i) => (
               <button
                 key={i}
-                className="relative h-2 rounded-full p-0 border-none cursor-pointer transition-all duration-300 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:w-[34px] before:h-[34px] before:-translate-x-1/2 before:-translate-y-1/2 max-[640px]:w-[7px] max-[640px]:h-[7px] bg-black/10 active:bg-[#d4d4d8]"
-                style={{ width: i === agentIndex ? '24px' : '8px', backgroundColor: i === agentIndex ? '#d4d4d8' : undefined, borderRadius: i === agentIndex ? '4px' : '50%' }}
+                className="relative h-1.5 rounded-full p-0 border-none cursor-pointer transition-all duration-300 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:w-[24px] before:h-[24px] before:-translate-x-1/2 before:-translate-y-1/2 max-[640px]:w-[5px] max-[640px]:h-[5px] bg-[#1c1917]/10"
+                style={{ width: i === agentIndex ? '18px' : '6px', backgroundColor: i === agentIndex ? '#1c1917' : undefined, borderRadius: i === agentIndex ? '3px' : '50%' }}
                 onClick={() => goToAgent(i)}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -368,7 +365,7 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Integrations ("Seamless Connectivity") ──────── */}
-      <div id="integrations" className="border-b border-[#d4d4d8]/8 bg-[#141414]/88">
+      <div id="integrations" className="border-b border-[#d4d4d8]/8 bg-[#1e1e1e]">
         <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
           <div className="mb-16 reveal-on-scroll">
             <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">Seamless <em className="text-[#d4d4d8] italic font-normal">Connectivity</em></div>
@@ -377,29 +374,33 @@ export default function LandingNoir() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
             {integrations.map((p, index) => {
               const IconComponent = p.Icon
               return (
                 <div
                   key={p.name}
-                  className={`group/card relative overflow-hidden rounded-2xl p-9 bg-[#242424]/85 border border-white/7 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.2),0_1px_3px_rgba(0,0,0,0.1)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:bg-[#282828]/90 hover:border-[var(--platform-accent)] hover:shadow-[0_0_0_1px_var(--platform-accent),0_16px_40px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.12)] max-[640px]:shadow-[0_2px_16px_rgba(0,0,0,0.12),0_1px_4px_rgba(0,0,0,0.06)] reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
+                  className={`group/card relative overflow-hidden rounded-xl p-8 bg-[#181818] border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--platform-accent)]/30 hover:shadow-[0_12px_32px_rgba(0,0,0,0.35)] reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
                   style={{
                     '--platform-accent': p.color || GOLD,
-                    '--platform-accent-alpha': `${p.color || GOLD}4D`
                   }}
                 >
-                  <div
-                    className="text-[2.2rem] mb-6 inline-flex p-3 rounded-xl transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/card:scale-105 group-hover/card:bg-[var(--platform-accent-alpha)]"
-                    style={{ color: p.color || GOLD, backgroundColor: `${p.color || GOLD}1A`, borderColor: `${p.color || GOLD}33`, borderWidth: '1px' }}
-                  >
-                    {IconComponent && <IconComponent size={24} />}
+                  {/* Subtle back ambient glow */}
+                  <div className="absolute top-0 right-0 w-[120px] h-[120px] rounded-full blur-[40px] pointer-events-none opacity-0 transition-opacity duration-300 group-hover/card:opacity-100" style={{ background: `radial-gradient(circle, ${p.color}15 0%, transparent 70%)` }} />
+
+                  <div className="flex justify-between items-start mb-6">
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 bg-white/[0.03] border border-white/10 group-hover/card:border-[var(--platform-accent)]/30 group-hover/card:bg-[var(--platform-accent)]/5"
+                      style={{ color: p.color || GOLD }}
+                    >
+                      {IconComponent && <IconComponent size={18} />}
+                    </div>
                   </div>
-                  <div className="font-cormorant text-[1.55rem] text-[#f0eeeb] mb-2 font-medium group-hover/card:text-[var(--platform-accent)] max-[640px]:text-[1.3rem]">{p.name}</div>
-                  <p className="text-[0.84rem] font-light leading-[1.7] text-[#f0eeeb]/52 mb-5 max-[640px]:text-[0.82rem]">{p.desc}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="font-cormorant text-[1.4rem] text-[#f0eeeb] mb-2 font-bold transition-colors duration-300 group-hover/card:text-[var(--platform-accent)] max-[640px]:text-[1.25rem]">{p.name}</div>
+                  <p className="text-[0.8rem] font-light leading-[1.65] text-[#f0eeeb]/55 mb-6 max-[640px]:text-[0.78rem]">{p.desc}</p>
+                  <div className="flex flex-wrap gap-1.5">
                     {p.pills.map(pill => (
-                      <span key={pill} className="text-[0.62rem] uppercase tracking-[0.12em] py-1 px-2.5 rounded border border-white/10 text-[#f0eeeb]/45 bg-white/3 transition-colors duration-300 group-hover/card:border-[var(--platform-accent)]/40 group-hover/card:text-[var(--platform-accent)] group-hover/card:bg-[var(--platform-accent)]/8">{pill}</span>
+                      <span key={pill} className="text-[0.58rem] font-mono tracking-[0.08em] uppercase py-1 px-2 rounded border border-white/5 text-[#f0eeeb]/40 bg-white/[0.01] transition-colors duration-300 group-hover/card:border-[var(--platform-accent)]/20 group-hover/card:text-[var(--platform-accent)]/80 group-hover/card:bg-[var(--platform-accent)]/[0.03]">{pill}</span>
                     ))}
                   </div>
                 </div>
@@ -410,7 +411,7 @@ export default function LandingNoir() {
       </div>
 
       {/* ── How it Works ("The Method") ────────────────── */}
-      <div id="process" className="bg-[#141414]/50 border-b border-[#d4d4d8]/8">
+      <div id="process" className="bg-[#1e1e1e] border-b border-[#d4d4d8]/8">
         <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
           <div className="mb-16 reveal-on-scroll" style={{ textAlign: 'center' }}>
             <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">The <em className="text-[#d4d4d8] italic font-normal">Method</em></div>
