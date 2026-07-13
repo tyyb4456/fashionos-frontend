@@ -15,10 +15,18 @@ export default function LandingNoir() {
   const heroRef = useRef(null)
   const heroImgLayerRef = useRef(null)
 
-  // Agent carousel state
+  // ── Agent stack-deck state ──────────────────────────────────────
+  const total = agents.length
+  const STACK_SIZE = Math.min(3, total)
   const [agentIndex, setAgentIndex] = useState(0)
-  const [cardsPerView, setCardsPerView] = useState(3)
-  const dragState = useRef({ startX: 0, isDragging: false })
+  const [exitDir, setExitDir] = useState(null) // 'left' | 'right' | null while a card is flying out
+  const frontCardRef = useRef(null)
+  const dragRef = useRef({ startX: 0, startY: 0, dragging: false, dx: 0 })
+
+  const stackIndices = Array.from({ length: STACK_SIZE }, (_, i) => ({
+    agent: agents[(agentIndex + i) % total],
+    offset: i,
+  }))
 
   // Track scrolling to collapse header
   useEffect(() => {
@@ -54,64 +62,65 @@ export default function LandingNoir() {
     }
   }, [])
 
-  // Responsive cardsPerView: 1 on mobile, 2 on tablet, 3 on desktop
-  useEffect(() => {
-    const updateCardsPerView = () => {
-      const w = window.innerWidth
-      if (w <= 640) setCardsPerView(1)
-      else if (w <= 900) setCardsPerView(2)
-      else setCardsPerView(3)
+  // ── Deck drag handlers (direct DOM transform for 1:1 smoothness) ──
+  const flyOut = (dir) => {
+    const el = frontCardRef.current
+    setExitDir(dir)
+    if (el) {
+      el.style.transition = 'transform 380ms cubic-bezier(0.4,0,0.2,1), opacity 380ms ease'
+      el.style.transform = `translate(${dir === 'left' ? '-140%' : '140%'}, -8px) rotate(${dir === 'left' ? -24 : 24}deg)`
+      el.style.opacity = '0'
     }
-    updateCardsPerView()
-    window.addEventListener('resize', updateCardsPerView)
-    return () => window.removeEventListener('resize', updateCardsPerView)
-  }, [])
+    setTimeout(() => {
+      setAgentIndex(i => (dir === 'left' ? (i + 1) % total : (i - 1 + total) % total))
+      setExitDir(null)
+    }, 380)
+  }
 
-  const maxAgentIndex = Math.max(0, agents.length - cardsPerView)
+  const settleFront = () => {
+    const el = frontCardRef.current
+    if (el) {
+      el.style.transition = 'transform 420ms cubic-bezier(0.16,1,0.3,1), opacity 300ms ease'
+      el.style.transform = ''
+      el.style.opacity = ''
+    }
+  }
 
-  useEffect(() => {
-    setAgentIndex(i => Math.min(i, maxAgentIndex))
-  }, [maxAgentIndex])
+  const handlePointerDown = (e) => {
+    if (exitDir) return
+    const el = frontCardRef.current
+    if (!el) return
+    el.setPointerCapture?.(e.pointerId)
+    dragRef.current = { startX: e.clientX, startY: e.clientY, dragging: true, dx: 0 }
+    el.style.transition = 'none'
+  }
 
-  const goToAgent = (i) => setAgentIndex(Math.min(Math.max(i, 0), maxAgentIndex))
-  const nextAgent = () => goToAgent(agentIndex + 1)
-  const prevAgent = () => goToAgent(agentIndex - 1)
+  const handlePointerMove = (e) => {
+    const d = dragRef.current
+    if (!d.dragging) return
+    const el = frontCardRef.current
+    if (!el) return
+    const dx = e.clientX - d.startX
+    const dy = e.clientY - d.startY
+    d.dx = dx
+    el.style.transform = `translate(${dx}px, ${dy * 0.12}px) rotate(${dx / 18}deg)`
+    el.style.opacity = String(Math.max(0.35, 1 - Math.abs(dx) / 450))
+  }
 
-  // Dynamic slides styling for coverflow fanned look using Tailwind
-  const getSlideStyles = (index) => {
-    let slideClass = "box-sizing-border-box px-3 relative transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-    let innerClass = "h-full flex flex-col rounded-xl transition-all duration-500 ease border border-[#1c1917]/8 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.02)] p-8 md:p-9 max-[640px]:p-7 max-[640px]:bg-[#222] max-[640px]:border-white/6 max-[640px]:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
-
-    if (cardsPerView !== 3) {
-      if (cardsPerView === 1) {
-        slideClass += " !transform-none z-1 opacity-100"
-      } else {
-        slideClass += " hover:z-5 hover:scale-[1.02]"
-        innerClass += " hover:border-[#1c1917]/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]"
-      }
+  const handlePointerUp = () => {
+    const d = dragRef.current
+    if (!d.dragging) return
+    d.dragging = false
+    const threshold = 90
+    if (Math.abs(d.dx) > threshold) {
+      flyOut(d.dx < 0 ? 'left' : 'right')
     } else {
-      const centerIndex = agentIndex + 1
-      if (index === centerIndex) {
-        slideClass += " z-[4] scale-[1.03]"
-        innerClass += " border-[#1c1917]/15 shadow-[0_24px_48px_rgba(0,0,0,0.05)]"
-      } else if (index === centerIndex - 1 || index === centerIndex + 1) {
-        slideClass += " z-[2] scale-[0.97]"
-        innerClass += " opacity-45 hover:opacity-90"
-      } else {
-        slideClass += " opacity-0 pointer-events-none"
-      }
+      settleFront()
     }
-    return { slideClass, innerClass }
   }
 
-  const handleDragStart = (clientX) => { dragState.current = { startX: clientX, isDragging: true } }
-  const handleDragEnd = (clientX) => {
-    if (!dragState.current.isDragging) return
-    const delta = clientX - dragState.current.startX
-    if (delta > 60) prevAgent()
-    else if (delta < -60) nextAgent()
-    dragState.current.isDragging = false
-  }
+  const nextAgent = () => { if (!exitDir) flyOut('left') }
+  const prevAgent = () => { if (!exitDir) flyOut('right') }
 
   // Hero photo parallax
   const handleHeroMouseMove = (e) => {
@@ -132,12 +141,12 @@ export default function LandingNoir() {
     <div className="bg-[#1e1e1e] text-[#f0eeeb] font-montserrat min-h-screen overflow-x-hidden relative">
 
       {/* Background Ambience */}
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 -top-[100px] -left-[100px] animate-[float-slow_25s_infinite_alternate_ease-in-out]" />
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 top-[35%] -right-[200px] animate-[float-slow_30s_infinite_alternate-reverse_ease-in-out]" />
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 bottom-[10%] -left-[200px] animate-[float-slow_28s_infinite_alternate_ease-in-out]" />
+      <div className="absolute w-150 h-150 rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 -top-25 -left-25 animate-[float-slow_25s_infinite_alternate_ease-in-out]" />
+      <div className="absolute w-150 h-150 rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 top-[35%] -right-50 animate-[float-slow_30s_infinite_alternate-reverse_ease-in-out]" />
+      <div className="absolute w-150 h-150 rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.06)_0%,rgba(212,212,216,0)_70%)] blur-[100px] pointer-events-none z-0 bottom-[10%] -left-50 animate-[float-slow_28s_infinite_alternate_ease-in-out]" />
 
       {/* ── Navbar ────────────────────────────────────── */}
-      <nav className={`fixed top-0 left-0 right-0 z-[100] flex items-center justify-between border-b transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
+      <nav className={`fixed top-0 left-0 right-0 z-100 flex items-center justify-between border-b transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
         ${isScrolled
           ? 'py-4 px-10 lg:px-16 bg-[#1e1e1e]/88 border-[#d4d4d8]/20 shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
           : 'py-6 px-10 lg:px-16 bg-[#1e1e1e]/72 border-[#d4d4d8]/10'
@@ -145,7 +154,6 @@ export default function LandingNoir() {
       >
         <div className="font-cormorant text-[1.6rem] font-bold tracking-[0.16em] uppercase text-[#d4d4d8] flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           FASHION<span className="text-[#f0eeeb]">OS</span>{' '}
-          {/* <Zap size={14} fill={GOLD} stroke="none" style={{ marginLeft: -2 }} /> */}
         </div>
 
         <div className="hidden min-[901px]:flex gap-12 text-[0.72rem] uppercase tracking-[0.2em] text-[#f0eeeb]/55">
@@ -156,41 +164,36 @@ export default function LandingNoir() {
 
         {isSignedIn ? (
           <button
-            className="py-2.5 px-7 rounded-[6px] text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-200 border border-[#d4d4d8]/60 text-[#d4d4d8] bg-transparent hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8]"
+            className="py-2.5 px-7 rounded-md text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-200 border border-[#d4d4d8]/60 text-[#d4d4d8] bg-transparent hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8]"
             onClick={() => navigate('/dashboard')}
           >
             Dashboard
           </button>
         ) : (
           <SignInButton mode="modal">
-            <button className="py-2.5 px-7 rounded-[6px] text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-200 border border-[#d4d4d8]/60 text-[#d4d4d8] bg-transparent hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8]">Sign In</button>
+            <button className="py-2.5 px-7 rounded-md text-[0.7rem] font-semibold tracking-[0.18em] uppercase cursor-pointer transition-all duration-200 border border-[#d4d4d8]/60 text-[#d4d4d8] bg-transparent hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8]">Sign In</button>
           </SignInButton>
         )}
       </nav>
 
       {/* ── Hero ──────────────────────────────────────── */}
-      <section className="flex flex-col-reverse min-[901px]:flex-row min-h-screen pt-[88px] border-b border-[#d4d4d8]/10 relative overflow-hidden" ref={heroRef}>
+      <section className="flex flex-col-reverse min-[901px]:flex-row min-h-screen pt-22 border-b border-[#d4d4d8]/10 relative overflow-hidden" ref={heroRef}>
         {/* Left: Text */}
-        <div className="flex-1 flex flex-col justify-center z-[2] p-[56px_32px] min-[901px]:p-[48px_40px_64px_48px] lg:p-[64px_64px_80px_80px] reveal-on-scroll">
-          {/* <div className="text-[0.68rem] uppercase tracking-[0.3em] text-[#d4d4d8] mb-6 flex items-center gap-2 font-semibold">
-            <Sparkles size={13} fill={GOLD} stroke="none" />
-            LangGraph · 8 Agents · Gemini Autopilot
-          </div> */}
-
+        <div className="flex-1 flex flex-col justify-center z-2 p-[56px_32px] min-[901px]:p-[48px_40px_64px_48px] lg:p-[64px_64px_80px_80px] reveal-on-scroll">
           <h1 className="font-cormorant text-[clamp(3.4rem,5.5vw,5.8rem)] leading-[0.95] font-light text-[#f0eeeb] m-[0_0_28px]">
             Run Your<br />
-            <em className="italic font-normal bg-[linear-gradient(90deg,#F2EDE4_0%,#d4d4d8_50%,#F2EDE4_100%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-[text-shimmer_6s_linear_infinite] drop-shadow-[0_0_20px_rgba(212,212,216,0.25)]">Fashion Brand</em><br />
+            <em className="italic font-normal bg-[linear-gradient(90deg,#F2EDE4_0%,#d4d4d8_50%,#F2EDE4_100%)] bg-size-[200%_auto] text-transparent bg-clip-text animate-[text-shimmer_6s_linear_infinite] drop-shadow-[0_0_20px_rgba(212,212,216,0.25)]">Fashion Brand</em><br />
             on Autopilot
           </h1>
 
-          <p className="text-[1.05rem] font-light leading-[1.8] text-[#f2ede4]/65 max-w-[480px] mb-12">
+          <p className="text-[1.05rem] font-light leading-[1.8] text-[#f2ede4]/65 max-w-120 mb-12">
             Eight elite AI agents work in symphony to automate inventory, markdown pricing, content generation, meta campaigns, and customer DMs. Supervised by LangGraph, approved by you.
           </p>
 
           <div className="flex items-center gap-4 sm:gap-7 flex-wrap">
             {isSignedIn ? (
               <button
-                className="py-[15px] px-10 border border-[#d4d4d8]/55 rounded-[6px] text-[#d4d4d8] bg-transparent text-[0.72rem] font-semibold tracking-[0.22em] uppercase cursor-pointer transition-all duration-200 flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-start hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8] hover:text-white"
+                className="py-3.75 px-10 border border-[#d4d4d8]/55 rounded-md text-[#d4d4d8] bg-transparent text-[0.72rem] font-semibold tracking-[0.22em] uppercase cursor-pointer transition-all duration-200 flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-start hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8] hover:text-white"
                 onClick={() => navigate('/dashboard')}
               >
                 Go to Dashboard
@@ -198,25 +201,18 @@ export default function LandingNoir() {
               </button>
             ) : (
               <SignInButton mode="modal">
-                <button className="py-[15px] px-10 border border-[#d4d4d8]/55 rounded-[6px] text-[#d4d4d8] bg-transparent text-[0.72rem] font-semibold tracking-[0.22em] uppercase cursor-pointer transition-all duration-200 flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-start hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8] hover:text-white">
+                <button className="py-3.75 px-10 border border-[#d4d4d8]/55 rounded-md text-[#d4d4d8] bg-transparent text-[0.72rem] font-semibold tracking-[0.22em] uppercase cursor-pointer transition-all duration-200 flex items-center gap-2.5 w-full sm:w-auto justify-center sm:justify-start hover:bg-[#d4d4d8]/10 hover:border-[#d4d4d8] hover:text-white">
                   Get Started
                   <ArrowRight size={15} />
                 </button>
               </SignInButton>
             )}
-            {/* <button
-              className="font-cormorant text-[1.3rem] italic text-[#d4d4d8] cursor-pointer border-none border-b border-[#d4d4d8]/40 pb-0.5 transition-all duration-250 bg-none flex items-center gap-1.5 hover:text-[#ffffff] hover:border-b-[#ffffff] hover:pl-1"
-              onClick={() => document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              View the pipeline
-              <ArrowDown size={14} />
-            </button> */}
           </div>
         </div>
 
         {/* Right: Editorial Image */}
         <div
-          className="flex-1 relative overflow-hidden min-h-[480px] h-[60vh] min-[901px]:min-h-screen"
+          className="flex-1 relative overflow-hidden min-h-120 h-[60vh] min-[901px]:min-h-screen"
           onMouseMove={handleHeroMouseMove}
           onMouseLeave={handleHeroMouseLeave}
         >
@@ -239,13 +235,13 @@ export default function LandingNoir() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #161616 0%, transparent 12%)' }} />
 
           {/* Stat bar */}
-          <div className="absolute bottom-12 left-12 z-[5] flex items-stretch bg-[#1e1e1e]/52 backdrop-blur-[20px] backdrop-saturate-[140%] border border-[#d4d4d8]/20 rounded-[14px] overflow-hidden divide-x divide-[#d4d4d8]/15 reveal-on-scroll reveal-delay-2">
+          <div className="absolute bottom-12 left-12 z-5 flex items-stretch bg-[#1e1e1e]/52 backdrop-blur-[20px] backdrop-saturate-140 border border-[#d4d4d8]/20 rounded-[14px] overflow-hidden divide-x divide-[#d4d4d8]/15 reveal-on-scroll reveal-delay-2">
             {[
               { label: 'Agents', val: '8' },
               { label: 'Uptime', val: '24/7' },
               { label: 'Auto', val: '<15%' },
             ].map(s => (
-              <div key={s.label} className="py-4 px-[26px] flex flex-col gap-1.25">
+              <div key={s.label} className="py-4 px-6.5 flex flex-col gap-1.25">
                 <span className="text-[0.58rem] uppercase tracking-[0.18em] text-[#f0eeeb]/45">{s.label}</span>
                 <span className="font-cormorant text-[1.2rem] text-[#d4d4d8] font-medium">{s.val}</span>
               </div>
@@ -256,8 +252,8 @@ export default function LandingNoir() {
 
       {/* ── Marquee ───────────────────────────────────── */}
       <div className="overflow-hidden relative py-7 bg-[#171717]/55 backdrop-blur-[5px] border-b border-[#d4d4d8]/10">
-        <div className="absolute left-0 top-0 bottom-0 w-[120px] bg-gradient-to-r from-[#1e1e1e] to-transparent z-[2]" />
-        <div className="absolute right-0 top-0 bottom-0 w-[120px] bg-gradient-to-l from-[#1e1e1e] to-transparent z-[2]" />
+        <div className="absolute left-0 top-0 bottom-0 w-30 bg-linear-to-r from-[#1e1e1e] to-transparent z-2" />
+        <div className="absolute right-0 top-0 bottom-0 w-30 bg-linear-to-l from-[#1e1e1e] to-transparent z-2" />
         <div className="flex w-max animate-marquee-noir hover:[animation-play-state:paused]">
           {allMarquee.map((item, i) => {
             const IconComponent = item.Icon
@@ -271,105 +267,138 @@ export default function LandingNoir() {
         </div>
       </div>
 
-      {/* ── Agents ("The Atelier") ────────────────────── */}
-      <div id="agents" className="border-b border-[#d4d4d8]/8 bg-[#F7F4EE] border-t border-[#8c7864]/12">
-        <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
+      {/* ── Agents ("The Atelier") — swipeable stacked deck ──────── */}
+      <div id="agents" className="border-b border-[#d4d4d8]/8 border-t  bg-[#1e1e1e]">
+        <div className="py-16 px-5 sm:py-22 sm:px-10 lg:py-30 lg:px-20 max-w-340 mx-auto relative z-2">
           <div className="mb-16 reveal-on-scroll">
-            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#1C1917]">The <em className="text-[#d4d4d8] italic font-normal">Atelier</em></div>
-            <p className="text-[1.02rem] font-light leading-[1.8] text-[#1c1917]/65 max-w-[580px] m-0">
+            <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">The <em className="text-[#d4d4d8] italic font-normal">Atelier</em></div>
+            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/60 max-w-145 m-0">
               Eight specialized agents operating in a sequenced pipeline managed by LangGraph. High-risk actions route to approvals, safe operations run autonomously.
             </p>
           </div>
 
-          <div className="relative reveal-on-scroll sm:mx-[-8px] max-[640px]:mx-0">
-            {/* Arrows — hidden on mobile via CSS */}
-            <button
-              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-200 absolute top-1/2 -translate-y-1/2 left-[-20px] max-[640px]:hidden bg-white border border-[#1c1917]/10 text-[#1C1917] hover:border-[#1c1917] hover:bg-[#1c1917] hover:text-white disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
-              onClick={prevAgent}
-              disabled={agentIndex === 0}
-              aria-label="Previous agents"
-            >
-              <ChevronLeft size={16} />
-            </button>
-
-            <div className="relative overflow-hidden py-5 my-[-20px] max-[640px]:py-3 max-[640px]:my-[-12px]">
-              <div
-                className="flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-grab active:cursor-grabbing select-none"
-                style={{ transform: `translateX(-${agentIndex * (100 / cardsPerView)}%)`, touchAction: 'pan-y' }}
-                onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
-                onTouchEnd={(e) => handleDragEnd(e.changedTouches[0].clientX)}
-                onMouseDown={(e) => handleDragStart(e.clientX)}
-                onMouseUp={(e) => handleDragEnd(e.clientX)}
-                onMouseLeave={() => { dragState.current.isDragging = false }}
+          <div className="reveal-on-scroll flex flex-col items-center">
+            <div className="relative flex items-center justify-center gap-4 sm:gap-6 w-full">
+              {/* Prev arrow — desktop only */}
+              <button
+                className="hidden sm:flex w-10 h-10 rounded-full items-center justify-center cursor-pointer shrink-0 transition-all duration-300 bg-transparent border border-[#d4d4d8]/25 text-[#f0eeeb]/70 hover:border-[#d4d4d8] hover:bg-[#d4d4d8] hover:text-[#1e1e1e] hover:shadow-[0_0_20px_rgba(212,212,216,0.4)]"
+                onClick={prevAgent}
+                aria-label="Previous agent"
               >
-                {agents.map((agent, index) => {
+                <ChevronLeft size={16} />
+              </button>
+
+              {/* Stack */}
+              <div
+                className="relative w-full max-w-95 sm:max-w-110 lg:max-w-120 min-h-110 sm:min-h-100 lg:min-h-95"
+                style={{ touchAction: 'pan-y' }}
+              >
+                {stackIndices.map(({ agent, offset }) => {
                   const Icon = agent.icon
-                  const { slideClass, innerClass } = getSlideStyles(index)
+                  const isFront = offset === 0
+                  const stackTransform =
+                    offset === 0
+                      ? 'translate(0,0) rotate(0deg) scale(1)'
+                      : offset === 1
+                      ? 'translate(-10px, 16px) rotate(-5deg) scale(0.94)'
+                      : 'translate(12px, 30px) rotate(5deg) scale(0.88)'
+
                   return (
                     <div
                       key={agent.step}
-                      className={slideClass}
-                      style={{ flex: `0 0 ${100 / cardsPerView}%`, position: 'relative' }}
+                      ref={isFront ? frontCardRef : null}
+                      onPointerDown={isFront ? handlePointerDown : undefined}
+                      onPointerMove={isFront ? handlePointerMove : undefined}
+                      onPointerUp={isFront ? handlePointerUp : undefined}
+                      onPointerCancel={isFront ? handlePointerUp : undefined}
+                      className={`absolute inset-0 rounded-2xl bg-[#1c1c1c] border border-[#d4d4d8]/14 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-7 sm:p-8 flex flex-col overflow-hidden ${isFront ? 'cursor-grab active:cursor-grabbing select-none' : 'pointer-events-none'}`}
+                      style={{
+                        zIndex: 30 - offset * 10,
+                        opacity: offset === 0 ? 1 : offset === 1 ? 0.85 : 0.6,
+                        transform: stackTransform,
+                        transition: 'transform 480ms cubic-bezier(0.16,1,0.3,1), opacity 380ms ease',
+                        willChange: 'transform',
+                        touchAction: 'pan-y',
+                      }}
                     >
-                      <div className={`group/card ${innerClass}`}>
-                        <div className="flex justify-between items-center mb-5">
-                          <div className="w-10 h-10 rounded-lg bg-[#1c1917]/4 border border-[#1c1917]/8 flex items-center justify-center text-[#1C1917] transition-all duration-300 group-hover/card:bg-[#1c1917] group-hover/card:text-white max-[640px]:bg-white/8 max-[640px]:border-white/10 max-[640px]:text-white">
-                            {Icon && <Icon size={18} />}
-                          </div>
-                          <span className="font-mono text-xs tracking-widest text-[#1c1917]/30 font-semibold max-[640px]:text-white/20">AGENT {agent.step}</span>
-                        </div>
-                        <div className="font-cormorant text-[1.45rem] text-[#1C1917] mb-2.5 font-bold transition-colors duration-300 group-hover/card:text-[#d4d4d8] max-[640px]:text-xl max-[640px]:text-[#F2EDE4] max-[640px]:leading-[1.1]">{agent.title}</div>
-                        <p className="flex-1 text-[0.82rem] font-light leading-[1.65] text-[#1c1917]/55 max-[640px]:text-[0.84rem] max-[640px]:leading-[1.6] max-[640px]:text-[#f2ede4]/50 max-[640px]:mb-0">{agent.desc}</p>
+                      {/* Numeral watermark */}
+                      <span className="font-cormorant absolute -top-3 right-2 text-[6rem] leading-none text-[#d4d4d8]/7 select-none pointer-events-none">
+                        {agent.step}
+                      </span>
 
-                        <div className="mt-6 flex justify-start">
-                          <span className={`text-[0.55rem] uppercase tracking-[0.14em] py-1 px-2.5 rounded font-semibold border flex items-center gap-1.5 ${agent.autoExec ? 'border-[#d4d4d8]/70 text-[#b5b5ba] bg-[#d4d4d8]/5' : 'border-[#1c1917]/10 text-[#1c1917]/50 bg-black/2 max-[640px]:border-white/10 max-[640px]:text-white/45 max-[640px]:bg-white/2'}`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${agent.autoExec ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                            {agent.autoExec ? 'Autonomous' : 'Requires Approval'}
-                          </span>
-                        </div>
+                      <div className="relative z-1 flex items-center gap-3 mb-6">
+                        {Icon && <Icon size={18} className="text-[#d4d4d8]/70" />}
+                        <span className="font-montserrat text-[0.62rem] tracking-[0.22em] uppercase text-[#f0eeeb]/35">Agent {agent.step}</span>
+                      </div>
+
+                      <div className="relative z-1 font-cormorant text-[1.55rem] text-[#f0eeeb] mb-3 font-bold leading-[1.1]">
+                        {agent.title}
+                      </div>
+
+                      <p className="relative z-1 flex-1 text-[0.85rem] font-light leading-[1.7] text-[#f0eeeb]/55">
+                        {agent.desc}
+                      </p>
+
+                      <div className="relative z-1 mt-6 flex items-center gap-2">
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${agent.autoExec ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                        <span className="text-[0.6rem] uppercase tracking-[0.14em] text-[#f0eeeb]/40 font-medium">
+                          {agent.autoExec ? 'Autonomous' : 'Requires Approval'}
+                        </span>
                       </div>
                     </div>
                   )
                 })}
               </div>
+
+              {/* Next arrow — desktop only */}
+              <button
+                className="hidden sm:flex w-10 h-10 rounded-full items-center justify-center cursor-pointer shrink-0 transition-all duration-300 bg-transparent border border-[#d4d4d8]/25 text-[#f0eeeb]/70 hover:border-[#d4d4d8] hover:bg-[#d4d4d8] hover:text-[#1e1e1e] hover:shadow-[0_0_20px_rgba(212,212,216,0.4)]"
+                onClick={nextAgent}
+                aria-label="Next agent"
+              >
+                <ChevronRight size={16} />
+              </button>
             </div>
 
-            <button
-              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-200 absolute top-1/2 -translate-y-1/2 right-[-20px] max-[640px]:hidden bg-white border border-[#1c1917]/10 text-[#1C1917] hover:border-[#1c1917] hover:bg-[#1c1917] hover:text-white disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
-              onClick={nextAgent}
-              disabled={agentIndex === maxAgentIndex}
-              aria-label="Next agents"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
-
-          {/* Dots */}
-          <div className="flex justify-center gap-1.5 mt-10">
-            {Array.from({ length: maxAgentIndex + 1 }).map((_, i) => (
+            {/* Mobile controls — arrows hidden above, shown below deck instead */}
+            <div className="flex sm:hidden items-center gap-6 mt-6">
               <button
-                key={i}
-                className="relative h-1.5 rounded-full p-0 border-none cursor-pointer transition-all duration-300 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:w-[24px] before:h-[24px] before:-translate-x-1/2 before:-translate-y-1/2 max-[640px]:w-[5px] max-[640px]:h-[5px] bg-[#1c1917]/10"
-                style={{ width: i === agentIndex ? '18px' : '6px', backgroundColor: i === agentIndex ? '#1c1917' : undefined, borderRadius: i === agentIndex ? '3px' : '50%' }}
-                onClick={() => goToAgent(i)}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
+                className="w-9 h-9 rounded-full flex items-center justify-center border border-[#d4d4d8]/25 text-[#f0eeeb]/70 active:bg-[#d4d4d8] active:text-[#1e1e1e]"
+                onClick={prevAgent}
+                aria-label="Previous agent"
+              >
+                <ChevronLeft size={15} />
+              </button>
+              <span className="font-cormorant text-[1.1rem] text-[#d4d4d8]">
+                {String(agentIndex + 1).padStart(2, '0')} <span className="text-[#f0eeeb]/30 text-[0.9rem]">/ {String(total).padStart(2, '0')}</span>
+              </span>
+              <button
+                className="w-9 h-9 rounded-full flex items-center justify-center border border-[#d4d4d8]/25 text-[#f0eeeb]/70 active:bg-[#d4d4d8] active:text-[#1e1e1e]"
+                onClick={nextAgent}
+                aria-label="Next agent"
+              >
+                <ChevronRight size={15} />
+              </button>
+            </div>
 
-          {/* Mobile only: swipe hint text */}
-          <p className="hidden max-[640px]:block text-center text-[0.7rem] uppercase tracking-[0.18em] text-[#1c1917]/35 mt-3 font-medium">
-            Swipe to explore all 8 agents &rarr;
-          </p>
+            {/* Desktop index readout */}
+            <div className="hidden sm:block mt-8 font-cormorant text-[1rem] text-[#d4d4d8]">
+              {String(agentIndex + 1).padStart(2, '0')} <span className="text-[#f0eeeb]/30">/ {String(total).padStart(2, '0')}</span>
+            </div>
+
+            <p className="sm:hidden text-center text-[0.68rem] uppercase tracking-[0.18em] text-[#f0eeeb]/35 mt-4 font-medium">
+              Swipe to explore all {total} agents
+            </p>
+          </div>
         </div>
       </div>
 
       {/* ── Integrations ("Seamless Connectivity") ──────── */}
       <div id="integrations" className="border-b border-[#d4d4d8]/8 bg-[#1e1e1e]">
-        <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
+        <div className="py-16 px-5 sm:py-22 sm:px-10 lg:py-30 lg:px-20 max-w-340 mx-auto relative z-2">
           <div className="mb-16 reveal-on-scroll">
             <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">Seamless <em className="text-[#d4d4d8] italic font-normal">Connectivity</em></div>
-            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/55 max-w-[580px] m-0">
+            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/55 max-w-145 m-0">
               Your existing operations linked with read & write capabilities. Integrated directly via secure platform MCP clients.
             </p>
           </div>
@@ -380,27 +409,27 @@ export default function LandingNoir() {
               return (
                 <div
                   key={p.name}
-                  className={`group/card relative overflow-hidden rounded-xl p-8 bg-[#181818] border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--platform-accent)]/30 hover:shadow-[0_12px_32px_rgba(0,0,0,0.35)] reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
+                  className={`group/card relative overflow-hidden rounded-xl p-8 bg-[#181818] border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-(--platform-accent)/30 hover:shadow-[0_12px_32px_rgba(0,0,0,0.35)] reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
                   style={{
                     '--platform-accent': p.color || GOLD,
                   }}
                 >
                   {/* Subtle back ambient glow */}
-                  <div className="absolute top-0 right-0 w-[120px] h-[120px] rounded-full blur-[40px] pointer-events-none opacity-0 transition-opacity duration-300 group-hover/card:opacity-100" style={{ background: `radial-gradient(circle, ${p.color}15 0%, transparent 70%)` }} />
+                  <div className="absolute top-0 right-0 w-30 h-30 rounded-full blur-2xl pointer-events-none opacity-0 transition-opacity duration-300 group-hover/card:opacity-100" style={{ background: `radial-gradient(circle, ${p.color}15 0%, transparent 70%)` }} />
 
                   <div className="flex justify-between items-start mb-6">
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 bg-white/[0.03] border border-white/10 group-hover/card:border-[var(--platform-accent)]/30 group-hover/card:bg-[var(--platform-accent)]/5"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 bg-white/3 border border-white/10 group-hover/card:border-(--platform-accent)/30 group-hover/card:bg-(--platform-accent)/5"
                       style={{ color: p.color || GOLD }}
                     >
                       {IconComponent && <IconComponent size={18} />}
                     </div>
                   </div>
-                  <div className="font-cormorant text-[1.4rem] text-[#f0eeeb] mb-2 font-bold transition-colors duration-300 group-hover/card:text-[var(--platform-accent)] max-[640px]:text-[1.25rem]">{p.name}</div>
+                  <div className="font-cormorant text-[1.4rem] text-[#f0eeeb] mb-2 font-bold transition-colors duration-300 group-hover/card:text-(--platform-accent) max-[640px]:text-[1.25rem]">{p.name}</div>
                   <p className="text-[0.8rem] font-light leading-[1.65] text-[#f0eeeb]/55 mb-6 max-[640px]:text-[0.78rem]">{p.desc}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {p.pills.map(pill => (
-                      <span key={pill} className="text-[0.58rem] font-mono tracking-[0.08em] uppercase py-1 px-2 rounded border border-white/5 text-[#f0eeeb]/40 bg-white/[0.01] transition-colors duration-300 group-hover/card:border-[var(--platform-accent)]/20 group-hover/card:text-[var(--platform-accent)]/80 group-hover/card:bg-[var(--platform-accent)]/[0.03]">{pill}</span>
+                      <span key={pill} className="text-[0.58rem] font-mono tracking-[0.08em] uppercase py-1 px-2 rounded border border-white/5 text-[#f0eeeb]/40 bg-white/1 transition-colors duration-300 group-hover/card:border-(--platform-accent)/20 group-hover/card:text-(--platform-accent)/80 group-hover/card:bg-(--platform-accent)/3">{pill}</span>
                     ))}
                   </div>
                 </div>
@@ -412,19 +441,19 @@ export default function LandingNoir() {
 
       {/* ── How it Works ("The Method") ────────────────── */}
       <div id="process" className="bg-[#1e1e1e] border-b border-[#d4d4d8]/8">
-        <div className="py-16 px-5 sm:py-[88px] sm:px-10 lg:py-[120px] lg:px-20 max-w-[1360px] mx-auto relative z-[2]">
+        <div className="py-16 px-5 sm:py-22 sm:px-10 lg:py-30 lg:px-20 max-w-340 mx-auto relative z-2">
           <div className="mb-16 reveal-on-scroll" style={{ textAlign: 'center' }}>
             <div className="font-cormorant text-[clamp(2.8rem,4.8vw,4.8rem)] font-light leading-[1.05] m-[0_0_20px] text-[#f0eeeb]">The <em className="text-[#d4d4d8] italic font-normal">Method</em></div>
-            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/52 max-w-[580px] mx-auto">
+            <p className="text-[1.02rem] font-light leading-[1.8] text-[#f0eeeb]/52 max-w-145 mx-auto">
               How FashionOS integrates, schedules, coordinates, and runs your business 24/7.
             </p>
           </div>
 
-          <div className="max-w-[800px] mx-auto reveal-on-scroll">
-            <div className="relative pl-16 border-l border-[#d4d4d8]/12 after:content-[''] after:absolute after:-left-[1px] after:bottom-0 after:h-[120px] after:w-[1px] after:bg-gradient-to-b after:from-[#d4d4d8]/12 after:to-transparent">
+          <div className="max-w-200 mx-auto reveal-on-scroll">
+            <div className="relative pl-16 border-l border-[#d4d4d8]/12 after:content-[''] after:absolute after:-left-px after:bottom-0 after:h-30 after:w-px after:bg-linear-to-b after:from-[#d4d4d8]/12 after:to-transparent">
               {howItWorksSteps.map((step, i) => (
                 <div key={step.step} className="group/item relative pb-14 last:pb-0">
-                  <div className="absolute -left-[86px] top-0 w-11 h-11 rounded-full bg-[#1e1e1e] border border-[#d4d4d8]/30 flex items-center justify-center font-cormorant text-[1.25rem] italic text-[#d4d4d8] font-medium shadow-[0_0_15px_rgba(0,0,0,0.6)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:bg-[#d4d4d8] group-hover/item:text-[#1e1e1e] group-hover/item:border-[#d4d4d8] group-hover/item:shadow-[0_0_20px_rgba(212,212,216,0.5)] group-hover/item:scale-110">
+                  <div className="absolute -left-21.5 top-0 w-11 h-11 rounded-full bg-[#1e1e1e] border border-[#d4d4d8]/30 flex items-center justify-center font-cormorant text-[1.25rem] italic text-[#d4d4d8] font-medium shadow-[0_0_15px_rgba(0,0,0,0.6)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:bg-[#d4d4d8] group-hover/item:text-[#1e1e1e] group-hover/item:border-[#d4d4d8] group-hover/item:shadow-[0_0_20px_rgba(212,212,216,0.5)] group-hover/item:scale-110">
                     {step.step}
                   </div>
                   <div className="timeline-content">
@@ -439,17 +468,17 @@ export default function LandingNoir() {
       </div>
 
       {/* ── CTA Section ───────────────────────────────── */}
-      <div className="py-[140px] px-16 text-center relative overflow-hidden border-t border-[#d4d4d8]/12 bg-[#F7F4EE] border-b border-[#8c7864]/12">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full blur-[100px] pointer-events-none bg-[radial-gradient(circle,rgba(212,212,216,0.1)_0%,rgba(212,212,216,0)_70%)]" />
-        <div className="font-cormorant text-[clamp(2.8rem,5vw,4.8rem)] font-light text-[#1C1917] mb-6 leading-[1.1] relative z-[1] reveal-on-scroll">
+      <div className="py-35 px-16 text-center relative overflow-hidden border-t  bg-[#F7F4EE] border-b border-[#8c7864]/12">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-162.5 h-162.5 rounded-full blur-[100px] pointer-events-none bg-[radial-gradient(circle,rgba(212,212,216,0.1)_0%,rgba(212,212,216,0)_70%)]" />
+        <div className="font-cormorant text-[clamp(2.8rem,5vw,4.8rem)] font-light text-[#1C1917] mb-6 leading-[1.1] relative z-1 reveal-on-scroll">
           Automate Your Brand<br />
           <em className="text-[#d4d4d8] italic font-normal">Without Losing Control</em>
         </div>
-        <p className="text-[1.05rem] font-light text-[#1c1917]/62 mb-14 relative z-[1] reveal-on-scroll reveal-delay-1">
+        <p className="text-[1.05rem] font-light text-[#1c1917]/62 mb-14 relative z-1 reveal-on-scroll reveal-delay-1">
           Zero coding required. Safe threshold validation safeguards your profit margins while automating day-to-day operations.
         </p>
 
-        <div className="flex gap-8 flex-wrap justify-center mb-14 relative z-[1] max-[640px]:flex-col max-[640px]:items-center max-[640px]:gap-3 reveal-on-scroll reveal-delay-2">
+        <div className="flex gap-8 flex-wrap justify-center mb-14 relative z-1 max-[640px]:flex-col max-[640px]:items-center max-[640px]:gap-3 reveal-on-scroll reveal-delay-2">
           {[
             'Shopify & Meta Ads Native Integration',
             'WhatsApp Real-time Notifications',
@@ -465,13 +494,13 @@ export default function LandingNoir() {
 
         <div className="reveal-on-scroll reveal-delay-3">
           {isSignedIn ? (
-            <button className="py-4 px-14 border border-[#3f3f46]/55 rounded-[6px] text-[#3f3f46] bg-transparent text-[0.72rem] font-semibold tracking-[0.24em] uppercase cursor-pointer transition-all duration-200 inline-flex items-center gap-3 hover:bg-[#3f3f46]/10 hover:border-[#1c1917] hover:text-[#1c1917] max-[640px]:w-full max-[640px]:justify-center" onClick={() => navigate('/dashboard')}>
+            <button className="py-4 px-14 border border-[#3f3f46]/55 rounded-md text-[#3f3f46] bg-transparent text-[0.72rem] font-semibold tracking-[0.24em] uppercase cursor-pointer transition-all duration-200 inline-flex items-center gap-3 hover:bg-[#3f3f46]/10 hover:border-[#1c1917] hover:text-[#1c1917] max-[640px]:w-full max-[640px]:justify-center" onClick={() => navigate('/dashboard')}>
               Go to Dashboard
               <ArrowRight size={16} />
             </button>
           ) : (
             <SignInButton mode="modal">
-              <button className="py-4 px-14 border border-[#3f3f46]/55 rounded-[6px] text-[#3f3f46] bg-transparent text-[0.72rem] font-semibold tracking-[0.24em] uppercase cursor-pointer transition-all duration-200 inline-flex items-center gap-3 hover:bg-[#3f3f46]/10 hover:border-[#1c1917] hover:text-[#1c1917] max-[640px]:w-full max-[640px]:justify-center">
+              <button className="py-4 px-14 border border-[#3f3f46]/55 rounded-md text-[#3f3f46] bg-transparent text-[0.72rem] font-semibold tracking-[0.24em] uppercase cursor-pointer transition-all duration-200 inline-flex items-center gap-3 hover:bg-[#3f3f46]/10 hover:border-[#1c1917] hover:text-[#1c1917] max-[640px]:w-full max-[640px]:justify-center">
                 Begin Setup
                 <ArrowRight size={16} />
               </button>
@@ -481,7 +510,7 @@ export default function LandingNoir() {
       </div>
 
       {/* ── Footer ────────────────────────────────────── */}
-      <footer className="py-11 px-20 max-w-full flex items-center justify-between border-t border-[#d4d4d8]/12 flex-wrap gap-6 bg-[#171717] relative z-[2] max-[1024px]:py-9 max-[1024px]:px-10 max-[640px]:flex-col max-[640px]:text-center max-[640px]:gap-4">
+      <footer className="py-11 px-20 max-w-full flex items-center justify-between border-t border-[#d4d4d8]/12 flex-wrap gap-6 bg-[#171717] relative z-2 max-[1024px]:py-9 max-[1024px]:px-10 max-[640px]:flex-col max-[640px]:text-center max-[640px]:gap-4">
         <div className="font-cormorant text-[1.4rem] uppercase tracking-[0.16em] text-[#d4d4d8]">
           FASHION<span className="text-[#f0eeeb]">OS</span>{' '}
           <Zap size={12} fill={GOLD} stroke="none" style={{ verticalAlign: 'middle', marginTop: -2 }} />
