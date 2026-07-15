@@ -64,6 +64,11 @@ export default function Trends() {
               <div className="text-right text-xs">
                 <div className="flex items-center gap-1 justify-end" style={{ color: 'var(--text-primary)' }}>
                   <TrendingUp size={12} /> {s.score.toFixed(2)}
+                  {s.score_delta != null && (
+                    <span style={{ color: s.score_delta > 0 ? '#4ade80' : s.score_delta < 0 ? '#f87171' : 'var(--text-muted)' }}>
+                      ({s.score_delta > 0 ? '+' : ''}{s.score_delta.toFixed(2)})
+                    </span>
+                  )}
                 </div>
                 <div style={{ color: 'var(--text-muted)' }}>{new Date(s.created_at).toLocaleDateString()}</div>
               </div>
