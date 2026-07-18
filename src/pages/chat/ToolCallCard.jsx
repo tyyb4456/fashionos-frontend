@@ -45,7 +45,8 @@ function AgentChips({ names }) {
 export default function ToolCallCard({ call }) {
   const [expanded, setExpanded] = useState(false)
   const isPipeline = PIPELINE_TOOLS.has(call.name) || call.name.includes(',')
-  const label   = call.name.includes(',') ? 'Pipeline Run' : (TOOL_LABELS[call.name] || call.name)
+  const baseName = call.name.split('#')[0]
+  const label   = call.name.includes(',') ? 'Pipeline Run' : (TOOL_LABELS[baseName] || call.name)
   const hasData = call.status === 'done'
   const agents  = isPipeline ? pipelineAgents(call) : []
   const pStatus = isPipeline ? pipelineStatus(call) : null
